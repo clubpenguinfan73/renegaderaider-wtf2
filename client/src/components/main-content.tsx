@@ -171,29 +171,31 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           </p>
         </div>
 
-        {/* Social Links - iOS Control Center Style */}
-        <div className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-2xl p-4 mb-8 shadow-2xl">
-          <div className="grid grid-cols-5 gap-3 w-full max-w-sm mx-auto">
-            {links.map((link) => (
-              <motion.a
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center group"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <div className={`w-12 h-12 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
-                  <i className={`${link.icon} text-lg text-white`}></i>
-                </div>
-                <span className="text-white text-xs font-medium mt-1 text-center opacity-80 group-hover:opacity-100 transition-opacity">
-                  {link.title}
-                </span>
-              </motion.a>
-            ))}
+        {/* Social Links - iOS Control Center Style - Only show if there are links */}
+        {links.length > 0 && (
+          <div className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-2xl p-4 mb-8 shadow-2xl">
+            <div className="grid grid-cols-5 gap-3 w-full max-w-sm mx-auto">
+              {links.map((link) => (
+                <motion.a
+                  key={link.id}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center group"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <div className={`w-12 h-12 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
+                    <i className={`${link.icon} text-lg text-white`}></i>
+                  </div>
+                  <span className="text-white text-xs font-medium mt-1 text-center opacity-80 group-hover:opacity-100 transition-opacity">
+                    {link.title}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Feature Cards */}
         <div className="w-full max-w-2xl space-y-4">
