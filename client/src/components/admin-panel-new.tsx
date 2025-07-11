@@ -317,18 +317,18 @@ export default function AdminPanel({
               </div>
 
               {/* Multi-column Grid Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                 {/* Left Column */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Profile Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-2">
                       <CardTitle className="text-gaming-purple flex items-center gap-2">
                         <User className="h-5 w-5" />
                         Profile
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-1.5">
                       <Input
                         placeholder="Username"
                         value={username}
@@ -400,13 +400,13 @@ export default function AdminPanel({
 
                   {/* Music Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-2">
                       <CardTitle className="text-gaming-cyan flex items-center gap-2">
                         <Music className="h-5 w-5" />
                         Background Music
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-white text-sm">Enable Background Music</span>
                         <Switch
@@ -456,16 +456,16 @@ export default function AdminPanel({
                 </div>
 
                 {/* Middle Column */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Discord Rich Presence Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-2">
                       <CardTitle className="text-indigo-400 flex items-center gap-2">
                         <i className="fab fa-discord text-lg"></i>
                         Discord Rich Presence
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-white text-sm">Enable Discord Widget</span>
                         <Switch
@@ -509,13 +509,13 @@ export default function AdminPanel({
 
                   {/* Spotify Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-2">
                       <CardTitle className="text-green-400 flex items-center gap-2">
                         <i className="fab fa-spotify text-lg"></i>
                         Spotify Integration
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-white text-sm">Enable Spotify Widget</span>
                         <Switch
@@ -587,16 +587,16 @@ export default function AdminPanel({
                 </div>
 
                 {/* Right Column */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Links Management */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-2">
                       <CardTitle className="text-gaming-purple flex items-center gap-2">
                         <ExternalLink className="h-5 w-5" />
                         Social Links
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-1.5">
                       <Button
                         onClick={onNewLink}
                         className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
