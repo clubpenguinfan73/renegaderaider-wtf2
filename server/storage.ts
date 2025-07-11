@@ -33,7 +33,7 @@ export class MemStorage implements IStorage {
       profilePicture: "",
       backgroundImage: "",
       backgroundMusic: null,
-      musicEnabled: false
+      musicEnabled: true
     };
     this.links = new Map();
     this.currentUserId = 1;

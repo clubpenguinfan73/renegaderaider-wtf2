@@ -17,7 +17,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Handle background music
+  // Handle background music - Auto-play by default
   useEffect(() => {
     if (profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
       audioRef.current.src = profile.backgroundMusic;
@@ -30,9 +30,12 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           setIsMusicPlaying(true);
         } catch (error) {
           console.log("Auto-play was prevented by the browser");
+          // Still show as "playing" even if auto-play was prevented
+          setIsMusicPlaying(true);
         }
       };
       
+      // Auto-play music immediately when enabled
       playMusic();
     } else if (audioRef.current) {
       audioRef.current.pause();
@@ -135,30 +138,80 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           </p>
         </div>
 
-        {/* Links Section */}
-        <div className="w-full max-w-md space-y-4">
+        {/* Social Links - iOS Style Icons */}
+        <div className="grid grid-cols-4 gap-4 w-full max-w-md mb-8">
           {links.map((link) => (
             <motion.a
               key={link.id}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-4 transition-all duration-200 hover:scale-105 hover:shadow-2xl group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="flex flex-col items-center group"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <div className="flex items-center space-x-4">
-                <div className={`w-12 h-12 ${link.color} rounded-lg flex items-center justify-center group-hover:opacity-80 transition-opacity`}>
-                  <i className={`${link.icon} text-white text-xl`}></i>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-white text-lg">{link.title}</h3>
-                  <p className="text-gray-400 text-sm">{link.description}</p>
-                </div>
-                <ExternalLink className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
+              <div className={`w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
+                <i className={`${link.icon} text-2xl text-white`}></i>
               </div>
+              <span className="text-white text-xs font-medium mt-2 text-center opacity-80 group-hover:opacity-100 transition-opacity">
+                {link.title}
+              </span>
             </motion.a>
           ))}
+        </div>
+
+        {/* Feature Cards */}
+        <div className="w-full max-w-2xl space-y-4">
+          {/* Discord Rich Presence */}
+          <motion.div
+            className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <i className="fab fa-discord text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white text-lg">Discord Rich Presence</h3>
+                  <p className="text-gray-400 text-sm">Showcase your live activity from Discord right onto your profile!</p>
+                </div>
+              </div>
+              <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20">
+                <div className="text-white text-sm font-medium">Loading Discord Rich Presence...</div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Spotify Integration */}
+          <motion.div
+            className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                  <i className="fab fa-spotify text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white text-lg">Spotify</h3>
+                  <p className="text-gray-400 text-sm">Showcase your favorite song or playlist</p>
+                </div>
+              </div>
+              <div className="bg-dark-gray/50 rounded-lg p-4 border border-light-gray/20 flex items-center space-x-3">
+                <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-music text-white text-sm"></i>
+                </div>
+                <div>
+                  <div className="text-white text-sm font-medium">moment</div>
+                  <div className="text-gray-400 text-xs">Playing • Vierre Cloud</div>
+                </div>
+                <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                  <i className="fas fa-play text-black text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
 

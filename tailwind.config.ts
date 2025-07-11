@@ -61,6 +61,11 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        "gaming-purple": "#8B5CF6",
+        "gaming-cyan": "#06B6D4",
+        "light-gray": "#2d3748",
+        "medium-gray": "#1a202c",
+        "dark-gray": "#171923",
       },
       keyframes: {
         "accordion-down": {
