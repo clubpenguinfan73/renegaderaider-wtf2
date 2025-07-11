@@ -8,6 +8,11 @@ interface EntranceOverlayProps {
 }
 
 export default function EntranceOverlay({ onEnter, isEntering, profile }: EntranceOverlayProps) {
+  // Don't render if profile data hasn't loaded yet
+  if (!profile) {
+    return null;
+  }
+
   const backgroundImage = profile?.backgroundImage;
   const entranceText = profile?.entranceText || "click to enter...";
   const fontSize = profile?.entranceFontSize || "4xl";
