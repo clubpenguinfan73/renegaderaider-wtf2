@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Upload, Trash2, Plus, Edit2, LogOut, Music, User, Image, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,23 @@ export default function AdminPanel({
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Sync local state with profile prop changes
+  useEffect(() => {
+    if (profile) {
+      setUsername(profile.username || "");
+      setBio(profile.bio || "");
+      setMusicEnabled(profile.musicEnabled || false);
+      setDiscordEnabled(profile.discordEnabled || false);
+      setDiscordUserId(profile.discordUserId || "");
+      setDiscordApplicationId(profile.discordApplicationId || "");
+      setSpotifyEnabled(profile.spotifyEnabled || false);
+      setSpotifyTrackName(profile.spotifyTrackName || "");
+      setSpotifyArtistName(profile.spotifyArtistName || "");
+      setSpotifyAlbumArt(profile.spotifyAlbumArt || "");
+      setSpotifyTrackUrl(profile.spotifyTrackUrl || "");
+    }
+  }, [profile]);
 
   const updateProfileMutation = useMutation({
     mutationFn: (data: any) => apiRequest("/api/profile", "PUT", data),
