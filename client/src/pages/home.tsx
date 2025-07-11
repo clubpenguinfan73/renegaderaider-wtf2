@@ -47,12 +47,7 @@ export default function Home() {
     checkAuth();
   }, []);
 
-  // Cache background image when profile loads
-  useEffect(() => {
-    if (profile?.backgroundImage) {
-      localStorage.setItem('cached_background_image', profile.backgroundImage);
-    }
-  }, [profile?.backgroundImage]);
+
 
   const handleEnter = () => {
     setIsEntering(true);
@@ -99,21 +94,10 @@ export default function Home() {
 
   // Show loading screen while data loads
   if (profileLoading || linksLoading) {
-    // Try to get cached background image from localStorage
-    const cachedBackground = localStorage.getItem('cached_background_image');
-    
     return (
       <div className="fixed inset-0 z-50">
-        {/* Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
-          {cachedBackground && (
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-              style={{ backgroundImage: `url(${cachedBackground})` }}
-            />
-          )}
-        </div>
+        {/* Background matching the main theme */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
       </div>
     );
   }
