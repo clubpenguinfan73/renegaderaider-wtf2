@@ -222,9 +222,9 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             />
           </h1>
           
-          {/* Animated Title - Updates Browser Tab */}
+          {/* Animated Title - Updates Browser Tab Only (Hidden) */}
           {profile?.animatedTitleEnabled && profile?.animatedTitleTexts && (
-            <div className="text-xl md:text-2xl font-medium mb-2 text-gaming-cyan">
+            <div className="hidden">
               <AnimatedTitle 
                 titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t.length > 0)} 
                 speed={profile.animatedTitleSpeed || 2000}
