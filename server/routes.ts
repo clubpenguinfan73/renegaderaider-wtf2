@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertProfileSchema, insertLinkSchema } from "@shared/schema";
 import { z } from "zod";
+import { discordAPI } from "./discord";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get profile data
@@ -91,6 +92,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Link deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete link" });
+    }
+  });
+
+  // Discord API endpoints
+  app.get("/api/discord/profile", async (req, res) => {
+    try {
+      const user = await discordAPI.getUserProfile();
+      const avatarUrl = discordAPI.getAvatarUrl(user);
+      const bannerUrl = discordAPI.getBannerUrl(user);
+      const badges = discordAPI.getBadges(user.public_flags);
+      
+      res.json({
+        id: user.id,
+        username: user.username,
+        discriminator: user.discriminator,
+        avatar: avatarUrl,
+        banner: bannerUrl,
+        accentColor: user.accent_color,
+        badges: badges,
+        premiumType: user.premium_type,
+        publicFlags: user.public_flags
+      });
+    } catch (error) {
+      console.error('Discord API error:', error);
+      res.status(500).json({ message: "Failed to fetch Discord profile" });
     }
   });
 

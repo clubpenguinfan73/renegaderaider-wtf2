@@ -102,5 +102,7 @@ To set up Netlify DB for your deployment:
 - **Entrance Animation**: Smooth entrance overlay with localStorage persistence
 - **Secure Authentication**: Admin access protected with username/password (Cat / Cat@Renagde.wtf73)
 - **Persistent Storage**: Netlify DB integration for data persistence across deployments
+- **Live Discord Integration**: Real-time Discord profile display with 24/7 connection showing authentic avatar, username, and badges
+- **Animated Browser Titles**: Dynamic typewriter effect in browser tab titles
 
 The application is designed to be easily deployable to Netlify with automatic database provisioning and serverless architecture.
