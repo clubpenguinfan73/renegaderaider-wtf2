@@ -226,8 +226,8 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           {profile?.animatedTitleEnabled && profile?.animatedTitleTexts && (
             <div className="text-xl md:text-2xl font-medium mb-2 text-gaming-cyan">
               <AnimatedTitle 
-                titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t)} 
-                speed={profile.animatedTitleSpeed || 1000}
+                titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t.length > 0)} 
+                speed={profile.animatedTitleSpeed || 2000}
                 updateDocumentTitle={true}
               />
             </div>

@@ -12,47 +12,68 @@ export default function AnimatedTitle({ titles, speed = 1000, className = "", up
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typeSpeed, setTypeSpeed] = useState(100);
+  const [isWaiting, setIsWaiting] = useState(false);
 
   useEffect(() => {
     if (titles.length === 0) return;
 
     const currentTitle = titles[currentIndex];
-    
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        // Typing
-        if (displayText.length < currentTitle.length) {
-          setDisplayText(currentTitle.slice(0, displayText.length + 1));
-          setTypeSpeed(100); // Fixed typing speed
-        } else {
-          // Finished typing, wait then start deleting
-          setTypeSpeed(speed || 1500); // Use speed prop for pause duration
-          setIsDeleting(true);
-        }
-      } else {
-        // Deleting
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1));
-          setTypeSpeed(50); // Fixed deleting speed
-        } else {
-          // Finished deleting, move to next title
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % titles.length);
-          setTypeSpeed(200); // Brief pause before next title
-        }
-      }
-    }, typeSpeed);
+    let timeout: NodeJS.Timeout;
 
-    return () => clearTimeout(timer);
-  }, [displayText, isDeleting, currentIndex, titles, speed, typeSpeed]);
+    if (isWaiting) {
+      // Wait before starting to delete
+      timeout = setTimeout(() => {
+        setIsWaiting(false);
+        setIsDeleting(true);
+      }, speed);
+    } else if (!isDeleting) {
+      // Typing phase
+      if (displayText.length < currentTitle.length) {
+        timeout = setTimeout(() => {
+          setDisplayText(currentTitle.slice(0, displayText.length + 1));
+        }, 150);
+      } else {
+        // Finished typing, start waiting
+        setIsWaiting(true);
+      }
+    } else {
+      // Deleting phase
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1));
+        }, 75);
+      } else {
+        // Finished deleting, move to next title
+        setIsDeleting(false);
+        setCurrentIndex((prev) => (prev + 1) % titles.length);
+      }
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [displayText, isDeleting, isWaiting, currentIndex, titles, speed]);
+
+  // Debug effect
+  useEffect(() => {
+    console.log('AnimatedTitle Debug:', {
+      titles,
+      currentIndex,
+      displayText,
+      isDeleting,
+      isWaiting,
+      currentTitle: titles[currentIndex]
+    });
+  }, [titles, currentIndex, displayText, isDeleting, isWaiting]);
 
   // Update document title if enabled
   useEffect(() => {
-    if (updateDocumentTitle && displayText) {
-      document.title = displayText;
-    } else if (updateDocumentTitle && !displayText) {
-      document.title = 'renegade raider.wtf';
+    if (updateDocumentTitle) {
+      if (displayText) {
+        document.title = displayText;
+      } else {
+        document.title = 'renegade raider.wtf';
+      }
     }
   }, [displayText, updateDocumentTitle]);
 
