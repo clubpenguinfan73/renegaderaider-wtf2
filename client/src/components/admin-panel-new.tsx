@@ -617,7 +617,7 @@ export default function AdminPanel({
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <label className="text-sm font-medium text-gray-300">Enable Animated Title</label>
-                          <p className="text-xs text-gray-400">Add typewriter-style animated text under your username</p>
+                          <p className="text-xs text-gray-400">Add typewriter-style animated text to your browser tab</p>
                         </div>
                         <Switch
                           checked={animatedTitleEnabled}
@@ -636,7 +636,7 @@ export default function AdminPanel({
                           rows={3}
                         />
                         <p className="text-xs text-gray-400">
-                          Enter multiple titles separated by commas. Example: "Gamer, Streamer, Content Creator"
+                          Enter multiple titles separated by commas. These will cycle in your browser tab title.
                         </p>
                       </div>
                       

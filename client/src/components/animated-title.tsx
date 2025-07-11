@@ -5,9 +5,10 @@ interface AnimatedTitleProps {
   titles: string[];
   speed?: number;
   className?: string;
+  updateDocumentTitle?: boolean;
 }
 
-export default function AnimatedTitle({ titles, speed = 1000, className = "" }: AnimatedTitleProps) {
+export default function AnimatedTitle({ titles, speed = 1000, className = "", updateDocumentTitle = false }: AnimatedTitleProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -45,6 +46,13 @@ export default function AnimatedTitle({ titles, speed = 1000, className = "" }: 
 
     return () => clearTimeout(timer);
   }, [displayText, isDeleting, currentIndex, titles, speed, typeSpeed]);
+
+  // Update document title if enabled
+  useEffect(() => {
+    if (updateDocumentTitle && displayText) {
+      document.title = displayText;
+    }
+  }, [displayText, updateDocumentTitle]);
 
   if (titles.length === 0) return null;
 

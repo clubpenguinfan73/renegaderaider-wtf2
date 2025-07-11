@@ -167,15 +167,13 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             />
           </h1>
           
-          {/* Animated Title */}
+          {/* Animated Title - Updates Browser Tab */}
           {profile?.animatedTitleEnabled && profile?.animatedTitleTexts && (
-            <div className="mb-4">
-              <AnimatedTitle 
-                titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t)} 
-                speed={profile.animatedTitleSpeed || 1000}
-                className="text-2xl md:text-3xl font-medium"
-              />
-            </div>
+            <AnimatedTitle 
+              titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t)} 
+              speed={profile.animatedTitleSpeed || 1000}
+              updateDocumentTitle={true}
+            />
           )}
           
           <p className="text-lg text-gray-300 max-w-md mx-auto leading-relaxed">
