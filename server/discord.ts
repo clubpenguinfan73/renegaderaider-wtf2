@@ -1,4 +1,5 @@
 import { fetch } from 'undici';
+import { Client, GatewayIntentBits, ActivityType } from 'discord.js';
 
 export interface DiscordUser {
   id: string;
