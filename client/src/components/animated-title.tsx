@@ -23,19 +23,20 @@ export default function AnimatedTitle({ titles, speed = 2000, className = "", up
       if (displayText.length < currentTitle.length) {
         timeout = setTimeout(() => {
           setDisplayText(currentTitle.slice(0, displayText.length + 1));
-        }, 100);
+        }, 150);
       } else {
         // Finished typing current title
         if (currentIndex === titles.length - 1) {
           // Last title - wait then start deleting
           timeout = setTimeout(() => {
             setIsDeleting(true);
-          }, speed);
+          }, 1000);
         } else {
-          // Not last title - move to next title after pause
+          // Not last title - clear and move to next title
           timeout = setTimeout(() => {
+            setDisplayText('');
             setCurrentIndex((prev) => prev + 1);
-          }, speed);
+          }, 1000);
         }
       }
     } else {
@@ -43,7 +44,7 @@ export default function AnimatedTitle({ titles, speed = 2000, className = "", up
       if (displayText.length > 0) {
         timeout = setTimeout(() => {
           setDisplayText(displayText.slice(0, -1));
-        }, 50);
+        }, 30);
       } else {
         // Finished deleting, restart from first title
         setIsDeleting(false);
