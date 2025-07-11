@@ -233,12 +233,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             </div>
           )}
           
-          {/* Debug: Check animated title data */}
-          {profile && (
-            <div className="text-xs text-gray-500 mb-2">
-              Debug: Enabled={profile.animatedTitleEnabled?.toString()}, Texts="{profile.animatedTitleTexts}", Speed={profile.animatedTitleSpeed}
-            </div>
-          )}
+
           
           <p className="text-lg text-gray-300 max-w-md mx-auto leading-relaxed">
             {profile?.bio || "Professional gamer • Content creator • Streaming daily"}

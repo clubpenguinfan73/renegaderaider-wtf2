@@ -12,7 +12,7 @@ export default function AnimatedTitle({ titles, speed = 1000, className = "", up
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typeSpeed, setTypeSpeed] = useState(speed / 10);
+  const [typeSpeed, setTypeSpeed] = useState(100);
 
   useEffect(() => {
     if (titles.length === 0) return;
@@ -24,22 +24,22 @@ export default function AnimatedTitle({ titles, speed = 1000, className = "", up
         // Typing
         if (displayText.length < currentTitle.length) {
           setDisplayText(currentTitle.slice(0, displayText.length + 1));
-          setTypeSpeed(speed / 10);
+          setTypeSpeed(100); // Fixed typing speed
         } else {
           // Finished typing, wait then start deleting
-          setTypeSpeed(speed * 2);
+          setTypeSpeed(speed || 1500); // Use speed prop for pause duration
           setIsDeleting(true);
         }
       } else {
         // Deleting
         if (displayText.length > 0) {
           setDisplayText(displayText.slice(0, -1));
-          setTypeSpeed(speed / 20);
+          setTypeSpeed(50); // Fixed deleting speed
         } else {
           // Finished deleting, move to next title
           setIsDeleting(false);
           setCurrentIndex((prev) => (prev + 1) % titles.length);
-          setTypeSpeed(speed / 10);
+          setTypeSpeed(200); // Brief pause before next title
         }
       }
     }, typeSpeed);
