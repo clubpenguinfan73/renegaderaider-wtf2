@@ -7,6 +7,7 @@ import type { Profile, Link } from "@shared/schema";
 import UsernameEffects from "./username-effects";
 import AnimatedTitle from "./animated-title";
 import { useDiscordProfile } from "@/hooks/use-discord-profile";
+import { useSpotifyCurrentTrack, formatDuration, getAlbumArt } from "@/hooks/use-spotify";
 
 interface MainContentProps {
   profile?: Profile;
@@ -22,6 +23,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { profile: discordProfile, activity: discordActivity, isLoading: discordLoading, error: discordError, getBadgeIcon } = useDiscordProfile();
+  const { data: spotifyData, isLoading: spotifyLoading, error: spotifyError } = useSpotifyCurrentTrack();
 
   // Check if background is a video
   const isVideoBackground = backgroundImage && (
@@ -353,58 +355,93 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             </motion.div>
           )}
 
-          {/* Spotify Integration - Only show if enabled */}
+          {/* Spotify Integration - Real-time tracking */}
           {profile?.spotifyEnabled && (
             <motion.div
               className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-4 transition-all duration-200 hover:shadow-2xl"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
-                    <i className="fab fa-spotify text-white text-xl"></i>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white text-lg">Spotify</h3>
-                    <p className="text-gray-400 text-sm">Showcase your favorite song or playlist</p>
+              {spotifyLoading ? (
+                <div className="flex items-center gap-4 animate-pulse">
+                  <div className="w-16 h-16 rounded-lg bg-gray-600"></div>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-600 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-600 rounded w-1/2"></div>
                   </div>
                 </div>
-                <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20 flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
-                    {profile?.spotifyAlbumArt ? (
-                      <img 
-                        src={profile.spotifyAlbumArt} 
-                        alt="Album Art" 
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    ) : (
-                      <i className="fas fa-music text-white text-sm"></i>
+              ) : spotifyError ? (
+                <div className="text-center py-4">
+                  <p className="text-red-400 text-sm">Spotify temporarily unavailable</p>
+                  <p className="text-gray-500 text-xs mt-1">Retrying connection...</p>
+                </div>
+              ) : spotifyData && spotifyData.track ? (
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
+                    <img 
+                      src={getAlbumArt(spotifyData.track, 'small')} 
+                      alt={`${spotifyData.track.album.name} album art`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMUVENzYwIi8+CjxwYXRoIGQ9Ik0yMC4yIDI4LjJDMjAuMiAyNi4yIDIxLjggMjQuNiAyMy44IDI0LjZDMjUuOCAyNC42IDI3LjQgMjYuMiAyNy40IDI4LjJDMjcuNCAzMC4yIDI1LjggMzEuOCAyMy44IDMxLjhDMjEuOCAzMS44IDIwLjIgMzAuMiAyMC4yIDI4LjJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K';
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-xs text-green-400 font-medium">
+                        {spotifyData.is_playing ? 'Listening to Spotify' : 'Paused'}
+                      </span>
+                    </div>
+                    <h4 className="font-semibold text-white text-sm truncate">
+                      {spotifyData.track.name}
+                    </h4>
+                    <p className="text-xs text-gray-400 truncate">
+                      by {spotifyData.track.artists.map(artist => artist.name).join(', ')}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {spotifyData.track.album.name}
+                    </p>
+                    {spotifyData.progress_ms && spotifyData.track.duration_ms && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-xs text-gray-500">
+                          {formatDuration(spotifyData.progress_ms)}
+                        </span>
+                        <div className="flex-1 bg-gray-700 rounded-full h-1">
+                          <div 
+                            className="bg-green-500 h-1 rounded-full transition-all duration-200"
+                            style={{ 
+                              width: `${(spotifyData.progress_ms / spotifyData.track.duration_ms) * 100}%` 
+                            }}
+                          />
+                        </div>
+                        <span className="text-xs text-gray-500">
+                          {formatDuration(spotifyData.track.duration_ms)}
+                        </span>
+                      </div>
                     )}
                   </div>
-                  <div>
-                    <div className="text-white text-sm font-medium">
-                      {profile?.spotifyTrackName || 'No Track Set'}
-                    </div>
-                    <div className="text-gray-400 text-xs">
-                      Playing • {profile?.spotifyArtistName || 'Unknown Artist'}
-                    </div>
-                  </div>
-                  {profile?.spotifyTrackUrl ? (
-                    <a 
-                      href={profile.spotifyTrackUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    >
-                      <i className="fas fa-play text-black text-xs"></i>
-                    </a>
-                  ) : (
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <i className="fas fa-play text-black text-xs"></i>
-                    </div>
-                  )}
+                  <a 
+                    href={spotifyData.track.external_urls.spotify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center hover:bg-green-500 transition-colors"
+                  >
+                    <i className="fab fa-spotify text-white text-sm"></i>
+                  </a>
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center">
+                    <i className="fab fa-spotify text-gray-500 text-xl"></i>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-white">Spotify</h4>
+                    <p className="text-sm text-gray-400">Nothing playing</p>
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
         </div>

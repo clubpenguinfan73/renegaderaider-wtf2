@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertProfileSchema, insertLinkSchema } from "@shared/schema";
 import { z } from "zod";
 import { discordAPI } from "./discord";
+import { spotifyAPI } from "./spotify";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get profile data
@@ -128,6 +129,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Discord activity error:', error);
       res.status(500).json({ message: "Failed to fetch Discord activity" });
+    }
+  });
+
+  // Spotify API endpoints
+  app.get("/api/spotify/current", async (req, res) => {
+    try {
+      const currentTrack = await spotifyAPI.getCurrentlyPlaying();
+      res.json(currentTrack);
+    } catch (error) {
+      console.error('Spotify API error:', error);
+      res.status(500).json({ message: "Failed to fetch current track" });
+    }
+  });
+
+  app.get("/api/spotify/recent", async (req, res) => {
+    try {
+      const recentTracks = await spotifyAPI.getRecentlyPlayed(5);
+      res.json(recentTracks);
+    } catch (error) {
+      console.error('Spotify API error:', error);
+      res.status(500).json({ message: "Failed to fetch recent tracks" });
     }
   });
 
