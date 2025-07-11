@@ -7,8 +7,6 @@ import type { Profile, Link } from "@shared/schema";
 import UsernameEffects from "./username-effects";
 import AnimatedTitle from "./animated-title";
 import { useDiscordProfile } from "@/hooks/use-discord-profile";
-import ThemeSelector from "./theme-selector";
-import { Theme, getStoredTheme, applyTheme } from "@/themes/themes";
 
 interface MainContentProps {
   profile?: Profile;
@@ -21,14 +19,17 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   const backgroundImage = profile?.backgroundImage;
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [volume, setVolume] = useState(30);
-  const [currentTheme, setCurrentTheme] = useState<Theme>(getStoredTheme());
   const audioRef = useRef<HTMLAudioElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { profile: discordProfile, activity: discordActivity, isLoading: discordLoading, error: discordError, getBadgeIcon } = useDiscordProfile();
 
-  // Apply theme on component mount
-  useEffect(() => {
-    applyTheme(currentTheme);
-  }, [currentTheme]);
+  // Check if background is a video
+  const isVideoBackground = backgroundImage && (
+    backgroundImage.includes('.mp4') || 
+    backgroundImage.includes('.webm') || 
+    backgroundImage.includes('.mov') || 
+    backgroundImage.includes('.avi')
+  );
 
   // Handle background music - Auto-play by default
   useEffect(() => {
@@ -58,6 +59,29 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       setIsMusicPlaying(false);
     }
   }, [profile?.backgroundMusic, profile?.musicEnabled]);
+
+  // Handle video background with audio sync
+  useEffect(() => {
+    if (isVideoBackground && videoRef.current) {
+      videoRef.current.volume = profile?.musicEnabled ? volume / 100 : 0;
+      
+      if (profile?.musicEnabled) {
+        // Pause separate audio if video has audio
+        if (audioRef.current) {
+          audioRef.current.pause();
+        }
+        
+        // Play video with audio
+        videoRef.current.play().catch(console.error);
+      } else {
+        // Mute video and play separate audio if available
+        videoRef.current.volume = 0;
+        if (profile?.backgroundMusic && audioRef.current) {
+          audioRef.current.play().catch(console.error);
+        }
+      }
+    }
+  }, [isVideoBackground, profile?.musicEnabled, volume]);
 
   // Update volume when slider changes
   useEffect(() => {
@@ -110,15 +134,27 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
     >
       {/* Custom Background */}
       <div className="fixed inset-0 z-0">
-        <div 
-          className="absolute inset-0 opacity-80"
-          style={{ background: `var(--gradient-secondary)` }}
-        ></div>
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{ background: `var(--gradient-primary)` }}
-        ></div>
-        {backgroundImage && (
+        <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
+        {isVideoBackground ? (
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+            autoPlay
+            muted={!profile?.musicEnabled}
+            loop
+            playsInline
+            onLoadedData={() => {
+              if (videoRef.current && profile?.musicEnabled) {
+                videoRef.current.volume = volume / 100;
+              }
+            }}
+          >
+            <source src={backgroundImage} type="video/mp4" />
+            <source src={backgroundImage} type="video/webm" />
+            <source src={backgroundImage} type="video/mov" />
+            Your browser does not support the video tag.
+          </video>
+        ) : backgroundImage && (
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
             style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -126,12 +162,8 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
         )}
       </div>
 
-      {/* Admin Toggle and Theme Selector */}
-      <div className="fixed top-4 right-4 z-40 flex gap-2">
-        <ThemeSelector 
-          currentTheme={currentTheme} 
-          onThemeChange={setCurrentTheme}
-        />
+      {/* Admin Toggle */}
+      <div className="fixed top-4 right-4 z-40">
         <Button
           onClick={onToggleAdmin}
           variant="ghost"
@@ -143,7 +175,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       </div>
 
       {/* Music Volume Slider */}
-      {profile?.backgroundMusic && profile.musicEnabled && (
+      {(profile?.backgroundMusic || isVideoBackground) && profile.musicEnabled && (
         <div className="fixed top-4 left-4 z-40">
           <div className="bg-black/30 hover:bg-black/40 backdrop-blur-sm rounded-xl p-2 flex items-center gap-2 shadow-lg transition-all duration-200">
             <div className="text-white">

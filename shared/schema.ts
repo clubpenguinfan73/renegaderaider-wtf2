@@ -32,7 +32,6 @@ export const profiles = pgTable("profiles", {
   spotifyArtistName: text("spotify_artist_name"),
   spotifyAlbumArt: text("spotify_album_art"),
   spotifyTrackUrl: text("spotify_track_url"),
-  selectedTheme: text("selected_theme").default("cyber-purple"),
 });
 
 export const links = pgTable("links", {
@@ -73,7 +72,6 @@ export const insertProfileSchema = createInsertSchema(profiles).pick({
   spotifyArtistName: true,
   spotifyAlbumArt: true,
   spotifyTrackUrl: true,
-  selectedTheme: true,
 });
 
 export const insertLinkSchema = createInsertSchema(links).pick({

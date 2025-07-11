@@ -104,5 +104,15 @@ To set up Netlify DB for your deployment:
 - **Persistent Storage**: Netlify DB integration for data persistence across deployments
 - **Live Discord Integration**: Real-time Discord profile display with 24/7 connection showing authentic avatar, username, and badges
 - **Animated Browser Titles**: Dynamic typewriter effect in browser tab titles
+- **Video Background Support**: Full video background support (.mp4, .webm, .mov formats) with automatic playback and looping
+- **Audio/Video Sync**: Synchronized audio control for video backgrounds with volume controls
+- **Authentic Discord Badges**: Official Discord badge SVG icons for proper badge display
+
+## Recent Changes (July 2025)
+- **July 11, 2025**: Removed theme template system per user request to avoid overlap with custom backgrounds
+- **July 11, 2025**: Added comprehensive video background support with multiple format compatibility
+- **July 11, 2025**: Implemented audio synchronization for video backgrounds with volume controls
+- **July 11, 2025**: Updated Discord badge system with official SVG icons for proper rendering
+- **July 11, 2025**: Enhanced video background controls with auto-play and mute functionality
 
 The application is designed to be easily deployable to Netlify with automatic database provisioning and serverless architecture.

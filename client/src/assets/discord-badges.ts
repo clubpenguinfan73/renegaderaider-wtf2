@@ -1,11 +1,14 @@
-// Real Discord badge SVG content from official Discord assets
+// Official Discord badge SVG content
 export const discordBadges = {
-  early_supporter: `<svg width="22" height="16" viewBox="0 0 22 16" fill="none">
-    <path d="M11 0L0 9h3v7h6v-4h4v4h6V9h3L11 0z" fill="#5865F2"/>
+  'Early Supporter': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M7.69 0.12a2.51 2.51 0 0 1 1.62 0l4.18 1.45a2.51 2.51 0 0 1 1.7 2.06l.47 4.38a2.51 2.51 0 0 1-.58 2.13l-3.05 3.47a2.51 2.51 0 0 1-2.01 0.89h-4.04a2.51 2.51 0 0 1-2.01-0.89l-3.05-3.47a2.51 2.51 0 0 1-0.58-2.13l0.47-4.38a2.51 2.51 0 0 1 1.7-2.06l4.18-1.45z" fill="#5865F2"/>
+    <path d="M7.2 3.6a.6.6 0 0 1 1.2 0v5.64a.6.6 0 0 1-1.2 0V3.6z" fill="white"/>
+    <path d="M4.8 6a.6.6 0 0 1 1.2 0v3.24a.6.6 0 0 1-1.2 0V6z" fill="white"/>
+    <path d="M9.6 6a.6.6 0 0 1 1.2 0v3.24a.6.6 0 0 1-1.2 0V6z" fill="white"/>
   </svg>`,
   
-  hypesquad_events: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="url(#hypesquad-gradient)"/>
+  'HypeSquad Events': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0L10.04 5.06L16 6.05L12.24 10.24L13.52 16L8 13.26L2.48 16L3.76 10.24L0 6.05L5.96 5.06L8 0Z" fill="url(#hypesquad-gradient)"/>
     <defs>
       <linearGradient id="hypesquad-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#9C84EF"/>
@@ -14,12 +17,32 @@ export const discordBadges = {
     </defs>
   </svg>`,
   
-  discord_nitro: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M8.715 3.401C9.62 2.726 10.749 2.343 12 2.343s2.38.383 3.285 1.058c.89.665 1.458 1.64 1.458 2.756 0 .663-.317 1.248-.798 1.663-.481.415-1.125.637-1.802.637H9.857c-.677 0-1.321-.222-1.802-.637-.481-.415-.798-1-.798-1.663 0-1.116.568-2.091 1.458-2.756zM12 0C9.515 0 7.4.756 5.905 2.086 4.41 3.417 3.6 5.255 3.6 7.2c0 1.456.7 2.747 1.756 3.65 1.056.903 2.468 1.407 4.01 1.407h4.268c1.542 0 2.954-.504 4.01-1.407 1.056-.903 1.756-2.194 1.756-3.65 0-1.945-.81-3.783-2.305-5.114C16.6.756 14.485 0 12 0z" fill="#5865F2"/>
-    <circle cx="12" cy="6.157" r="2.4" fill="#FFFFFF"/>
+  'Discord Nitro': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 2.5c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm4.5 9.5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-9 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" fill="#5865F2"/>
+    <circle cx="8" cy="5.5" r="1.5" fill="white"/>
+    <circle cx="3.5" cy="11" r="0.5" fill="white"/>
+    <circle cx="12.5" cy="11" r="0.5" fill="white"/>
   </svg>`,
   
-  active_developer: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.4-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z" fill="#79818F"/>
+  'Active Developer': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <rect width="16" height="16" rx="3" fill="#23A55A"/>
+    <path d="M4 8L7 11L12 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  
+  'Bug Hunter': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0L12 4L16 2L14 6L16 8L12 12L8 16L4 12L0 14L2 10L0 8L4 4L8 0Z" fill="#3BA55C"/>
+    <path d="M8 4L10 6L6 10L4 8L8 4Z" fill="white"/>
+  </svg>`,
+  
+  'HypeSquad Balance': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0L10.04 5.06L16 6.05L12.24 10.24L13.52 16L8 13.26L2.48 16L3.76 10.24L0 6.05L5.96 5.06L8 0Z" fill="#45DDC0"/>
+  </svg>`,
+  
+  'HypeSquad Brilliance': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0L10.04 5.06L16 6.05L12.24 10.24L13.52 16L8 13.26L2.48 16L3.76 10.24L0 6.05L5.96 5.06L8 0Z" fill="#F47FFF"/>
+  </svg>`,
+  
+  'HypeSquad Bravery': `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M8 0L10.04 5.06L16 6.05L12.24 10.24L13.52 16L8 13.26L2.48 16L3.76 10.24L0 6.05L5.96 5.06L8 0Z" fill="#9C84EF"/>
   </svg>`
 };
