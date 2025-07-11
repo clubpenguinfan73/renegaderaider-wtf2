@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, Trash2, Plus, Edit2, LogOut, Music, User, Image, ExternalLink } from "lucide-react";
+import { X, Upload, Trash2, Plus, Edit2, LogOut, Music, User, Image, ExternalLink, Wand2 } from "lucide-react";
+import UsernameEffects from "./username-effects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,6 +38,7 @@ export default function AdminPanel({
   const [entranceFontSize, setEntranceFontSize] = useState(profile?.entranceFontSize || "4xl");
   const [entranceFontFamily, setEntranceFontFamily] = useState(profile?.entranceFontFamily || "Inter");
   const [entranceFontColor, setEntranceFontColor] = useState(profile?.entranceFontColor || "#ffffff");
+  const [usernameEffect, setUsernameEffect] = useState(profile?.usernameEffect || "none");
   const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
   const [discordEnabled, setDiscordEnabled] = useState(profile?.discordEnabled || false);
   const [discordUserId, setDiscordUserId] = useState(profile?.discordUserId || "");
@@ -64,6 +66,7 @@ export default function AdminPanel({
       setEntranceFontSize(profile.entranceFontSize || "4xl");
       setEntranceFontFamily(profile.entranceFontFamily || "Inter");
       setEntranceFontColor(profile.entranceFontColor || "#ffffff");
+      setUsernameEffect(profile.usernameEffect || "none");
       setMusicEnabled(profile.musicEnabled || false);
       setDiscordEnabled(profile.discordEnabled || false);
       setDiscordUserId(profile.discordUserId || "");
@@ -106,6 +109,11 @@ export default function AdminPanel({
       const updateData: any = {
         username: username || profile?.username || "",
         bio: bio || profile?.bio || "",
+        entranceText: entranceText || profile?.entranceText || "click to enter...",
+        entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+        entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+        entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
+        usernameEffect: usernameEffect || profile?.usernameEffect || "none",
         profilePicture: profile?.profilePicture,
         backgroundImage: profile?.backgroundImage,
         backgroundMusic: profile?.backgroundMusic,
@@ -146,6 +154,7 @@ export default function AdminPanel({
       entranceFontSize,
       entranceFontFamily,
       entranceFontColor,
+      usernameEffect,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -729,6 +738,53 @@ export default function AdminPanel({
 
                 {/* Right Column */}
                 <div className="space-y-4">
+                  {/* Username Effects */}
+                  <Card className="bg-medium-gray/50 border-light-gray/30">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-gaming-cyan flex items-center gap-2">
+                        <Wand2 className="h-5 w-5" />
+                        Username Effects
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-1.5">
+                      <Select value={usernameEffect} onValueChange={setUsernameEffect}>
+                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-cyan">
+                          <SelectValue placeholder="Choose effect" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-medium-gray border-light-gray">
+                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="rainbow">Rainbow</SelectItem>
+                          <SelectItem value="glow">Purple Glow</SelectItem>
+                          <SelectItem value="neon">Neon Cyan</SelectItem>
+                          <SelectItem value="fire">Fire</SelectItem>
+                          <SelectItem value="ice">Ice</SelectItem>
+                          <SelectItem value="white-sparkles">White Sparkles</SelectItem>
+                          <SelectItem value="colored-sparkles">Purple Sparkles</SelectItem>
+                          <SelectItem value="rainbow-sparkles">Rainbow Sparkles</SelectItem>
+                          <SelectItem value="typewriter">Typewriter</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      
+                      <div className="bg-medium-gray/30 rounded p-3 text-center min-h-[50px] flex items-center justify-center">
+                        <div className="text-lg font-semibold">
+                          {username ? (
+                            <UsernameEffects username={username} effect={usernameEffect} />
+                          ) : (
+                            <span className="text-gray-400 text-sm">Enter username to preview</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <Button
+                        onClick={handleSaveProfile}
+                        className="w-full bg-gaming-cyan hover:bg-gaming-cyan/80 text-sm"
+                        disabled={updateProfileMutation.isPending}
+                      >
+                        {updateProfileMutation.isPending ? "Saving..." : "Save Username Effect"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+
                   {/* Links Management */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
                     <CardHeader className="pb-2">

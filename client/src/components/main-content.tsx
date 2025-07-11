@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useRef, useState } from "react";
 import type { Profile, Link } from "@shared/schema";
+import UsernameEffects from "./username-effects";
 
 interface MainContentProps {
   profile?: Profile;
@@ -132,7 +133,10 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white tracking-wide">
-            {profile?.username || "renegade raider"}
+            <UsernameEffects 
+              username={profile?.username || "renegade raider"}
+              effect={profile?.usernameEffect || "none"}
+            />
           </h1>
           
           <p className="text-lg text-gray-300 max-w-md mx-auto leading-relaxed">

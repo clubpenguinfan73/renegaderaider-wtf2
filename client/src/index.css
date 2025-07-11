@@ -132,6 +132,48 @@
   }
 }
 
+/* Username Effects Animations */
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+  from { 
+    text-shadow: 0 0 10px #7c3aed, 0 0 20px #7c3aed, 0 0 40px #7c3aed;
+  }
+  to { 
+    text-shadow: 0 0 20px #7c3aed, 0 0 30px #7c3aed, 0 0 60px #7c3aed;
+  }
+}
+
+@keyframes neon {
+  from { 
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+  }
+  to { 
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 80px #00ffff;
+  }
+}
+
+@keyframes fire {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 200% 50%; }
+  75% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes ice {
+  from { 
+    text-shadow: 0 0 10px #87ceeb, 0 0 20px #4682b4, 0 0 40px #4682b4;
+  }
+  to { 
+    text-shadow: 0 0 20px #87ceeb, 0 0 30px #4682b4, 0 0 60px #4682b4;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
