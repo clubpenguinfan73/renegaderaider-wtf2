@@ -51,6 +51,8 @@ export default function AnimatedTitle({ titles, speed = 1000, className = "", up
   useEffect(() => {
     if (updateDocumentTitle && displayText) {
       document.title = displayText;
+    } else if (updateDocumentTitle && !displayText) {
+      document.title = 'renegade raider.wtf';
     }
   }, [displayText, updateDocumentTitle]);
 
