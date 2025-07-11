@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 
 export interface SpotifyTrack {
   name: string;
@@ -28,7 +29,9 @@ export interface SpotifyCurrentlyPlaying {
 }
 
 export function useSpotifyCurrentTrack() {
-  return useQuery({
+  const [smoothProgress, setSmoothProgress] = useState<number | null>(null);
+  
+  const query = useQuery({
     queryKey: ['/api/spotify/current'],
     queryFn: async (): Promise<SpotifyCurrentlyPlaying | null> => {
       const response = await fetch('/api/spotify/current');
@@ -42,6 +45,39 @@ export function useSpotifyCurrentTrack() {
     retry: 1,
     staleTime: 3000, // Consider data stale after 3 seconds
   });
+
+  // Smooth progress interpolation
+  useEffect(() => {
+    if (!query.data?.track || !query.data.is_playing || typeof query.data.progress_ms !== 'number') {
+      setSmoothProgress(null);
+      return;
+    }
+
+    const startProgress = query.data.progress_ms;
+    const startTime = Date.now();
+    
+    setSmoothProgress(startProgress);
+
+    const intervalId = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const newProgress = startProgress + elapsedTime;
+      
+      // Don't exceed track duration
+      if (newProgress <= query.data.track!.duration_ms) {
+        setSmoothProgress(newProgress);
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [query.data?.progress_ms, query.data?.is_playing, query.data?.track?.duration_ms]);
+
+  return {
+    ...query,
+    data: query.data ? {
+      ...query.data,
+      progress_ms: smoothProgress ?? query.data.progress_ms
+    } : null
+  };
 }
 
 export function useSpotifyRecentTracks() {
