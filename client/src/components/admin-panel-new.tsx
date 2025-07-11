@@ -328,6 +328,34 @@ export default function AdminPanel({
     });
   };
 
+  const handleRemoveMusic = () => {
+    updateProfileMutation.mutate({
+      username: username || profile?.username || "",
+      bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
+      usernameEffect: usernameEffect || profile?.usernameEffect || "none",
+      animatedTitleEnabled: animatedTitleEnabled,
+      animatedTitleTexts: animatedTitleTexts,
+      animatedTitleSpeed: animatedTitleSpeed,
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: null,
+      musicEnabled: false,
+      discordEnabled: discordEnabled,
+      discordUserId: discordUserId,
+      discordApplicationId: discordApplicationId,
+      spotifyEnabled: spotifyEnabled,
+      spotifyTrackName: spotifyTrackName,
+      spotifyArtistName: spotifyArtistName,
+      spotifyAlbumArt: spotifyAlbumArt,
+      spotifyTrackUrl: spotifyTrackUrl,
+    });
+    setMusicEnabled(false);
+  };
+
   const handleDeleteLink = (linkId: number) => {
     deleteLinkMutation.mutate(linkId);
   };
@@ -353,30 +381,6 @@ export default function AdminPanel({
       spotifyAlbumArt: profile?.spotifyAlbumArt,
       spotifyTrackUrl: profile?.spotifyTrackUrl,
     });
-  };
-
-  const handleRemoveMusic = () => {
-    updateProfileMutation.mutate({
-      username: username || profile?.username || "",
-      bio: bio || profile?.bio || "",
-      entranceText: entranceText || profile?.entranceText || "click to enter...",
-      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
-      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
-      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
-      profilePicture: profile?.profilePicture,
-      backgroundImage: profile?.backgroundImage,
-      backgroundMusic: null,
-      musicEnabled: false,
-      discordEnabled: profile?.discordEnabled,
-      discordUserId: profile?.discordUserId,
-      discordApplicationId: profile?.discordApplicationId,
-      spotifyEnabled: profile?.spotifyEnabled,
-      spotifyTrackName: profile?.spotifyTrackName,
-      spotifyArtistName: profile?.spotifyArtistName,
-      spotifyAlbumArt: profile?.spotifyAlbumArt,
-      spotifyTrackUrl: profile?.spotifyTrackUrl,
-    });
-    setMusicEnabled(false);
   };
 
   return (
