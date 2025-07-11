@@ -71,9 +71,12 @@ export class MemStorage implements IStorage {
   async updateProfile(profileData: InsertProfile): Promise<Profile> {
     this.profile = {
       id: this.profile?.id || 1,
-      ...profileData
+      username: profileData.username,
+      bio: profileData.bio,
+      profilePicture: profileData.profilePicture || null,
+      backgroundImage: profileData.backgroundImage || null,
     };
-    return this.profile;
+    return this.profile!;
   }
 
   async getLinks(): Promise<Link[]> {
@@ -82,7 +85,15 @@ export class MemStorage implements IStorage {
 
   async createLink(linkData: InsertLink): Promise<Link> {
     const id = this.currentLinkId++;
-    const link: Link = { ...linkData, id };
+    const link: Link = { 
+      id,
+      title: linkData.title,
+      url: linkData.url,
+      description: linkData.description || null,
+      icon: linkData.icon,
+      color: linkData.color,
+      order: linkData.order || 0
+    };
     this.links.set(id, link);
     return link;
   }
