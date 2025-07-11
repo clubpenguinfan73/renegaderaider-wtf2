@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Settings, ExternalLink, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { useEffect, useRef, useState } from "react";
 import type { Profile, Link } from "@shared/schema";
 
@@ -14,7 +15,7 @@ interface MainContentProps {
 export default function MainContent({ profile, links, onToggleAdmin, onEditLink }: MainContentProps) {
   const backgroundImage = profile?.backgroundImage;
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(30);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Handle background music - Auto-play by default
@@ -22,7 +23,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
     if (profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
       audioRef.current.src = profile.backgroundMusic;
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.3; // Set volume to 30%
+      audioRef.current.volume = volume / 100; // Set volume based on slider
       
       const playMusic = async () => {
         try {
@@ -41,24 +42,28 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       audioRef.current.pause();
       setIsMusicPlaying(false);
     }
-  }, [profile?.backgroundMusic, profile?.musicEnabled]);
+  }, [profile?.backgroundMusic, profile?.musicEnabled, volume]);
 
-  const toggleMusic = () => {
+  // Update volume when slider changes
+  useEffect(() => {
     if (audioRef.current) {
-      if (isMusicPlaying) {
-        audioRef.current.pause();
-        setIsMusicPlaying(false);
-      } else {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume]);
+
+  const handleVolumeChange = (value: number[]) => {
+    const newVolume = value[0];
+    setVolume(newVolume);
+    
+    // Auto-play music when volume is changed (if music is enabled)
+    if (newVolume > 0 && profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
+      if (!isMusicPlaying) {
         audioRef.current.play();
         setIsMusicPlaying(true);
       }
-    }
-  };
-
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+    } else if (newVolume === 0 && audioRef.current) {
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
     }
   };
 
@@ -92,25 +97,22 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
         </Button>
       </div>
 
-      {/* Music Controls */}
+      {/* Music Volume Slider */}
       {profile?.backgroundMusic && profile.musicEnabled && (
-        <div className="fixed top-4 left-4 z-40 flex gap-2">
-          <Button
-            onClick={toggleMusic}
-            variant="ghost"
-            size="icon"
-            className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-full"
-          >
-            {isMusicPlaying ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-          </Button>
-          <Button
-            onClick={toggleMute}
-            variant="ghost"
-            size="icon"
-            className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-full"
-          >
-            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-          </Button>
+        <div className="fixed top-4 left-4 z-40">
+          <div className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-lg">
+            <div className="text-white">
+              {volume > 0 ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+            </div>
+            <Slider
+              value={[volume]}
+              onValueChange={handleVolumeChange}
+              max={100}
+              min={0}
+              step={1}
+              className="w-24"
+            />
+          </div>
         </div>
       )}
 
