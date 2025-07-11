@@ -95,10 +95,12 @@ To set up Netlify DB for your deployment:
 ### Key Features
 - **Gaming Theme**: Purple and cyan color scheme with gaming-inspired animations
 - **Responsive Design**: Mobile-first approach with Tailwind breakpoints
-- **Admin Panel**: Toggle-able admin interface for content management
+- **Admin Panel**: Toggle-able admin interface with secure authentication
 - **Link Management**: Create, edit, and delete social media links
 - **Profile Customization**: Edit username, bio, and upload profile/background images (including GIFs)
+- **Website Music**: Upload and control background music with visitor controls
 - **Entrance Animation**: Smooth entrance overlay with localStorage persistence
+- **Secure Authentication**: Admin access protected with username/password (Cat / Cat@Renagde.wtf73)
 - **Persistent Storage**: Netlify DB integration for data persistence across deployments
 
 The application is designed to be easily deployable to Netlify with automatic database provisioning and serverless architecture.

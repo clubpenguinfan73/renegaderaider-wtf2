@@ -14,6 +14,8 @@ export const profiles = pgTable("profiles", {
   bio: text("bio").notNull(),
   profilePicture: text("profile_picture"),
   backgroundImage: text("background_image"),
+  backgroundMusic: text("background_music"),
+  musicEnabled: boolean("music_enabled").default(false),
 });
 
 export const links = pgTable("links", {
@@ -36,6 +38,8 @@ export const insertProfileSchema = createInsertSchema(profiles).pick({
   bio: true,
   profilePicture: true,
   backgroundImage: true,
+  backgroundMusic: true,
+  musicEnabled: true,
 });
 
 export const insertLinkSchema = createInsertSchema(links).pick({

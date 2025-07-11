@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, Trash2, Plus, Edit, LogOut } from "lucide-react";
+import { X, Upload, Trash2, Plus, Edit, LogOut, Music, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -31,8 +32,10 @@ export default function AdminPanel({
 }: AdminPanelProps) {
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
+  const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
   const backgroundUploadRef = useRef<HTMLInputElement>(null);
   const profileUploadRef = useRef<HTMLInputElement>(null);
+  const musicUploadRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -105,13 +108,59 @@ export default function AdminPanel({
     }
   };
 
+  const handleMusicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        updateProfileMutation.mutate({
+          username: profile?.username || "",
+          bio: profile?.bio || "",
+          profilePicture: profile?.profilePicture,
+          backgroundImage: profile?.backgroundImage,
+          backgroundMusic: result,
+          musicEnabled: true,
+        });
+        setMusicEnabled(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleRemoveBackground = () => {
     updateProfileMutation.mutate({
       username: profile?.username || "",
       bio: profile?.bio || "",
       profilePicture: profile?.profilePicture,
       backgroundImage: "",
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
     });
+  };
+
+  const handleToggleMusic = (enabled: boolean) => {
+    setMusicEnabled(enabled);
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: enabled,
+    });
+  };
+
+  const handleRemoveMusic = () => {
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: null,
+      musicEnabled: false,
+    });
+    setMusicEnabled(false);
   };
 
   const handleUpdateText = () => {
@@ -120,6 +169,8 @@ export default function AdminPanel({
       bio,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
     });
   };
 
@@ -199,6 +250,57 @@ export default function AdminPanel({
                     <Trash2 className="h-4 w-4 mr-2" />
                     Remove Background
                   </Button>
+                </CardContent>
+              </Card>
+
+              {/* Website Music Settings */}
+              <Card className="mb-6 bg-medium-gray/50 border-light-gray/30">
+                <CardHeader>
+                  <CardTitle className="text-gaming-cyan flex items-center gap-2">
+                    <Music className="h-5 w-5" />
+                    Website Music
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-sm">Enable Background Music</span>
+                    <Switch
+                      checked={musicEnabled}
+                      onCheckedChange={handleToggleMusic}
+                      className="data-[state=checked]:bg-gaming-purple"
+                    />
+                  </div>
+                  
+                  <input
+                    type="file"
+                    ref={musicUploadRef}
+                    accept="audio/*"
+                    onChange={handleMusicUpload}
+                    className="hidden"
+                  />
+                  
+                  <Button
+                    onClick={() => musicUploadRef.current?.click()}
+                    className="w-full bg-medium-gray hover:bg-light-gray text-sm"
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Music
+                  </Button>
+                  
+                  {profile?.backgroundMusic && (
+                    <Button
+                      onClick={handleRemoveMusic}
+                      variant="destructive"
+                      className="w-full"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Remove Music
+                    </Button>
+                  )}
+                  
+                  <div className="text-xs text-gray-400">
+                    Supported formats: MP3, WAV, OGG
+                  </div>
                 </CardContent>
               </Card>
 

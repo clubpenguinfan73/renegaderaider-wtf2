@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Settings, ExternalLink } from "lucide-react";
+import { Settings, ExternalLink, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 import type { Profile, Link } from "@shared/schema";
 
 interface MainContentProps {
@@ -12,6 +13,51 @@ interface MainContentProps {
 
 export default function MainContent({ profile, links, onToggleAdmin, onEditLink }: MainContentProps) {
   const backgroundImage = profile?.backgroundImage;
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Handle background music
+  useEffect(() => {
+    if (profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
+      audioRef.current.src = profile.backgroundMusic;
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3; // Set volume to 30%
+      
+      const playMusic = async () => {
+        try {
+          await audioRef.current?.play();
+          setIsMusicPlaying(true);
+        } catch (error) {
+          console.log("Auto-play was prevented by the browser");
+        }
+      };
+      
+      playMusic();
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
+    }
+  }, [profile?.backgroundMusic, profile?.musicEnabled]);
+
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isMusicPlaying) {
+        audioRef.current.pause();
+        setIsMusicPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsMusicPlaying(true);
+      }
+    }
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
   return (
     <motion.div 
@@ -42,6 +88,31 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           <Settings className="h-5 w-5" />
         </Button>
       </div>
+
+      {/* Music Controls */}
+      {profile?.backgroundMusic && profile.musicEnabled && (
+        <div className="fixed top-4 left-4 z-40 flex gap-2">
+          <Button
+            onClick={toggleMusic}
+            variant="ghost"
+            size="icon"
+            className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-full"
+          >
+            {isMusicPlaying ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+          </Button>
+          <Button
+            onClick={toggleMute}
+            variant="ghost"
+            size="icon"
+            className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-full"
+          >
+            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+          </Button>
+        </div>
+      )}
+
+      {/* Hidden Audio Element */}
+      <audio ref={audioRef} />
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">

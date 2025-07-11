@@ -31,7 +31,9 @@ export class MemStorage implements IStorage {
       username: "renegade raider",
       bio: "Professional gamer • Content creator • Streaming daily",
       profilePicture: "",
-      backgroundImage: ""
+      backgroundImage: "",
+      backgroundMusic: null,
+      musicEnabled: false
     };
     this.links = new Map();
     this.currentUserId = 1;
@@ -78,6 +80,8 @@ export class MemStorage implements IStorage {
       bio: profileData.bio,
       profilePicture: profileData.profilePicture || null,
       backgroundImage: profileData.backgroundImage || null,
+      backgroundMusic: profileData.backgroundMusic || null,
+      musicEnabled: profileData.musicEnabled || false,
     };
     return this.profile!;
   }
