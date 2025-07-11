@@ -125,11 +125,16 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
         {/* Profile Section */}
         <div className="text-center mb-8">
           <div className="mb-6">
-            <img 
-              src={profile?.profilePicture || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&h=200"}
-              alt="Profile Picture"
-              className="w-32 h-32 rounded-full mx-auto shadow-2xl object-cover"
-            />
+            <div className="w-32 h-32 rounded-full mx-auto shadow-2xl overflow-hidden bg-transparent relative">
+              <img 
+                src={profile?.profilePicture || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&h=200"}
+                alt="Profile Picture"
+                className="w-full h-full object-cover object-center"
+                style={{ 
+                  imageRendering: 'pixelated'
+                }}
+              />
+            </div>
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white tracking-wide">
