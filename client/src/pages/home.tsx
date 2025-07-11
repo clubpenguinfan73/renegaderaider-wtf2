@@ -9,7 +9,7 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import type { Profile, Link } from "@shared/schema";
 
 export default function Home() {
-  const [showEntrance, setShowEntrance] = useLocalStorage("showEntrance", true);
+  const [showEntrance, setShowEntrance] = useState(true);
   const [isEntering, setIsEntering] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -91,7 +91,7 @@ export default function Home() {
   };
 
   if (showEntrance) {
-    return <EntranceOverlay onEnter={handleEnter} isEntering={isEntering} />;
+    return <EntranceOverlay onEnter={handleEnter} isEntering={isEntering} profile={profile} />;
   }
 
   return (

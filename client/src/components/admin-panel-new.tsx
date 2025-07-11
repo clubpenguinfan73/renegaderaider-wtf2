@@ -32,6 +32,7 @@ export default function AdminPanel({
 }: AdminPanelProps) {
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
+  const [entranceText, setEntranceText] = useState(profile?.entranceText || "click to enter...");
   const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
   const [discordEnabled, setDiscordEnabled] = useState(profile?.discordEnabled || false);
   const [discordUserId, setDiscordUserId] = useState(profile?.discordUserId || "");
@@ -55,6 +56,7 @@ export default function AdminPanel({
     if (profile) {
       setUsername(profile.username || "");
       setBio(profile.bio || "");
+      setEntranceText(profile.entranceText || "click to enter...");
       setMusicEnabled(profile.musicEnabled || false);
       setDiscordEnabled(profile.discordEnabled || false);
       setDiscordUserId(profile.discordUserId || "");
@@ -133,6 +135,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username,
       bio,
+      entranceText,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -153,6 +156,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -173,6 +177,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -193,6 +198,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -212,6 +218,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -231,6 +238,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -254,6 +262,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: "",
       backgroundMusic: profile?.backgroundMusic,
@@ -273,6 +282,7 @@ export default function AdminPanel({
     updateProfileMutation.mutate({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: null,
@@ -358,6 +368,12 @@ export default function AdminPanel({
                         onChange={(e) => setBio(e.target.value)}
                         className="bg-medium-gray border-light-gray focus:border-gaming-purple resize-none"
                         rows={3}
+                      />
+                      <Input
+                        placeholder="Entrance screen text"
+                        value={entranceText}
+                        onChange={(e) => setEntranceText(e.target.value)}
+                        className="bg-medium-gray border-light-gray focus:border-gaming-purple"
                       />
                       <input
                         type="file"

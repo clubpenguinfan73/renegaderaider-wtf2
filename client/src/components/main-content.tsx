@@ -141,8 +141,8 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
         </div>
 
         {/* Social Links - iOS Control Center Style */}
-        <div className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-2xl p-6 mb-8 shadow-2xl">
-          <div className="grid grid-cols-4 gap-4 w-full max-w-md mx-auto">
+        <div className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-2xl p-4 mb-8 shadow-2xl">
+          <div className="grid grid-cols-5 gap-3 w-full max-w-sm mx-auto">
             {links.map((link) => (
               <motion.a
                 key={link.id}
@@ -153,10 +153,10 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <div className={`w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
-                  <i className={`${link.icon} text-2xl text-white`}></i>
+                <div className={`w-12 h-12 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
+                  <i className={`${link.icon} text-lg text-white`}></i>
                 </div>
-                <span className="text-white text-xs font-medium mt-2 text-center opacity-80 group-hover:opacity-100 transition-opacity">
+                <span className="text-white text-xs font-medium mt-1 text-center opacity-80 group-hover:opacity-100 transition-opacity">
                   {link.title}
                 </span>
               </motion.a>
