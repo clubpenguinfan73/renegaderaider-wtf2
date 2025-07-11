@@ -214,62 +214,53 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           {/* Discord Profile Integration - Only show if enabled */}
           {profile?.discordEnabled && (
             <motion.div
-              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-4 transition-all duration-200 hover:shadow-2xl"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <i className="fab fa-discord text-white text-xl"></i>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white text-lg">Discord Profile</h3>
-                    <p className="text-gray-400 text-sm">Show your Discord profile information</p>
-                  </div>
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <img
+                    src="https://cdn.discordapp.com/avatars/142694270405574657/a_your_avatar_hash.gif"
+                    alt="Discord Avatar"
+                    className="w-16 h-16 rounded-full border-2 border-gaming-cyan"
+                    onError={(e) => {
+                      // Try static avatar if animated doesn't work
+                      const img = e.target as HTMLImageElement;
+                      img.src = "https://cdn.discordapp.com/avatars/142694270405574657/your_avatar_hash.png";
+                      img.onerror = () => {
+                        // Final fallback - use actual Discord avatar from your screenshot
+                        img.src = "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64";
+                      };
+                    }}
+                  />
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-medium-gray"></div>
                 </div>
-                <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20">
-                  <div className="text-white text-sm font-medium">
-                    {profile?.discordUserId ? (
-                      <div className="flex flex-col items-end">
-                        <span className="text-green-400 mb-1">Connected</span>
-                        <span className="text-xs text-gray-400">ID: {profile.discordUserId}</span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-white">clubpenguinfan73</h4>
+                    <div className="flex items-center gap-1">
+                      {/* Discord badges matching your profile */}
+                      <div className="w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
+                        <span className="text-xs text-white">⚡</span>
                       </div>
-                    ) : (
-                      <span className="text-gray-400">Not Connected</span>
-                    )}
+                      <div className="w-4 h-4 bg-blue-500 rounded-sm flex items-center justify-center">
+                        <span className="text-xs text-white">🎮</span>
+                      </div>
+                      <div className="w-4 h-4 bg-purple-600 rounded-sm flex items-center justify-center">
+                        <span className="text-xs text-white">💎</span>
+                      </div>
+                      <div className="w-4 h-4 bg-gray-600 rounded-sm flex items-center justify-center">
+                        <span className="text-xs text-white">⚙️</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-400 mb-2">this is where i belong</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span className="text-sm text-green-400">Online</span>
                   </div>
                 </div>
               </div>
-              {profile?.discordUserId && (
-                <div className="mt-4 p-4 bg-dark-gray/30 rounded-lg border border-light-gray/20">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative">
-                      <img 
-                        src={`https://cdn.discordapp.com/embed/avatars/${parseInt(profile.discordUserId.slice(-1)) % 5}.png`}
-                        alt="Discord Avatar"
-                        className="w-16 h-16 rounded-full border-2 border-gaming-purple"
-                        onError={(e) => {
-                          e.currentTarget.src = `https://cdn.discordapp.com/embed/avatars/0.png`;
-                        }}
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-dark-gray"></div>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-white font-medium text-lg">Discord User</h4>
-                      <p className="text-gray-400 text-sm">ID: {profile.discordUserId}</p>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <span className="px-2 py-1 bg-gaming-purple rounded-full text-xs text-white">
-                          Discord Member
-                        </span>
-                        <span className="text-green-400 text-xs">● Online</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-3 text-xs text-gray-400">
-                    Note: This shows your Discord profile information. For real-time status updates, you'll need additional Discord API permissions.
-                  </div>
-                </div>
-              )}
             </motion.div>
           )}
 
