@@ -117,5 +117,7 @@ To set up Netlify DB for your deployment:
 - **July 11, 2025**: Implemented real-time Spotify integration with live track display, album art, and progress bars
 - **July 11, 2025**: Added Spotify authentication helper at /spotify-auth endpoint for easy token generation
 - **July 11, 2025**: Created comprehensive OAuth flow handling for Spotify API credentials
+- **July 11, 2025**: Fixed and perfected animated title system with progressive word building (e.g., "m,me,meo,meow,meow!")
+- **July 11, 2025**: Added manual speed control slider for animated titles with real-time adjustment capability
 
 The application is designed to be easily deployable to Netlify with automatic database provisioning and serverless architecture.
