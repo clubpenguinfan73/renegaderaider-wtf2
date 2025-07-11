@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, Trash2, Plus, Edit } from "lucide-react";
+import { X, Upload, Trash2, Plus, Edit, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +17,7 @@ interface AdminPanelProps {
   links: Link[];
   onNewLink: () => void;
   onEditLink: (link: Link) => void;
+  onLogout?: () => void;
 }
 
 export default function AdminPanel({ 
@@ -25,7 +26,8 @@ export default function AdminPanel({
   profile, 
   links, 
   onNewLink, 
-  onEditLink 
+  onEditLink,
+  onLogout 
 }: AdminPanelProps) {
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
@@ -146,14 +148,27 @@ export default function AdminPanel({
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-white">Admin Panel</h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={onClose}
-                  className="text-gray-400 hover:text-white"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  {onLogout && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={onLogout}
+                      className="text-red-400 hover:text-red-300"
+                      title="Logout"
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onClose}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
               </div>
 
               {/* Background Settings */}
