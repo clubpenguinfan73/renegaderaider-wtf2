@@ -22,17 +22,19 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   // Handle background music - Auto-play by default
   useEffect(() => {
     if (profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
+      // Set the audio source and properties
       audioRef.current.src = profile.backgroundMusic;
       audioRef.current.loop = true;
-      audioRef.current.volume = volume / 100; // Set volume based on slider
+      audioRef.current.volume = volume / 100;
       
       const playMusic = async () => {
         try {
           await audioRef.current?.play();
           setIsMusicPlaying(true);
+          console.log("Background music playing");
         } catch (error) {
-          console.log("Auto-play was prevented by the browser");
-          // Still show as "playing" even if auto-play was prevented
+          console.log("Auto-play was prevented by the browser:", error);
+          // Set as playing but it won't actually play until user interaction
           setIsMusicPlaying(true);
         }
       };
@@ -41,9 +43,10 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       playMusic();
     } else if (audioRef.current) {
       audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       setIsMusicPlaying(false);
     }
-  }, [profile?.backgroundMusic, profile?.musicEnabled, volume]);
+  }, [profile?.backgroundMusic, profile?.musicEnabled]);
 
   // Update volume when slider changes
   useEffect(() => {
@@ -59,12 +62,31 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
     // Auto-play music when volume is changed (if music is enabled)
     if (newVolume > 0 && profile?.backgroundMusic && profile.musicEnabled && audioRef.current) {
       if (!isMusicPlaying) {
-        audioRef.current.play();
-        setIsMusicPlaying(true);
+        audioRef.current.play().then(() => {
+          setIsMusicPlaying(true);
+        }).catch((error) => {
+          console.log("Failed to play music:", error);
+        });
       }
     } else if (newVolume === 0 && audioRef.current) {
       audioRef.current.pause();
       setIsMusicPlaying(false);
+    }
+  };
+
+  // Add a click handler to ensure music plays on user interaction
+  const handleMusicToggle = () => {
+    if (audioRef.current && profile?.backgroundMusic && profile.musicEnabled) {
+      if (isMusicPlaying) {
+        audioRef.current.pause();
+        setIsMusicPlaying(false);
+      } else {
+        audioRef.current.play().then(() => {
+          setIsMusicPlaying(true);
+        }).catch((error) => {
+          console.log("Failed to play music:", error);
+        });
+      }
     }
   };
 

@@ -383,38 +383,49 @@ export default function AdminPanel({
                 </div>
               </div>
 
-              {/* Multi-column Grid Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                {/* Left Column */}
-                <div className="space-y-4">
+              {/* Clean Grid Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Profile & Content Settings */}
+                <div className="space-y-6">
                   {/* Profile Settings */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-gaming-purple flex items-center gap-2">
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-purple flex items-center gap-2 text-lg">
                         <User className="h-5 w-5" />
-                        Profile
+                        Profile Information
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-1.5">
-                      <Input
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-gaming-purple"
-                      />
-                      <Textarea
-                        placeholder="Bio"
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-gaming-purple resize-none"
-                        rows={3}
-                      />
-                      <Input
-                        placeholder="Entrance screen text"
-                        value={entranceText}
-                        onChange={(e) => setEntranceText(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-gaming-purple"
-                      />
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Username</label>
+                        <Input
+                          placeholder="Your username"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Bio</label>
+                        <Textarea
+                          placeholder="Tell people about yourself"
+                          value={bio}
+                          onChange={(e) => setBio(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple resize-none text-white"
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Entrance Text</label>
+                        <Input
+                          placeholder="Welcome message"
+                          value={entranceText}
+                          onChange={(e) => setEntranceText(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white"
+                        />
+                      </div>
+                      
+                      {/* File Upload Inputs */}
                       <input
                         type="file"
                         ref={profileUploadRef}
@@ -435,26 +446,33 @@ export default function AdminPanel({
                         }}
                         className="hidden"
                       />
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => profileUploadRef.current?.click()}
-                          className="flex-1 bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
-                        >
-                          <Upload className="h-4 w-4 mr-2" />
-                          Profile Picture
-                        </Button>
-                        <Button
-                          onClick={() => backgroundUploadRef.current?.click()}
-                          className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
-                        >
-                          <Upload className="h-4 w-4 mr-2" />
-                          Background
-                        </Button>
+                      
+                      {/* Image Upload Section */}
+                      <div className="space-y-3 pt-2">
+                        <label className="text-sm font-medium text-gray-300">Images</label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Button
+                            onClick={() => profileUploadRef.current?.click()}
+                            className="bg-gaming-purple hover:bg-gaming-purple/80 text-white"
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Profile Picture
+                          </Button>
+                          <Button
+                            onClick={() => backgroundUploadRef.current?.click()}
+                            className="bg-medium-gray hover:bg-light-gray text-white"
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Background
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-3 pt-2">
                         <Button
                           onClick={handleSaveProfile}
-                          className="flex-1 bg-gaming-cyan hover:bg-gaming-cyan/80 text-sm"
+                          className="flex-1 bg-gaming-cyan hover:bg-gaming-cyan/80 text-white font-medium"
                           disabled={updateProfileMutation.isPending}
                         >
                           {updateProfileMutation.isPending ? "Saving..." : "Save Profile"}
@@ -462,7 +480,7 @@ export default function AdminPanel({
                         <Button
                           onClick={handleRemoveBackground}
                           variant="destructive"
-                          className="flex-1 text-sm"
+                          className="bg-red-600 hover:bg-red-700"
                         >
                           <Trash2 className="h-4 w-4 mr-2" />
                           Remove BG
@@ -471,17 +489,67 @@ export default function AdminPanel({
                     </CardContent>
                   </Card>
 
+                  {/* Username Effects */}
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-purple flex items-center gap-2 text-lg">
+                        <Wand2 className="h-5 w-5" />
+                        Username Effects
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Effect Style</label>
+                        <Select value={usernameEffect} onValueChange={setUsernameEffect}>
+                          <SelectTrigger className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white">
+                            <SelectValue placeholder="Select effect" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-dark-gray border-light-gray/50">
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="rainbow">Rainbow</SelectItem>
+                            <SelectItem value="glow">Glow</SelectItem>
+                            <SelectItem value="neon">Neon</SelectItem>
+                            <SelectItem value="fire">Fire</SelectItem>
+                            <SelectItem value="ice">Ice</SelectItem>
+                            <SelectItem value="sparkles">Sparkles</SelectItem>
+                            <SelectItem value="typewriter">Typewriter</SelectItem>
+                            <SelectItem value="glitch">Glitch</SelectItem>
+                            <SelectItem value="wave">Wave</SelectItem>
+                            <SelectItem value="pulse">Pulse</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Preview</label>
+                        <div className="bg-dark-gray/50 p-4 rounded-lg text-center">
+                          <UsernameEffects 
+                            username={username || "Preview"} 
+                            effect={usernameEffect} 
+                            className="text-xl"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Media & Integrations */}
+                <div className="space-y-6">
                   {/* Music Settings */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-gaming-cyan flex items-center gap-2">
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-cyan flex items-center gap-2 text-lg">
                         <Music className="h-5 w-5" />
                         Background Music
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-1.5">
+                    <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-white text-sm">Enable Background Music</span>
+                        <div className="space-y-1">
+                          <label className="text-sm font-medium text-gray-300">Enable Music</label>
+                          <p className="text-xs text-gray-400">Auto-plays when visitors enter</p>
+                        </div>
                         <Switch
                           checked={musicEnabled}
                           onCheckedChange={handleToggleMusic}
@@ -500,124 +568,56 @@ export default function AdminPanel({
                         className="hidden"
                       />
                       
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => musicUploadRef.current?.click()}
-                          className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
-                        >
-                          <Upload className="h-4 w-4 mr-2" />
-                          Upload
-                        </Button>
-                        
-                        {profile?.backgroundMusic && (
+                      <div className="space-y-3">
+                        <div className="flex gap-3">
                           <Button
-                            onClick={handleRemoveMusic}
-                            variant="destructive"
-                            className="flex-1 text-sm"
+                            onClick={() => musicUploadRef.current?.click()}
+                            className="flex-1 bg-gaming-cyan hover:bg-gaming-cyan/80 text-white"
                           >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Remove
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload Music
                           </Button>
-                        )}
-                      </div>
-                      
-                      <div className="text-xs text-gray-400">
-                        MP3, WAV, OGG
+                          
+                          {profile?.backgroundMusic && (
+                            <Button
+                              onClick={handleRemoveMusic}
+                              variant="destructive"
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        
+                        <div className="bg-dark-gray/50 p-3 rounded-lg">
+                          <p className="text-xs text-gray-400">
+                            Supported formats: MP3, WAV, OGG
+                          </p>
+                          {profile?.backgroundMusic && (
+                            <p className="text-xs text-green-400 mt-1">
+                              ✓ Music uploaded and ready
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  {/* Entrance Screen Customization */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-gaming-purple flex items-center gap-2">
-                        <Image className="h-5 w-5" />
-                        Entrance Screen
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-1.5">
-                      <Input
-                        placeholder="Entrance text"
-                        value={entranceText}
-                        onChange={(e) => setEntranceText(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-gaming-purple"
-                      />
-                      
-                      <Select value={entranceFontSize} onValueChange={setEntranceFontSize}>
-                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-purple">
-                          <SelectValue placeholder="Font size" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-medium-gray border-light-gray">
-                          <SelectItem value="sm">Small</SelectItem>
-                          <SelectItem value="base">Base</SelectItem>
-                          <SelectItem value="lg">Large</SelectItem>
-                          <SelectItem value="xl">Extra Large</SelectItem>
-                          <SelectItem value="2xl">2XL</SelectItem>
-                          <SelectItem value="3xl">3XL</SelectItem>
-                          <SelectItem value="4xl">4XL</SelectItem>
-                          <SelectItem value="5xl">5XL</SelectItem>
-                          <SelectItem value="6xl">6XL</SelectItem>
-                          <SelectItem value="7xl">7XL</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      
-                      <Select value={entranceFontFamily} onValueChange={setEntranceFontFamily}>
-                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-purple">
-                          <SelectValue placeholder="Font family" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-medium-gray border-light-gray">
-                          <SelectItem value="Inter">Inter (Clean)</SelectItem>
-                          <SelectItem value="Orbitron">Orbitron (Futuristic)</SelectItem>
-                          <SelectItem value="Rajdhani">Rajdhani (Gaming)</SelectItem>
-                          <SelectItem value="Audiowide">Audiowide (Retro)</SelectItem>
-                          <SelectItem value="Bebas Neue">Bebas Neue (Bold)</SelectItem>
-                          <SelectItem value="Bangers">Bangers (Comic)</SelectItem>
-                          <SelectItem value="Creepster">Creepster (Horror)</SelectItem>
-                          <SelectItem value="Righteous">Righteous (Strong)</SelectItem>
-                          <SelectItem value="Fredoka One">Fredoka One (Friendly)</SelectItem>
-                          <SelectItem value="Permanent Marker">Permanent Marker (Handwritten)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="color"
-                          value={entranceFontColor}
-                          onChange={(e) => setEntranceFontColor(e.target.value)}
-                          className="w-12 h-8 bg-medium-gray border-light-gray focus:border-gaming-purple"
-                        />
-                        <Input
-                          placeholder="Font color (hex)"
-                          value={entranceFontColor}
-                          onChange={(e) => setEntranceFontColor(e.target.value)}
-                          className="flex-1 bg-medium-gray border-light-gray focus:border-gaming-purple"
-                        />
-                      </div>
-                      
-                      <Button
-                        onClick={handleSaveProfile}
-                        className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
-                        disabled={updateProfileMutation.isPending}
-                      >
-                        {updateProfileMutation.isPending ? "Saving..." : "Save Entrance Settings"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Middle Column */}
-                <div className="space-y-4">
-                  {/* Discord Rich Presence Settings */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-indigo-400 flex items-center gap-2">
+                  {/* Discord & Spotify Integration */}
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-indigo-400 flex items-center gap-2 text-lg">
                         <i className="fab fa-discord text-lg"></i>
-                        Discord Rich Presence
+                        Discord Integration
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-1.5">
+                    <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-white text-sm">Enable Discord Widget</span>
+                        <div className="space-y-1">
+                          <label className="text-sm font-medium text-gray-300">Enable Discord Widget</label>
+                          <p className="text-xs text-gray-400">Show your Discord Rich Presence</p>
+                        </div>
                         <Switch
                           checked={discordEnabled}
                           onCheckedChange={handleToggleDiscord}
@@ -625,49 +625,58 @@ export default function AdminPanel({
                         />
                       </div>
                       
-                      <Input
-                        placeholder="Discord User ID"
-                        value={discordUserId}
-                        onChange={(e) => setDiscordUserId(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-indigo-500"
-                      />
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Discord User ID</label>
+                        <Input
+                          placeholder="Your Discord User ID"
+                          value={discordUserId}
+                          onChange={(e) => setDiscordUserId(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-indigo-500 text-white"
+                        />
+                      </div>
                       
-                      <Input
-                        placeholder="Discord Application ID"
-                        value={discordApplicationId}
-                        onChange={(e) => setDiscordApplicationId(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-indigo-500"
-                      />
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Application ID</label>
+                        <Input
+                          placeholder="Discord Application ID"
+                          value={discordApplicationId}
+                          onChange={(e) => setDiscordApplicationId(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-indigo-500 text-white"
+                        />
+                      </div>
                       
                       <Button
                         onClick={handleUpdateDiscordSettings}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
                         disabled={updateProfileMutation.isPending}
                       >
                         {updateProfileMutation.isPending ? "Saving..." : "Save Discord Settings"}
                       </Button>
                       
-                      <div className="text-xs text-gray-400 bg-medium-gray/30 rounded p-2">
-                        <p className="font-medium mb-1">Setup:</p>
-                        <p>1. discord.com/developers</p>
-                        <p>2. Create application</p>
-                        <p>3. Copy Application ID</p>
-                        <p>4. Get User ID from Discord</p>
+                      <div className="bg-dark-gray/50 p-3 rounded-lg">
+                        <p className="text-xs text-gray-400 font-medium mb-1">Quick Setup:</p>
+                        <p className="text-xs text-gray-400">1. Visit discord.com/developers</p>
+                        <p className="text-xs text-gray-400">2. Create new application</p>
+                        <p className="text-xs text-gray-400">3. Copy Application ID</p>
+                        <p className="text-xs text-gray-400">4. Get your User ID from Discord</p>
                       </div>
                     </CardContent>
                   </Card>
 
-                  {/* Spotify Settings */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-green-400 flex items-center gap-2">
+                  {/* Spotify Integration */}
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-green-400 flex items-center gap-2 text-lg">
                         <i className="fab fa-spotify text-lg"></i>
                         Spotify Integration
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-1.5">
+                    <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-white text-sm">Enable Spotify Widget</span>
+                        <div className="space-y-1">
+                          <label className="text-sm font-medium text-gray-300">Enable Spotify Widget</label>
+                          <p className="text-xs text-gray-400">Show your current track</p>
+                        </div>
                         <Switch
                           checked={spotifyEnabled}
                           onCheckedChange={handleToggleSpotify}
@@ -675,26 +684,36 @@ export default function AdminPanel({
                         />
                       </div>
                       
-                      <Input
-                        placeholder="Track Name"
-                        value={spotifyTrackName}
-                        onChange={(e) => setSpotifyTrackName(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-green-500"
-                      />
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Track Name</label>
+                          <Input
+                            placeholder="Song title"
+                            value={spotifyTrackName}
+                            onChange={(e) => setSpotifyTrackName(e.target.value)}
+                            className="bg-dark-gray border-light-gray/50 focus:border-green-500 text-white"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Artist Name</label>
+                          <Input
+                            placeholder="Artist name"
+                            value={spotifyArtistName}
+                            onChange={(e) => setSpotifyArtistName(e.target.value)}
+                            className="bg-dark-gray border-light-gray/50 focus:border-green-500 text-white"
+                          />
+                        </div>
+                      </div>
                       
-                      <Input
-                        placeholder="Artist Name"
-                        value={spotifyArtistName}
-                        onChange={(e) => setSpotifyArtistName(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-green-500"
-                      />
-                      
-                      <Input
-                        placeholder="Spotify Track URL"
-                        value={spotifyTrackUrl}
-                        onChange={(e) => setSpotifyTrackUrl(e.target.value)}
-                        className="bg-medium-gray border-light-gray focus:border-green-500"
-                      />
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Spotify Track URL</label>
+                        <Input
+                          placeholder="https://open.spotify.com/track/..."
+                          value={spotifyTrackUrl}
+                          onChange={(e) => setSpotifyTrackUrl(e.target.value)}
+                          className="bg-dark-gray border-light-gray/50 focus:border-green-500 text-white"
+                        />
+                      </div>
                       
                       <input
                         type="file"
@@ -707,135 +726,88 @@ export default function AdminPanel({
                         className="hidden"
                       />
                       
-                      <div className="flex gap-2">
+                      <div className="flex gap-3">
                         <Button
                           onClick={() => spotifyAlbumUploadRef.current?.click()}
-                          className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                         >
                           <Upload className="h-4 w-4 mr-2" />
                           Album Art
                         </Button>
                         <Button
-                          onClick={() => setSpotifyAlbumArt("")}
-                          variant="destructive"
-                          className="flex-1 text-sm"
+                          onClick={handleUpdateSpotifySettings}
+                          className="flex-1 bg-gaming-cyan hover:bg-gaming-cyan/80 text-white"
+                          disabled={updateProfileMutation.isPending}
                         >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Remove
+                          {updateProfileMutation.isPending ? "Saving..." : "Save"}
                         </Button>
                       </div>
-                      
-                      <Button
-                        onClick={handleUpdateSpotifySettings}
-                        className="w-full bg-green-600 hover:bg-green-700 text-sm"
-                        disabled={updateProfileMutation.isPending}
-                      >
-                        {updateProfileMutation.isPending ? "Saving..." : "Save Spotify Settings"}
-                      </Button>
                     </CardContent>
                   </Card>
                 </div>
+              </div>
 
-                {/* Right Column */}
-                <div className="space-y-4">
-                  {/* Username Effects */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-gaming-cyan flex items-center gap-2">
-                        <Wand2 className="h-5 w-5" />
-                        Username Effects
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-1.5">
-                      <Select value={usernameEffect} onValueChange={setUsernameEffect}>
-                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-cyan">
-                          <SelectValue placeholder="Choose effect" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-medium-gray border-light-gray">
-                          <SelectItem value="none">None</SelectItem>
-                          <SelectItem value="rainbow">Rainbow</SelectItem>
-                          <SelectItem value="glow">Purple Glow</SelectItem>
-                          <SelectItem value="neon">Neon Cyan</SelectItem>
-                          <SelectItem value="fire">Fire</SelectItem>
-                          <SelectItem value="ice">Ice</SelectItem>
-                          <SelectItem value="white-sparkles">White Sparkles</SelectItem>
-                          <SelectItem value="colored-sparkles">Purple Sparkles</SelectItem>
-                          <SelectItem value="rainbow-sparkles">Rainbow Sparkles</SelectItem>
-                          <SelectItem value="typewriter">Typewriter</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      
-                      <div className="bg-medium-gray/30 rounded p-3 text-center min-h-[50px] flex items-center justify-center">
-                        <div className="text-lg font-semibold">
-                          {username ? (
-                            <UsernameEffects username={username} effect={usernameEffect} />
-                          ) : (
-                            <span className="text-gray-400 text-sm">Enter username to preview</span>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <Button
-                        onClick={handleSaveProfile}
-                        className="w-full bg-gaming-cyan hover:bg-gaming-cyan/80 text-sm"
-                        disabled={updateProfileMutation.isPending}
-                      >
-                        {updateProfileMutation.isPending ? "Saving..." : "Save Username Effect"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  {/* Links Management */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-gaming-purple flex items-center gap-2">
-                        <ExternalLink className="h-5 w-5" />
-                        Social Links
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-1.5">
+              {/* Links Management Section */}
+              <div className="mt-8">
+                <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-gaming-cyan flex items-center gap-2 text-lg">
+                      <ExternalLink className="h-5 w-5" />
+                      Social Media Links
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-gray-300 text-sm">
+                        Manage your social media links and platform connections
+                      </p>
                       <Button
                         onClick={onNewLink}
-                        className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
+                        className="bg-gaming-purple hover:bg-gaming-purple/80 text-white"
                       >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add New Link
+                        Add Link
                       </Button>
-                      
-                      <div className="space-y-1 max-h-64 overflow-y-auto">
-                        {links.map((link) => (
-                          <div
-                            key={link.id}
-                            className="flex items-center justify-between p-2 bg-medium-gray/30 rounded-md"
-                          >
-                            <div className="flex items-center gap-3">
-                              <i className={`fab fa-${link.title.toLowerCase()} text-gaming-purple`}></i>
-                              <span className="text-white font-medium text-sm">{link.title}</span>
+                    </div>
+                    
+                    <div className="grid gap-3">
+                      {links.map((link) => (
+                        <div
+                          key={link.id}
+                          className="flex items-center justify-between bg-dark-gray/50 p-3 rounded-lg"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${link.color}`}>
+                              <i className={`${link.icon} text-white text-sm`}></i>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => onEditLink(link)}
-                                className="text-gaming-cyan hover:text-gaming-cyan/80 p-1"
-                              >
-                                <Edit2 className="h-3 w-3" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDeleteLink(link.id)}
-                                className="text-red-400 hover:text-red-300 p-1"
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
+                            <div>
+                              <p className="text-white font-medium">{link.title}</p>
+                              <p className="text-gray-400 text-xs">{link.description}</p>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={() => onEditLink(link)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-gray-400 hover:text-white"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              onClick={() => handleDeleteLink(link.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-400 hover:text-red-300"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </motion.div>
