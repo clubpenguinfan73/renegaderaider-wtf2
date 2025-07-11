@@ -25,21 +25,29 @@ export default function AnimatedTitle({ titles, speed = 2000, className = "", up
           setDisplayText(currentTitle.slice(0, displayText.length + 1));
         }, 100);
       } else {
-        // Finished typing, wait then start deleting
-        timeout = setTimeout(() => {
-          setIsDeleting(true);
-        }, speed);
+        // Finished typing current title
+        if (currentIndex === titles.length - 1) {
+          // Last title - wait then start deleting
+          timeout = setTimeout(() => {
+            setIsDeleting(true);
+          }, speed);
+        } else {
+          // Not last title - move to next title after pause
+          timeout = setTimeout(() => {
+            setCurrentIndex((prev) => prev + 1);
+          }, speed);
+        }
       }
     } else {
-      // Deleting phase
+      // Deleting phase (only happens after all titles are shown)
       if (displayText.length > 0) {
         timeout = setTimeout(() => {
           setDisplayText(displayText.slice(0, -1));
         }, 50);
       } else {
-        // Finished deleting, move to next title
+        // Finished deleting, restart from first title
         setIsDeleting(false);
-        setCurrentIndex((prev) => (prev + 1) % titles.length);
+        setCurrentIndex(0);
       }
     }
 
