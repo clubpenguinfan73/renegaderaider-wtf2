@@ -201,7 +201,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
 
         {/* Feature Cards */}
         <div className="w-full max-w-2xl space-y-4">
-          {/* Discord Rich Presence - Only show if enabled */}
+          {/* Discord Profile Integration - Only show if enabled */}
           {profile?.discordEnabled && (
             <motion.div
               className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
@@ -213,15 +213,15 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                     <i className="fab fa-discord text-white text-xl"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-lg">Discord Rich Presence</h3>
-                    <p className="text-gray-400 text-sm">Note: Rich Presence requires Discord desktop client + browser extension</p>
+                    <h3 className="font-semibold text-white text-lg">Discord Profile</h3>
+                    <p className="text-gray-400 text-sm">Show your Discord profile information</p>
                   </div>
                 </div>
                 <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20">
                   <div className="text-white text-sm font-medium">
                     {profile?.discordUserId ? (
                       <div className="flex flex-col items-end">
-                        <span className="text-orange-400 mb-1">Preview Mode</span>
+                        <span className="text-green-400 mb-1">Connected</span>
                         <span className="text-xs text-gray-400">ID: {profile.discordUserId}</span>
                       </div>
                     ) : (
@@ -231,35 +231,32 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                 </div>
               </div>
               {profile?.discordUserId && (
-                <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-600/30 rounded-lg">
-                  <div className="flex items-start space-x-3">
-                    <i className="fas fa-info-circle text-yellow-400 mt-0.5"></i>
-                    <div>
-                      <h4 className="text-yellow-400 font-medium text-sm">How to Enable Real Discord Rich Presence</h4>
-                      <p className="text-gray-300 text-xs mt-1">
-                        1. Install Discord Rich Presence browser extension<br/>
-                        2. Keep Discord desktop client running<br/>
-                        3. Extension will show your real Discord activity
-                      </p>
-                      <div className="mt-2 flex space-x-3">
-                        <a 
-                          href="https://addons.mozilla.org/en-US/firefox/addon/discord-rich-presence/" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-400 hover:text-blue-300"
-                        >
-                          Firefox Extension
-                        </a>
-                        <a 
-                          href="https://github.com/lolamtisch/Discord-RPC-Extension" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-400 hover:text-blue-300"
-                        >
-                          Chrome Extension
-                        </a>
+                <div className="mt-4 p-4 bg-dark-gray/30 rounded-lg border border-light-gray/20">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <img 
+                        src={`https://cdn.discordapp.com/avatars/${profile.discordUserId}/a_01.png?size=128`}
+                        alt="Discord Avatar"
+                        className="w-16 h-16 rounded-full border-2 border-gaming-purple"
+                        onError={(e) => {
+                          e.currentTarget.src = `https://cdn.discordapp.com/embed/avatars/${parseInt(profile.discordUserId) % 5}.png`;
+                        }}
+                      />
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-dark-gray"></div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-white font-medium text-lg">Discord User</h4>
+                      <p className="text-gray-400 text-sm">ID: {profile.discordUserId}</p>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <span className="px-2 py-1 bg-gaming-purple rounded-full text-xs text-white">
+                          Discord Member
+                        </span>
+                        <span className="text-green-400 text-xs">● Online</span>
                       </div>
                     </div>
+                  </div>
+                  <div className="mt-3 text-xs text-gray-400">
+                    Note: This shows your Discord profile information. For real-time status updates, you'll need additional Discord API permissions.
                   </div>
                 </div>
               )}

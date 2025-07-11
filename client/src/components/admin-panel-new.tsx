@@ -690,11 +690,16 @@ export default function AdminPanel({
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Discord User ID</label>
                         <Input
-                          placeholder="Your Discord User ID"
+                          placeholder="Your Discord User ID (e.g., 123456789012345678)"
                           value={discordUserId}
                           onChange={(e) => setDiscordUserId(e.target.value)}
                           className="bg-dark-gray border-light-gray/50 focus:border-indigo-500 text-white"
                         />
+                        <div className="text-xs text-gray-400 mt-1">
+                          <p>To get your Discord ID:</p>
+                          <p>1. Enable Developer Mode in Discord Settings</p>
+                          <p>2. Right-click your username → "Copy User ID"</p>
+                        </div>
                       </div>
                       
                       <div className="space-y-2">
