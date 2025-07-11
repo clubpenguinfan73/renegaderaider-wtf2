@@ -17,11 +17,11 @@ export default function Home() {
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const { data: profile } = useQuery<Profile>({
+  const { data: profile, isLoading: profileLoading } = useQuery<Profile>({
     queryKey: ["/api/profile"],
   });
 
-  const { data: links = [] } = useQuery<Link[]>({
+  const { data: links = [], isLoading: linksLoading } = useQuery<Link[]>({
     queryKey: ["/api/links"],
   });
 
@@ -89,6 +89,34 @@ export default function Home() {
     setIsAuthenticated(false);
     setShowAdminPanel(false);
   };
+
+  // Show loading screen while data loads
+  if (profileLoading || linksLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        {/* Background with blur */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
+          {profile?.backgroundImage && (
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${profile.backgroundImage})` }}
+            />
+          )}
+        </div>
+        
+        {/* Blur overlay */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-md" />
+        
+        {/* Loading content */}
+        <div className="relative z-10 text-center">
+          <div className="animate-pulse">
+            <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showEntrance) {
     return <EntranceOverlay onEnter={handleEnter} isEntering={isEntering} profile={profile} />;
