@@ -165,7 +165,7 @@ export default function AdminPanel({
                   <input
                     type="file"
                     ref={backgroundUploadRef}
-                    accept="image/*"
+                    accept="image/*,image/gif"
                     onChange={handleBackgroundUpload}
                     className="hidden"
                   />
@@ -174,7 +174,7 @@ export default function AdminPanel({
                     className="w-full bg-medium-gray hover:bg-light-gray"
                   >
                     <Upload className="h-4 w-4 mr-2" />
-                    Upload Background
+                    Upload Background (Image/GIF)
                   </Button>
                   <Button
                     onClick={handleRemoveBackground}
