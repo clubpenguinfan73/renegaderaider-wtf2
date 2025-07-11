@@ -94,24 +94,15 @@ export default function Home() {
   if (profileLoading || linksLoading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        {/* Background with blur */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
-          {profile?.backgroundImage && (
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${profile.backgroundImage})` }}
-            />
-          )}
-        </div>
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
         
-        {/* Blur overlay */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-md" />
-        
-        {/* Loading content */}
+        {/* Loading animation */}
         <div className="relative z-10 text-center">
-          <div className="animate-pulse">
-            <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+          <div className="flex space-x-2">
+            <div className="w-3 h-3 bg-gaming-purple rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+            <div className="w-3 h-3 bg-gaming-cyan rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+            <div className="w-3 h-3 bg-gaming-purple rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
           </div>
         </div>
       </div>
