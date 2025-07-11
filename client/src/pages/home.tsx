@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import EntranceOverlay from "@/components/entrance-overlay";
 import MainContent from "@/components/main-content";
-import AdminPanel from "@/components/admin-panel";
+import AdminPanel from "@/components/admin-panel-new";
 import LinkEditModal from "@/components/link-edit-modal";
 import LoginModal from "@/components/login-modal";
 import { useLocalStorage } from "@/hooks/use-local-storage";
