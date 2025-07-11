@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -39,6 +40,9 @@ export default function AdminPanel({
   const [entranceFontFamily, setEntranceFontFamily] = useState(profile?.entranceFontFamily || "Inter");
   const [entranceFontColor, setEntranceFontColor] = useState(profile?.entranceFontColor || "#ffffff");
   const [usernameEffect, setUsernameEffect] = useState(profile?.usernameEffect || "none");
+  const [animatedTitleEnabled, setAnimatedTitleEnabled] = useState(profile?.animatedTitleEnabled || false);
+  const [animatedTitleTexts, setAnimatedTitleTexts] = useState(profile?.animatedTitleTexts || "");
+  const [animatedTitleSpeed, setAnimatedTitleSpeed] = useState(profile?.animatedTitleSpeed || 1000);
   const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
   const [discordEnabled, setDiscordEnabled] = useState(profile?.discordEnabled || false);
   const [discordUserId, setDiscordUserId] = useState(profile?.discordUserId || "");
@@ -67,6 +71,9 @@ export default function AdminPanel({
       setEntranceFontFamily(profile.entranceFontFamily || "Inter");
       setEntranceFontColor(profile.entranceFontColor || "#ffffff");
       setUsernameEffect(profile.usernameEffect || "none");
+      setAnimatedTitleEnabled(profile.animatedTitleEnabled || false);
+      setAnimatedTitleTexts(profile.animatedTitleTexts || "");
+      setAnimatedTitleSpeed(profile.animatedTitleSpeed || 1000);
       setMusicEnabled(profile.musicEnabled || false);
       setDiscordEnabled(profile.discordEnabled || false);
       setDiscordUserId(profile.discordUserId || "");
@@ -114,6 +121,9 @@ export default function AdminPanel({
         entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
         entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
         usernameEffect: usernameEffect || profile?.usernameEffect || "none",
+        animatedTitleEnabled: animatedTitleEnabled,
+        animatedTitleTexts: animatedTitleTexts,
+        animatedTitleSpeed: animatedTitleSpeed,
         profilePicture: profile?.profilePicture,
         backgroundImage: profile?.backgroundImage,
         backgroundMusic: profile?.backgroundMusic,
@@ -591,6 +601,62 @@ export default function AdminPanel({
                             className="text-xl"
                           />
                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Animated Title */}
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-cyan flex items-center gap-2 text-lg">
+                        <i className="fas fa-text-height"></i>
+                        Animated Title
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-1">
+                          <label className="text-sm font-medium text-gray-300">Enable Animated Title</label>
+                          <p className="text-xs text-gray-400">Add typewriter-style animated text under your username</p>
+                        </div>
+                        <Switch
+                          checked={animatedTitleEnabled}
+                          onCheckedChange={setAnimatedTitleEnabled}
+                          className="data-[state=checked]:bg-gaming-cyan"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Title Texts (comma separated)</label>
+                        <textarea
+                          placeholder="Gamer, Streamer, Content Creator"
+                          value={animatedTitleTexts}
+                          onChange={(e) => setAnimatedTitleTexts(e.target.value)}
+                          className="w-full bg-dark-gray border-light-gray/50 focus:border-gaming-cyan text-white rounded-md p-2 resize-none"
+                          rows={3}
+                        />
+                        <p className="text-xs text-gray-400">
+                          Enter multiple titles separated by commas. Example: "Gamer, Streamer, Content Creator"
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Animation Speed (ms)</label>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-xs text-gray-400">Fast</span>
+                          <Slider
+                            value={[animatedTitleSpeed]}
+                            onValueChange={(value) => setAnimatedTitleSpeed(value[0])}
+                            min={500}
+                            max={3000}
+                            step={100}
+                            className="flex-1"
+                          />
+                          <span className="text-xs text-gray-400">Slow</span>
+                        </div>
+                        <p className="text-xs text-gray-400 text-center">
+                          Current: {animatedTitleSpeed}ms
+                        </p>
                       </div>
                     </CardContent>
                   </Card>

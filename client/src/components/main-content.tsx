@@ -5,6 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { useEffect, useRef, useState } from "react";
 import type { Profile, Link } from "@shared/schema";
 import UsernameEffects from "./username-effects";
+import AnimatedTitle from "./animated-title";
 
 interface MainContentProps {
   profile?: Profile;
@@ -166,6 +167,17 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             />
           </h1>
           
+          {/* Animated Title */}
+          {profile?.animatedTitleEnabled && profile?.animatedTitleTexts && (
+            <div className="mb-4">
+              <AnimatedTitle 
+                titles={profile.animatedTitleTexts.split(',').map(t => t.trim()).filter(t => t)} 
+                speed={profile.animatedTitleSpeed || 1000}
+                className="text-2xl md:text-3xl font-medium"
+              />
+            </div>
+          )}
+          
           <p className="text-lg text-gray-300 max-w-md mx-auto leading-relaxed">
             {profile?.bio || "Professional gamer • Content creator • Streaming daily"}
           </p>
@@ -235,11 +247,11 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                   <div className="flex items-center space-x-4">
                     <div className="relative">
                       <img 
-                        src={`https://cdn.discordapp.com/avatars/${profile.discordUserId}/a_01.png?size=128`}
+                        src={`https://cdn.discordapp.com/embed/avatars/${parseInt(profile.discordUserId.slice(-1)) % 5}.png`}
                         alt="Discord Avatar"
                         className="w-16 h-16 rounded-full border-2 border-gaming-purple"
                         onError={(e) => {
-                          e.currentTarget.src = `https://cdn.discordapp.com/embed/avatars/${parseInt(profile.discordUserId) % 5}.png`;
+                          e.currentTarget.src = `https://cdn.discordapp.com/embed/avatars/0.png`;
                         }}
                       />
                       <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-dark-gray"></div>
