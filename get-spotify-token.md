@@ -10,10 +10,10 @@
 4. Save and copy your **Client ID** and **Client Secret**
 
 ## Step 2: Get Authorization Code
-1. Replace `YOUR_CLIENT_ID` in the URL below with your actual Client ID:
+1. Click this URL to authorize your app:
 
 ```
-https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=https://developer.spotify.com/&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
+https://accounts.spotify.com/authorize?client_id=f3de4f2a29744cd08369c0d071bb3a1a&response_type=code&redirect_uri=https://developer.spotify.com/&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
 ```
 
 2. Open this URL in your browser
@@ -43,12 +43,12 @@ redirect_uri=https://developer.spotify.com/
 - Base64 encode it (use https://www.base64encode.org/)
 
 ## Step 4: Alternative - Use curl command
-Replace the values and run this in terminal:
+Replace AUTHORIZATION_CODE with the code from Step 2 and run this:
 
 ```bash
 curl -X POST "https://accounts.spotify.com/api/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -H "Authorization: Basic $(echo -n 'CLIENT_ID:CLIENT_SECRET' | base64)" \
+  -H "Authorization: Basic ZjNkZTRmMmEyOTc0NGNkMDgzNjljMGQwNzFiYjNhMWE6ZmZmZTQ0ZmEyNTg1NDZjMjhkOTJkMWZiZmI0NGQ2MmU=" \
   -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://developer.spotify.com/"
 ```
 
