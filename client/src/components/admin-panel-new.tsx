@@ -90,9 +90,11 @@ export default function AdminPanel({
   });
 
   const handleFileUpload = (file: File, type: 'background' | 'profile' | 'music' | 'spotify-album') => {
+    console.log("File upload clicked:", type, file.name);
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result as string;
+      console.log("File read complete:", type, result.substring(0, 50) + "...");
       
       const updateData: any = {
         username: username || profile?.username || "",
@@ -100,15 +102,15 @@ export default function AdminPanel({
         profilePicture: profile?.profilePicture,
         backgroundImage: profile?.backgroundImage,
         backgroundMusic: profile?.backgroundMusic,
-        musicEnabled: profile?.musicEnabled,
-        discordEnabled: profile?.discordEnabled,
-        discordUserId: profile?.discordUserId,
-        discordApplicationId: profile?.discordApplicationId,
-        spotifyEnabled: profile?.spotifyEnabled,
-        spotifyTrackName: profile?.spotifyTrackName,
-        spotifyArtistName: profile?.spotifyArtistName,
-        spotifyAlbumArt: profile?.spotifyAlbumArt,
-        spotifyTrackUrl: profile?.spotifyTrackUrl,
+        musicEnabled: musicEnabled,
+        discordEnabled: discordEnabled,
+        discordUserId: discordUserId,
+        discordApplicationId: discordApplicationId,
+        spotifyEnabled: spotifyEnabled,
+        spotifyTrackName: spotifyTrackName,
+        spotifyArtistName: spotifyArtistName,
+        spotifyAlbumArt: spotifyAlbumArt,
+        spotifyTrackUrl: spotifyTrackUrl,
       };
 
       if (type === 'background') {
@@ -124,27 +126,29 @@ export default function AdminPanel({
         setSpotifyAlbumArt(result);
       }
 
+      console.log("Updating profile with:", updateData);
       updateProfileMutation.mutate(updateData);
     };
     reader.readAsDataURL(file);
   };
 
   const handleSaveProfile = () => {
+    console.log("Saving profile:", { username, bio });
     updateProfileMutation.mutate({
       username,
       bio,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
-      musicEnabled: profile?.musicEnabled,
-      discordEnabled: profile?.discordEnabled,
-      discordUserId: profile?.discordUserId,
-      discordApplicationId: profile?.discordApplicationId,
-      spotifyEnabled: profile?.spotifyEnabled,
-      spotifyTrackName: profile?.spotifyTrackName,
-      spotifyArtistName: profile?.spotifyArtistName,
-      spotifyAlbumArt: profile?.spotifyAlbumArt,
-      spotifyTrackUrl: profile?.spotifyTrackUrl,
+      musicEnabled: musicEnabled,
+      discordEnabled: discordEnabled,
+      discordUserId: discordUserId,
+      discordApplicationId: discordApplicationId,
+      spotifyEnabled: spotifyEnabled,
+      spotifyTrackName: spotifyTrackName,
+      spotifyArtistName: spotifyArtistName,
+      spotifyAlbumArt: spotifyAlbumArt,
+      spotifyTrackUrl: spotifyTrackUrl,
     });
   };
 
@@ -247,6 +251,7 @@ export default function AdminPanel({
   };
 
   const handleDeleteLink = (linkId: number) => {
+    console.log("Delete link clicked:", linkId);
     deleteLinkMutation.mutate(linkId);
   };
 
