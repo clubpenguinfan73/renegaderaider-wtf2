@@ -20,7 +20,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [volume, setVolume] = useState(30);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { data: discordProfile, isLoading: discordLoading, error: discordError } = useDiscordProfile();
+  const { profile: discordProfile, activity: discordActivity, isLoading: discordLoading, error: discordError, getBadgeIcon } = useDiscordProfile();
 
   // Handle background music - Auto-play by default
   useEffect(() => {
@@ -254,44 +254,29 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-semibold text-white">{discordProfile.username}</h4>
                       <div className="flex items-center gap-1">
-                        {/* Render actual Discord badges based on API response */}
-                        {discordProfile.badges.includes('early_supporter') && (
-                          <div className="w-4 h-4 flex items-center justify-center" title="Early Supporter">
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                              <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z" fill="#5865F2"/>
-                            </svg>
+                        {/* Render actual Discord badges */}
+                        {discordProfile.badges.map((badge, index) => (
+                          <div key={index} className="w-4 h-4 flex items-center justify-center" title={badge}>
+                            <div dangerouslySetInnerHTML={{ __html: getBadgeIcon(badge) }} />
                           </div>
-                        )}
-                        {discordProfile.badges.includes('hypesquad_events') && (
-                          <div className="w-4 h-4 flex items-center justify-center" title="HypeSquad Events">
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="url(#hypesquad-gradient)"/>
-                              <defs>
-                                <linearGradient id="hypesquad-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" stopColor="#9C84EF"/>
-                                  <stop offset="100%" stopColor="#FF73FA"/>
-                                </linearGradient>
-                              </defs>
-                            </svg>
-                          </div>
-                        )}
-                        {discordProfile.premiumType > 0 && (
-                          <div className="w-4 h-4 flex items-center justify-center" title="Discord Nitro">
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                              <path d="M12 2l6 6-6 6-6-6z" fill="#5865F2"/>
-                              <path d="M12 8l3 3-3 3-3-3z" fill="#FFFFFF"/>
-                            </svg>
-                          </div>
-                        )}
-                        {discordProfile.badges.includes('active_developer') && (
-                          <div className="w-4 h-4 flex items-center justify-center" title="Active Developer">
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                              <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.4-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z" fill="#79818F"/>
-                            </svg>
-                          </div>
-                        )}
+                        ))}
                       </div>
                     </div>
+                    <p className="text-sm text-gray-400">
+                      Discord ID: {discordProfile.id}
+                    </p>
+                    {/* Show current activity if available */}
+                    {discordActivity && (
+                      <div className="text-xs text-gaming-cyan mt-1">
+                        <span className="font-medium">Playing:</span> {discordActivity.name}
+                        {discordActivity.details && (
+                          <div className="text-gray-400">{discordActivity.details}</div>
+                        )}
+                        {discordActivity.state && (
+                          <div className="text-gray-400">{discordActivity.state}</div>
+                        )}
+                      </div>
+                    )}
                     <p className="text-sm text-gray-400 mb-2">this is where i belong</p>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>

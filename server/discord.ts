@@ -46,16 +46,110 @@ export interface DiscordPresence {
   }>;
 }
 
+export interface DiscordActivity {
+  name: string;
+  type: number;
+  details?: string;
+  state?: string;
+  timestamps?: {
+    start?: number;
+    end?: number;
+  };
+  assets?: {
+    large_image?: string;
+    large_text?: string;
+    small_image?: string;
+    small_text?: string;
+  };
+}
+
 class DiscordAPI {
   private botToken: string;
   private clientId: string;
   private clientSecret: string;
   private targetUserId: string = '142694270405574657'; // Your Discord ID
+  private client: Client | null = null;
+  private currentActivity: DiscordActivity | null = null;
 
   constructor() {
     this.botToken = process.env.DISCORD_BOT_TOKEN || '';
     this.clientId = process.env.DISCORD_CLIENT_ID || '';
     this.clientSecret = process.env.DISCORD_CLIENT_SECRET || '';
+    
+    this.initializeBot();
+  }
+
+  private async initializeBot() {
+    try {
+      this.client = new Client({
+        intents: [
+          GatewayIntentBits.Guilds
+        ]
+      });
+
+      this.client.on('ready', () => {
+        console.log(`Discord bot logged in as ${this.client?.user?.tag}`);
+        this.startActivityTracking();
+      });
+
+      this.client.on('presenceUpdate', (oldPresence, newPresence) => {
+        if (newPresence?.userId === this.targetUserId) {
+          this.updateActivity(newPresence);
+        }
+      });
+
+      if (this.botToken) {
+        await this.client.login(this.botToken);
+      }
+    } catch (error) {
+      console.error('Failed to initialize Discord bot:', error);
+    }
+  }
+
+  private startActivityTracking() {
+    if (!this.client) return;
+    
+    setInterval(() => {
+      this.checkUserActivity();
+    }, 30000);
+  }
+
+  private async checkUserActivity() {
+    if (!this.client) return;
+    
+    try {
+      const user = await this.client.users.fetch(this.targetUserId);
+      const presence = this.client.guilds.cache
+        .map(guild => guild.presences.cache.get(this.targetUserId))
+        .find(p => p);
+
+      if (presence) {
+        this.updateActivity(presence);
+      }
+    } catch (error) {
+      console.error('Error checking user activity:', error);
+    }
+  }
+
+  private updateActivity(presence: any) {
+    if (!presence?.activities?.length) {
+      this.currentActivity = null;
+      return;
+    }
+
+    const activity = presence.activities[0];
+    this.currentActivity = {
+      name: activity.name,
+      type: activity.type,
+      details: activity.details,
+      state: activity.state,
+      timestamps: activity.timestamps,
+      assets: activity.assets
+    };
+  }
+
+  async getCurrentActivity(): Promise<DiscordActivity | null> {
+    return this.currentActivity;
   }
 
   private async makeRequest(endpoint: string, options: RequestInit = {}): Promise<any> {

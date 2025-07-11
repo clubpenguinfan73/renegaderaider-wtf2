@@ -120,6 +120,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Discord activity endpoint
+  app.get("/api/discord/activity", async (req, res) => {
+    try {
+      const activity = await discordAPI.getCurrentActivity();
+      res.json(activity);
+    } catch (error) {
+      console.error('Discord activity error:', error);
+      res.status(500).json({ message: "Failed to fetch Discord activity" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
