@@ -6,20 +6,20 @@
 3. Fill in:
    - **App Name**: Your Profile Website
    - **App Description**: Personal profile integration
-   - **Redirect URI**: `https://developer.spotify.com/`
+   - **Redirect URI**: `http://localhost:3000/callback`
 4. Save and copy your **Client ID** and **Client Secret**
 
 ## Step 2: Get Authorization Code
 1. Click this URL to authorize your app:
 
 ```
-https://accounts.spotify.com/authorize?client_id=f3de4f2a29744cd08369c0d071bb3a1a&response_type=code&redirect_uri=https://developer.spotify.com/&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
+https://accounts.spotify.com/authorize?client_id=f3de4f2a29744cd08369c0d071bb3a1a&response_type=code&redirect_uri=http://localhost:3000/callback&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
 ```
 
 2. Open this URL in your browser
 3. Authorize the app
-4. You'll be redirected to developer.spotify.com with a `code` parameter in the URL
-5. Copy the value after `code=` (this is your authorization code)
+4. You'll be redirected to localhost:3000/callback with a `code` parameter in the URL (the page won't load, that's normal)
+5. Copy the value after `code=` from the URL bar (this is your authorization code)
 
 ## Step 3: Get Refresh Token
 1. Open https://httpie.io/app or use curl/Postman
@@ -49,7 +49,7 @@ Replace AUTHORIZATION_CODE with the code from Step 2 and run this:
 curl -X POST "https://accounts.spotify.com/api/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic ZjNkZTRmMmEyOTc0NGNkMDgzNjljMGQwNzFiYjNhMWE6ZmZmZTQ0ZmEyNTg1NDZjMjhkOTJkMWZiZmI0NGQ2MmU=" \
-  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://developer.spotify.com/"
+  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=http://localhost:3000/callback"
 ```
 
 ## Step 5: Get Your Credentials
