@@ -6,20 +6,20 @@
 3. Fill in:
    - **App Name**: Your Profile Website
    - **App Description**: Personal profile integration
-   - **Redirect URI**: `https://example.com/callback`
+   - **Redirect URI**: `https://httpbin.org/anything`
 4. Save and copy your **Client ID** and **Client Secret**
 
 ## Step 2: Get Authorization Code
 1. Click this URL to authorize your app:
 
 ```
-https://accounts.spotify.com/authorize?client_id=f3de4f2a29744cd08369c0d071bb3a1a&response_type=code&redirect_uri=https://example.com/callback&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
+https://accounts.spotify.com/authorize?client_id=f3de4f2a29744cd08369c0d071bb3a1a&response_type=code&redirect_uri=https://httpbin.org/anything&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
 ```
 
 2. Open this URL in your browser
 3. Authorize the app
-4. You'll be redirected to example.com/callback with a `code` parameter in the URL (the page won't load, that's normal)
-5. Copy the value after `code=` from the URL bar (this is your authorization code)
+4. You'll be redirected to httpbin.org/anything with a JSON response showing your authorization code
+5. Look for the "code" value in the "args" section of the JSON response (this is your authorization code)
 
 ## Step 3: Get Refresh Token
 1. Open https://httpie.io/app or use curl/Postman
@@ -35,7 +35,7 @@ Authorization: Basic BASE64_ENCODED_CLIENT_CREDENTIALS
 ```
 grant_type=authorization_code
 code=YOUR_AUTHORIZATION_CODE
-redirect_uri=https://example.com/callback
+redirect_uri=https://httpbin.org/anything
 ```
 
 **To get BASE64_ENCODED_CLIENT_CREDENTIALS:**
@@ -49,7 +49,7 @@ Replace AUTHORIZATION_CODE with the code from Step 2 and run this:
 curl -X POST "https://accounts.spotify.com/api/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic ZjNkZTRmMmEyOTc0NGNkMDgzNjljMGQwNzFiYjNhMWE6ZmZmZTQ0ZmEyNTg1NDZjMjhkOTJkMWZiZmI0NGQ2MmU=" \
-  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://example.com/callback"
+  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://httpbin.org/anything"
 ```
 
 ## Step 5: Get Your Credentials
