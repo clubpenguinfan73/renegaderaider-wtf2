@@ -55,7 +55,7 @@ The application follows a monorepo structure with clear separation between clien
 ## External Dependencies
 
 ### Database
-- **Neon Database**: Serverless PostgreSQL solution
+- **Netlify DB**: Serverless PostgreSQL solution powered by Neon
 - **Drizzle ORM**: Type-safe database operations and migrations
 
 ### UI Libraries
@@ -68,24 +68,37 @@ The application follows a monorepo structure with clear separation between clien
 - **TypeScript**: Type safety across the stack
 - **ESBuild**: Fast bundling for production
 
+### Netlify Integration
+- **Netlify Functions**: Serverless API endpoints
+- **Netlify DB**: Integrated PostgreSQL database
+- **Netlify CLI**: Development and deployment tooling
+
 ## Deployment Strategy
 
 ### Build Process
 - **Frontend**: Vite builds React app to `/dist/public`
-- **Backend**: ESBuild bundles Node.js server to `/dist`
+- **Backend**: ESBuild bundles Netlify Functions to `/dist/functions`
 - **Environment**: Supports both development and production modes
 
-### Environment Configuration
+### Netlify Configuration
 - **Development**: Uses Vite dev server with proxy to Express API
-- **Production**: Serves static files from Express with API routes
-- **Database**: Requires `DATABASE_URL` environment variable
+- **Production**: Serves static files from CDN with Netlify Functions API
+- **Database**: Automatic `DATABASE_URL` configuration via Netlify DB
+- **Build**: Custom build script handles both frontend and function bundling
+
+### Database Setup
+To set up Netlify DB for your deployment:
+1. Deploy to Netlify (database will be auto-provisioned)
+2. Claim your database within 7 days via Netlify dashboard
+3. Database tables will be created automatically via migration script
 
 ### Key Features
 - **Gaming Theme**: Purple and cyan color scheme with gaming-inspired animations
 - **Responsive Design**: Mobile-first approach with Tailwind breakpoints
 - **Admin Panel**: Toggle-able admin interface for content management
 - **Link Management**: Create, edit, and delete social media links
-- **Profile Customization**: Edit username, bio, and upload profile/background images
+- **Profile Customization**: Edit username, bio, and upload profile/background images (including GIFs)
 - **Entrance Animation**: Smooth entrance overlay with localStorage persistence
+- **Persistent Storage**: Netlify DB integration for data persistence across deployments
 
-The application is designed to be easily deployable to platforms like Replit, with built-in development tools and production optimization.
+The application is designed to be easily deployable to Netlify with automatic database provisioning and serverless architecture.

@@ -1,4 +1,7 @@
 import { users, profiles, links, type User, type InsertUser, type Profile, type InsertProfile, type Link, type InsertLink } from "@shared/schema";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -112,4 +115,94 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database storage implementation
+export class DatabaseStorage implements IStorage {
+  private db: ReturnType<typeof drizzle>;
+
+  constructor() {
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL environment variable is required");
+    }
+    const sql = neon(process.env.DATABASE_URL);
+    this.db = drizzle(sql);
+  }
+
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.id, id));
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await this.db.insert(users).values(insertUser).returning();
+    return result[0];
+  }
+
+  async getProfile(): Promise<Profile | undefined> {
+    const result = await this.db.select().from(profiles).limit(1);
+    return result[0];
+  }
+
+  async updateProfile(profileData: InsertProfile): Promise<Profile> {
+    const existing = await this.getProfile();
+    if (existing) {
+      const result = await this.db
+        .update(profiles)
+        .set({
+          username: profileData.username,
+          bio: profileData.bio,
+          profilePicture: profileData.profilePicture || null,
+          backgroundImage: profileData.backgroundImage || null,
+        })
+        .where(eq(profiles.id, existing.id))
+        .returning();
+      return result[0];
+    } else {
+      const result = await this.db.insert(profiles).values({
+        username: profileData.username,
+        bio: profileData.bio,
+        profilePicture: profileData.profilePicture || null,
+        backgroundImage: profileData.backgroundImage || null,
+      }).returning();
+      return result[0];
+    }
+  }
+
+  async getLinks(): Promise<Link[]> {
+    const result = await this.db.select().from(links).orderBy(links.order);
+    return result;
+  }
+
+  async createLink(linkData: InsertLink): Promise<Link> {
+    const result = await this.db.insert(links).values({
+      title: linkData.title,
+      url: linkData.url,
+      description: linkData.description || null,
+      icon: linkData.icon,
+      color: linkData.color,
+      order: linkData.order || 0
+    }).returning();
+    return result[0];
+  }
+
+  async updateLink(id: number, linkData: Partial<InsertLink>): Promise<Link | undefined> {
+    const result = await this.db
+      .update(links)
+      .set(linkData)
+      .where(eq(links.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async deleteLink(id: number): Promise<boolean> {
+    const result = await this.db.delete(links).where(eq(links.id, id)).returning();
+    return result.length > 0;
+  }
+}
+
+// Use environment variable to determine storage type
+export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
