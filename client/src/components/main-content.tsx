@@ -100,9 +100,9 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       {/* Music Volume Slider */}
       {profile?.backgroundMusic && profile.musicEnabled && (
         <div className="fixed top-4 left-4 z-40">
-          <div className="bg-medium-gray/80 hover:bg-light-gray/80 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-lg">
+          <div className="bg-black/30 hover:bg-black/40 backdrop-blur-sm rounded-xl p-2 flex items-center gap-2 shadow-lg transition-all duration-200">
             <div className="text-white">
-              {volume > 0 ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+              {volume > 0 ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
             </div>
             <Slider
               value={[volume]}
@@ -110,7 +110,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
               max={100}
               min={0}
               step={1}
-              className="w-24"
+              className="w-16"
             />
           </div>
         </div>
