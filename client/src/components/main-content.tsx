@@ -181,16 +181,18 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center group"
+                  className="flex items-center justify-center group relative"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
+                  title={link.title}
                 >
                   <div className={`w-12 h-12 rounded-2xl shadow-lg flex items-center justify-center ${link.color} hover:shadow-xl transition-all duration-200 group-hover:brightness-110`}>
                     <i className={`${link.icon} text-lg text-white`}></i>
                   </div>
-                  <span className="text-white text-xs font-medium mt-1 text-center opacity-80 group-hover:opacity-100 transition-opacity">
+                  {/* Tooltip on hover */}
+                  <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                     {link.title}
-                  </span>
+                  </div>
                 </motion.a>
               ))}
             </div>
