@@ -322,13 +322,13 @@ export default function AdminPanel({
                 <div className="space-y-6">
                   {/* Profile Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <CardTitle className="text-gaming-purple flex items-center gap-2">
                         <User className="h-5 w-5" />
                         Profile
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2">
                       <Input
                         placeholder="Username"
                         value={username}
@@ -352,32 +352,6 @@ export default function AdminPanel({
                         }}
                         className="hidden"
                       />
-                      <Button
-                        onClick={() => profileUploadRef.current?.click()}
-                        className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
-                      >
-                        <Upload className="h-4 w-4 mr-2" />
-                        Upload Profile Picture
-                      </Button>
-                      <Button
-                        onClick={handleSaveProfile}
-                        className="w-full bg-gaming-cyan hover:bg-gaming-cyan/80 text-sm"
-                        disabled={updateProfileMutation.isPending}
-                      >
-                        {updateProfileMutation.isPending ? "Saving..." : "Save Profile"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  {/* Background & Music Settings */}
-                  <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader>
-                      <CardTitle className="text-gaming-purple flex items-center gap-2">
-                        <Image className="h-5 w-5" />
-                        Background & Music
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
                       <input
                         type="file"
                         ref={backgroundUploadRef}
@@ -390,11 +364,27 @@ export default function AdminPanel({
                       />
                       <div className="flex gap-2">
                         <Button
+                          onClick={() => profileUploadRef.current?.click()}
+                          className="flex-1 bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
+                        >
+                          <Upload className="h-4 w-4 mr-2" />
+                          Profile Picture
+                        </Button>
+                        <Button
                           onClick={() => backgroundUploadRef.current?.click()}
                           className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
                         >
                           <Upload className="h-4 w-4 mr-2" />
-                          Upload
+                          Background
+                        </Button>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleSaveProfile}
+                          className="flex-1 bg-gaming-cyan hover:bg-gaming-cyan/80 text-sm"
+                          disabled={updateProfileMutation.isPending}
+                        >
+                          {updateProfileMutation.isPending ? "Saving..." : "Save Profile"}
                         </Button>
                         <Button
                           onClick={handleRemoveBackground}
@@ -402,58 +392,64 @@ export default function AdminPanel({
                           className="flex-1 text-sm"
                         >
                           <Trash2 className="h-4 w-4 mr-2" />
-                          Remove
+                          Remove BG
                         </Button>
                       </div>
-                      
-                      <div className="border-t border-light-gray/20 pt-3">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-white text-sm flex items-center gap-2">
-                            <Music className="h-4 w-4 text-gaming-cyan" />
-                            Background Music
-                          </span>
-                          <Switch
-                            checked={musicEnabled}
-                            onCheckedChange={handleToggleMusic}
-                            className="data-[state=checked]:bg-gaming-cyan"
-                          />
-                        </div>
-                        
-                        <input
-                          type="file"
-                          ref={musicUploadRef}
-                          accept="audio/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) handleFileUpload(file, 'music');
-                          }}
-                          className="hidden"
+                    </CardContent>
+                  </Card>
+
+                  {/* Music Settings */}
+                  <Card className="bg-medium-gray/50 border-light-gray/30">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-cyan flex items-center gap-2">
+                        <Music className="h-5 w-5" />
+                        Background Music
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-white text-sm">Enable Background Music</span>
+                        <Switch
+                          checked={musicEnabled}
+                          onCheckedChange={handleToggleMusic}
+                          className="data-[state=checked]:bg-gaming-cyan"
                         />
+                      </div>
+                      
+                      <input
+                        type="file"
+                        ref={musicUploadRef}
+                        accept="audio/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileUpload(file, 'music');
+                        }}
+                        className="hidden"
+                      />
+                      
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => musicUploadRef.current?.click()}
+                          className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
+                        >
+                          <Upload className="h-4 w-4 mr-2" />
+                          Upload
+                        </Button>
                         
-                        <div className="flex gap-2">
+                        {profile?.backgroundMusic && (
                           <Button
-                            onClick={() => musicUploadRef.current?.click()}
-                            className="flex-1 bg-medium-gray hover:bg-light-gray text-sm"
+                            onClick={handleRemoveMusic}
+                            variant="destructive"
+                            className="flex-1 text-sm"
                           >
-                            <Upload className="h-4 w-4 mr-2" />
-                            Upload
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Remove
                           </Button>
-                          
-                          {profile?.backgroundMusic && (
-                            <Button
-                              onClick={handleRemoveMusic}
-                              variant="destructive"
-                              className="flex-1 text-sm"
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Remove
-                            </Button>
-                          )}
-                        </div>
-                        
-                        <div className="text-xs text-gray-400 mt-2">
-                          MP3, WAV, OGG
-                        </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-xs text-gray-400">
+                        MP3, WAV, OGG
                       </div>
                     </CardContent>
                   </Card>
@@ -463,13 +459,13 @@ export default function AdminPanel({
                 <div className="space-y-6">
                   {/* Discord Rich Presence Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <CardTitle className="text-indigo-400 flex items-center gap-2">
                         <i className="fab fa-discord text-lg"></i>
                         Discord Rich Presence
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-white text-sm">Enable Discord Widget</span>
                         <Switch
@@ -513,13 +509,13 @@ export default function AdminPanel({
 
                   {/* Spotify Settings */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <CardTitle className="text-green-400 flex items-center gap-2">
                         <i className="fab fa-spotify text-lg"></i>
                         Spotify Integration
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-white text-sm">Enable Spotify Widget</span>
                         <Switch
@@ -594,13 +590,13 @@ export default function AdminPanel({
                 <div className="space-y-6">
                   {/* Links Management */}
                   <Card className="bg-medium-gray/50 border-light-gray/30">
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <CardTitle className="text-gaming-purple flex items-center gap-2">
                         <ExternalLink className="h-5 w-5" />
                         Social Links
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2">
                       <Button
                         onClick={onNewLink}
                         className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
@@ -609,32 +605,32 @@ export default function AdminPanel({
                         Add New Link
                       </Button>
                       
-                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                      <div className="space-y-1 max-h-64 overflow-y-auto">
                         {links.map((link) => (
                           <div
                             key={link.id}
-                            className="flex items-center justify-between p-3 bg-medium-gray/30 rounded-md"
+                            className="flex items-center justify-between p-2 bg-medium-gray/30 rounded-md"
                           >
                             <div className="flex items-center gap-3">
                               <i className={`fab fa-${link.title.toLowerCase()} text-gaming-purple`}></i>
                               <span className="text-white font-medium text-sm">{link.title}</span>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1">
                               <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => onEditLink(link)}
-                                className="text-gaming-cyan hover:text-gaming-cyan/80"
+                                className="text-gaming-cyan hover:text-gaming-cyan/80 p-1"
                               >
-                                <Edit2 className="h-4 w-4" />
+                                <Edit2 className="h-3 w-3" />
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => handleDeleteLink(link.id)}
-                                className="text-red-400 hover:text-red-300"
+                                className="text-red-400 hover:text-red-300 p-1"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-3 w-3" />
                               </Button>
                             </div>
                           </div>
