@@ -219,38 +219,37 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             >
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <img
-                    src="https://cdn.discordapp.com/avatars/142694270405574657/a_your_avatar_hash.gif"
-                    alt="Discord Avatar"
-                    className="w-16 h-16 rounded-full border-2 border-gaming-cyan"
-                    onError={(e) => {
-                      // Try static avatar if animated doesn't work
-                      const img = e.target as HTMLImageElement;
-                      img.src = "https://cdn.discordapp.com/avatars/142694270405574657/your_avatar_hash.png";
-                      img.onerror = () => {
-                        // Final fallback - use actual Discord avatar from your screenshot
-                        img.src = "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64";
-                      };
-                    }}
-                  />
+                  <div className="w-16 h-16 rounded-full border-2 border-gaming-cyan bg-gray-800 overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                      <span className="text-white text-2xl font-bold">C</span>
+                    </div>
+                  </div>
                   <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-medium-gray"></div>
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-semibold text-white">clubpenguinfan73</h4>
                     <div className="flex items-center gap-1">
-                      {/* Discord badges matching your profile */}
-                      <div className="w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
-                        <span className="text-xs text-white">⚡</span>
+                      {/* Actual Discord badges */}
+                      <div className="w-4 h-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-sm flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
                       </div>
                       <div className="w-4 h-4 bg-blue-500 rounded-sm flex items-center justify-center">
-                        <span className="text-xs text-white">🎮</span>
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
                       </div>
                       <div className="w-4 h-4 bg-purple-600 rounded-sm flex items-center justify-center">
-                        <span className="text-xs text-white">💎</span>
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
                       </div>
                       <div className="w-4 h-4 bg-gray-600 rounded-sm flex items-center justify-center">
-                        <span className="text-xs text-white">⚙️</span>
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
                       </div>
                     </div>
                   </div>
@@ -267,7 +266,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           {/* Spotify Integration - Only show if enabled */}
           {profile?.spotifyEnabled && (
             <motion.div
-              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-4 transition-all duration-200 hover:shadow-2xl"
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex items-center justify-between">
@@ -280,8 +279,8 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                     <p className="text-gray-400 text-sm">Showcase your favorite song or playlist</p>
                   </div>
                 </div>
-                <div className="bg-dark-gray/50 rounded-lg p-4 border border-light-gray/20 flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20 flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
                     {profile?.spotifyAlbumArt ? (
                       <img 
                         src={profile.spotifyAlbumArt} 
