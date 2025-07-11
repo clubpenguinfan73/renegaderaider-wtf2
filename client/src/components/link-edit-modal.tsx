@@ -38,7 +38,7 @@ export default function LinkEditModal({ isOpen, onClose, link }: LinkEditModalPr
 
   const createLinkMutation = useMutation({
     mutationFn: async (linkData: Omit<Link, "id">) => {
-      const response = await apiRequest("POST", "/api/links", linkData);
+      const response = await apiRequest("/api/links", "POST", linkData);
       return response.json();
     },
     onSuccess: () => {
@@ -60,7 +60,7 @@ export default function LinkEditModal({ isOpen, onClose, link }: LinkEditModalPr
 
   const updateLinkMutation = useMutation({
     mutationFn: async (linkData: Partial<Link>) => {
-      const response = await apiRequest("PUT", `/api/links/${link?.id}`, linkData);
+      const response = await apiRequest(`/api/links/${link?.id}`, "PUT", linkData);
       return response.json();
     },
     onSuccess: () => {
