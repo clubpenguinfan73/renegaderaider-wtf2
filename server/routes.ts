@@ -247,14 +247,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           <div class="step" id="step1">
               <h2>Step 1: Update Spotify App Settings</h2>
-              <p>First, update your Spotify app redirect URI:</p>
+              <div class="warning">
+                  <strong>Important:</strong> You must complete this step first or authorization will fail!
+              </div>
+              <p>Update your Spotify app redirect URI:</p>
               <ol>
                   <li>Go to <a href="https://developer.spotify.com/dashboard" target="_blank" style="color: #1ed760;">https://developer.spotify.com/dashboard</a></li>
-                  <li>Click on your app</li>
+                  <li>Click on your app (the one with Client ID: f3de4f2a29...)</li>
                   <li>Click "Edit Settings"</li>
-                  <li>Set Redirect URI to: <code>https://httpbin.org/anything</code></li>
-                  <li>Save changes</li>
+                  <li>In the "Redirect URIs" field, replace whatever is there with: <br><code style="background: #333; padding: 4px 8px; border-radius: 4px; display: inline-block; margin: 5px 0;">https://httpbin.org/anything</code></li>
+                  <li>Click "Save" at the bottom</li>
               </ol>
+              <p><strong>After saving:</strong> Wait 30 seconds, then proceed to Step 2.</p>
           </div>
 
           <div class="step" id="step2">
