@@ -36,6 +36,12 @@ class SpotifyAPI {
     this.clientId = process.env.SPOTIFY_CLIENT_ID || '';
     this.clientSecret = process.env.SPOTIFY_CLIENT_SECRET || '';
     this.refreshToken = process.env.SPOTIFY_REFRESH_TOKEN || '';
+    
+    console.log('Spotify API initialized with:', {
+      clientId: this.clientId ? 'Set' : 'Missing',
+      clientSecret: this.clientSecret ? 'Set' : 'Missing',
+      refreshToken: this.refreshToken ? 'Set' : 'Missing'
+    });
   }
 
   private async getAccessToken(): Promise<string> {
@@ -43,26 +49,39 @@ class SpotifyAPI {
       return this.accessToken;
     }
 
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: this.refreshToken
-      })
-    });
+    try {
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: this.refreshToken
+        })
+      });
 
-    const data = await response.json();
-    
-    if (data.access_token) {
-      this.accessToken = data.access_token;
-      this.tokenExpiresAt = Date.now() + (data.expires_in * 1000) - 60000; // 1 minute buffer
-      return this.accessToken;
-    } else {
-      throw new Error('Failed to get Spotify access token');
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Spotify token refresh failed:', errorData);
+        throw new Error(`Failed to get Spotify access token: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.access_token) {
+        this.accessToken = data.access_token;
+        this.tokenExpiresAt = Date.now() + (data.expires_in * 1000) - 60000; // 1 minute buffer
+        console.log('Spotify access token refreshed successfully');
+        return this.accessToken;
+      } else {
+        console.error('No access token in response:', data);
+        throw new Error('Failed to get Spotify access token');
+      }
+    } catch (error) {
+      console.error('Error refreshing Spotify token:', error);
+      throw error;
     }
   }
 
