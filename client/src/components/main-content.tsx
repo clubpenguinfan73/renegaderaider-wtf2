@@ -128,7 +128,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
             <img 
               src={profile?.profilePicture || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&h=200"}
               alt="Profile Picture"
-              className="w-32 h-32 rounded-full mx-auto border-4 border-gaming-purple shadow-2xl object-cover"
+              className="w-32 h-32 rounded-full mx-auto shadow-2xl object-cover"
             />
           </div>
           
