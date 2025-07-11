@@ -165,6 +165,36 @@ export default function AdminPanel({
       entranceFontFamily,
       entranceFontColor,
       usernameEffect,
+      animatedTitleEnabled,
+      animatedTitleTexts,
+      animatedTitleSpeed,
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: musicEnabled,
+      discordEnabled: discordEnabled,
+      discordUserId: discordUserId,
+      discordApplicationId: discordApplicationId,
+      spotifyEnabled: spotifyEnabled,
+      spotifyTrackName: spotifyTrackName,
+      spotifyArtistName: spotifyArtistName,
+      spotifyAlbumArt: spotifyAlbumArt,
+      spotifyTrackUrl: spotifyTrackUrl,
+    });
+  };
+
+  const handleSaveAnimatedTitle = () => {
+    updateProfileMutation.mutate({
+      username: username || profile?.username || "",
+      bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
+      usernameEffect: usernameEffect || profile?.usernameEffect || "none",
+      animatedTitleEnabled,
+      animatedTitleTexts,
+      animatedTitleSpeed,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -658,6 +688,14 @@ export default function AdminPanel({
                           Current: {animatedTitleSpeed}ms
                         </p>
                       </div>
+                      
+                      <Button
+                        onClick={handleSaveAnimatedTitle}
+                        className="w-full bg-gaming-cyan hover:bg-gaming-cyan/80 text-white"
+                        disabled={updateProfileMutation.isPending}
+                      >
+                        {updateProfileMutation.isPending ? "Saving..." : "Save Animated Title"}
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
