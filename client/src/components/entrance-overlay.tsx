@@ -10,6 +10,23 @@ interface EntranceOverlayProps {
 export default function EntranceOverlay({ onEnter, isEntering, profile }: EntranceOverlayProps) {
   const backgroundImage = profile?.backgroundImage;
   const entranceText = profile?.entranceText || "click to enter...";
+  const fontSize = profile?.entranceFontSize || "4xl";
+  const fontFamily = profile?.entranceFontFamily || "Inter";
+  const fontColor = profile?.entranceFontColor || "#ffffff";
+
+  // Map font size to Tailwind classes
+  const fontSizeClasses = {
+    "sm": "text-sm md:text-lg",
+    "base": "text-base md:text-xl",
+    "lg": "text-lg md:text-2xl",
+    "xl": "text-xl md:text-3xl",
+    "2xl": "text-2xl md:text-4xl",
+    "3xl": "text-3xl md:text-5xl",
+    "4xl": "text-4xl md:text-6xl",
+    "5xl": "text-5xl md:text-7xl",
+    "6xl": "text-6xl md:text-8xl",
+    "7xl": "text-7xl md:text-9xl"
+  };
 
   return (
     <motion.div
@@ -34,7 +51,11 @@ export default function EntranceOverlay({ onEnter, isEntering, profile }: Entran
           initial={{ opacity: 0.9 }}
           animate={{ opacity: [0.9, 1, 0.9] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="text-4xl md:text-6xl font-light tracking-wide text-white"
+          className={`${fontSizeClasses[fontSize as keyof typeof fontSizeClasses]} font-light tracking-wide`}
+          style={{ 
+            fontFamily: fontFamily,
+            color: fontColor
+          }}
         >
           {entranceText}
         </motion.h1>

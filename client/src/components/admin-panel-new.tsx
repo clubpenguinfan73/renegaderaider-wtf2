@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -33,6 +34,9 @@ export default function AdminPanel({
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [entranceText, setEntranceText] = useState(profile?.entranceText || "click to enter...");
+  const [entranceFontSize, setEntranceFontSize] = useState(profile?.entranceFontSize || "4xl");
+  const [entranceFontFamily, setEntranceFontFamily] = useState(profile?.entranceFontFamily || "Inter");
+  const [entranceFontColor, setEntranceFontColor] = useState(profile?.entranceFontColor || "#ffffff");
   const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
   const [discordEnabled, setDiscordEnabled] = useState(profile?.discordEnabled || false);
   const [discordUserId, setDiscordUserId] = useState(profile?.discordUserId || "");
@@ -57,6 +61,9 @@ export default function AdminPanel({
       setUsername(profile.username || "");
       setBio(profile.bio || "");
       setEntranceText(profile.entranceText || "click to enter...");
+      setEntranceFontSize(profile.entranceFontSize || "4xl");
+      setEntranceFontFamily(profile.entranceFontFamily || "Inter");
+      setEntranceFontColor(profile.entranceFontColor || "#ffffff");
       setMusicEnabled(profile.musicEnabled || false);
       setDiscordEnabled(profile.discordEnabled || false);
       setDiscordUserId(profile.discordUserId || "");
@@ -136,6 +143,9 @@ export default function AdminPanel({
       username,
       bio,
       entranceText,
+      entranceFontSize,
+      entranceFontFamily,
+      entranceFontColor,
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -157,6 +167,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -178,6 +191,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -199,6 +215,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -219,6 +238,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -239,6 +261,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
@@ -263,6 +288,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: "",
       backgroundMusic: profile?.backgroundMusic,
@@ -283,6 +311,9 @@ export default function AdminPanel({
       username: username || profile?.username || "",
       bio: bio || profile?.bio || "",
       entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
       profilePicture: profile?.profilePicture,
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: null,
@@ -484,6 +515,83 @@ export default function AdminPanel({
                       <div className="text-xs text-gray-400">
                         MP3, WAV, OGG
                       </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Entrance Screen Customization */}
+                  <Card className="bg-medium-gray/50 border-light-gray/30">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-gaming-purple flex items-center gap-2">
+                        <Image className="h-5 w-5" />
+                        Entrance Screen
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-1.5">
+                      <Input
+                        placeholder="Entrance text"
+                        value={entranceText}
+                        onChange={(e) => setEntranceText(e.target.value)}
+                        className="bg-medium-gray border-light-gray focus:border-gaming-purple"
+                      />
+                      
+                      <Select value={entranceFontSize} onValueChange={setEntranceFontSize}>
+                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-purple">
+                          <SelectValue placeholder="Font size" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-medium-gray border-light-gray">
+                          <SelectItem value="sm">Small</SelectItem>
+                          <SelectItem value="base">Base</SelectItem>
+                          <SelectItem value="lg">Large</SelectItem>
+                          <SelectItem value="xl">Extra Large</SelectItem>
+                          <SelectItem value="2xl">2XL</SelectItem>
+                          <SelectItem value="3xl">3XL</SelectItem>
+                          <SelectItem value="4xl">4XL</SelectItem>
+                          <SelectItem value="5xl">5XL</SelectItem>
+                          <SelectItem value="6xl">6XL</SelectItem>
+                          <SelectItem value="7xl">7XL</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      
+                      <Select value={entranceFontFamily} onValueChange={setEntranceFontFamily}>
+                        <SelectTrigger className="bg-medium-gray border-light-gray focus:border-gaming-purple">
+                          <SelectValue placeholder="Font family" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-medium-gray border-light-gray">
+                          <SelectItem value="Inter">Inter (Clean)</SelectItem>
+                          <SelectItem value="Orbitron">Orbitron (Futuristic)</SelectItem>
+                          <SelectItem value="Rajdhani">Rajdhani (Gaming)</SelectItem>
+                          <SelectItem value="Audiowide">Audiowide (Retro)</SelectItem>
+                          <SelectItem value="Bebas Neue">Bebas Neue (Bold)</SelectItem>
+                          <SelectItem value="Bangers">Bangers (Comic)</SelectItem>
+                          <SelectItem value="Creepster">Creepster (Horror)</SelectItem>
+                          <SelectItem value="Righteous">Righteous (Strong)</SelectItem>
+                          <SelectItem value="Fredoka One">Fredoka One (Friendly)</SelectItem>
+                          <SelectItem value="Permanent Marker">Permanent Marker (Handwritten)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="color"
+                          value={entranceFontColor}
+                          onChange={(e) => setEntranceFontColor(e.target.value)}
+                          className="w-12 h-8 bg-medium-gray border-light-gray focus:border-gaming-purple"
+                        />
+                        <Input
+                          placeholder="Font color (hex)"
+                          value={entranceFontColor}
+                          onChange={(e) => setEntranceFontColor(e.target.value)}
+                          className="flex-1 bg-medium-gray border-light-gray focus:border-gaming-purple"
+                        />
+                      </div>
+                      
+                      <Button
+                        onClick={handleSaveProfile}
+                        className="w-full bg-gaming-purple hover:bg-gaming-purple/80 text-sm"
+                        disabled={updateProfileMutation.isPending}
+                      >
+                        {updateProfileMutation.isPending ? "Saving..." : "Save Entrance Settings"}
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
