@@ -1,0 +1,61 @@
+# Get Spotify Refresh Token - Simple Method
+
+## Step 1: Create Spotify App
+1. Go to https://developer.spotify.com/dashboard
+2. Click "Create App" 
+3. Fill in:
+   - **App Name**: Your Profile Website
+   - **App Description**: Personal profile integration
+   - **Redirect URI**: `https://developer.spotify.com/`
+4. Save and copy your **Client ID** and **Client Secret**
+
+## Step 2: Get Authorization Code
+1. Replace `YOUR_CLIENT_ID` in the URL below with your actual Client ID:
+
+```
+https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=https://developer.spotify.com/&scope=user-read-currently-playing%20user-read-playback-state%20user-read-recently-played
+```
+
+2. Open this URL in your browser
+3. Authorize the app
+4. You'll be redirected to developer.spotify.com with a `code` parameter in the URL
+5. Copy the value after `code=` (this is your authorization code)
+
+## Step 3: Get Refresh Token
+1. Open https://httpie.io/app or use curl/Postman
+2. Make a POST request to `https://accounts.spotify.com/api/token` with:
+
+**Headers:**
+```
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic BASE64_ENCODED_CLIENT_CREDENTIALS
+```
+
+**Body (form-encoded):**
+```
+grant_type=authorization_code
+code=YOUR_AUTHORIZATION_CODE
+redirect_uri=https://developer.spotify.com/
+```
+
+**To get BASE64_ENCODED_CLIENT_CREDENTIALS:**
+- Combine: `CLIENT_ID:CLIENT_SECRET`
+- Base64 encode it (use https://www.base64encode.org/)
+
+## Step 4: Alternative - Use curl command
+Replace the values and run this in terminal:
+
+```bash
+curl -X POST "https://accounts.spotify.com/api/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Authorization: Basic $(echo -n 'CLIENT_ID:CLIENT_SECRET' | base64)" \
+  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://developer.spotify.com/"
+```
+
+## Step 5: Get Your Credentials
+The response will include a `refresh_token`. You'll need:
+- SPOTIFY_CLIENT_ID (from Step 1)
+- SPOTIFY_CLIENT_SECRET (from Step 1)  
+- SPOTIFY_REFRESH_TOKEN (from Step 3/4)
+
+Provide these as secrets to enable Spotify integration!
