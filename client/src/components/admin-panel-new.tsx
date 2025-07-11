@@ -90,11 +90,9 @@ export default function AdminPanel({
   });
 
   const handleFileUpload = (file: File, type: 'background' | 'profile' | 'music' | 'spotify-album') => {
-    console.log("File upload clicked:", type, file.name);
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result as string;
-      console.log("File read complete:", type, result.substring(0, 50) + "...");
       
       const updateData: any = {
         username: username || profile?.username || "",
@@ -126,14 +124,12 @@ export default function AdminPanel({
         setSpotifyAlbumArt(result);
       }
 
-      console.log("Updating profile with:", updateData);
       updateProfileMutation.mutate(updateData);
     };
     reader.readAsDataURL(file);
   };
 
   const handleSaveProfile = () => {
-    console.log("Saving profile:", { username, bio });
     updateProfileMutation.mutate({
       username,
       bio,
@@ -251,7 +247,6 @@ export default function AdminPanel({
   };
 
   const handleDeleteLink = (linkId: number) => {
-    console.log("Delete link clicked:", linkId);
     deleteLinkMutation.mutate(linkId);
   };
 
