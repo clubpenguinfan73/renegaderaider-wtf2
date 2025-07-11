@@ -186,10 +186,10 @@ export default function AdminPanel({
                   />
                   <Button
                     onClick={() => backgroundUploadRef.current?.click()}
-                    className="w-full bg-medium-gray hover:bg-light-gray"
+                    className="w-full bg-medium-gray hover:bg-light-gray text-sm"
                   >
                     <Upload className="h-4 w-4 mr-2" />
-                    Upload Background (Image/GIF)
+                    Upload Background
                   </Button>
                   <Button
                     onClick={handleRemoveBackground}
