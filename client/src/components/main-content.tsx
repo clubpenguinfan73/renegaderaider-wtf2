@@ -164,56 +164,85 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
 
         {/* Feature Cards */}
         <div className="w-full max-w-2xl space-y-4">
-          {/* Discord Rich Presence */}
-          <motion.div
-            className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
-            whileHover={{ scale: 1.02 }}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <i className="fab fa-discord text-white text-xl"></i>
+          {/* Discord Rich Presence - Only show if enabled */}
+          {profile?.discordEnabled && (
+            <motion.div
+              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <i className="fab fa-discord text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-lg">Discord Rich Presence</h3>
+                    <p className="text-gray-400 text-sm">Showcase your live activity from Discord right onto your profile!</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-white text-lg">Discord Rich Presence</h3>
-                  <p className="text-gray-400 text-sm">Showcase your live activity from Discord right onto your profile!</p>
+                <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20">
+                  <div className="text-white text-sm font-medium">
+                    {profile?.discordUserId ? `Connected: ${profile.discordUserId}` : 'Loading Discord Rich Presence...'}
+                  </div>
                 </div>
               </div>
-              <div className="bg-dark-gray/50 rounded-lg p-3 border border-light-gray/20">
-                <div className="text-white text-sm font-medium">Loading Discord Rich Presence...</div>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
 
-          {/* Spotify Integration */}
-          <motion.div
-            className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
-            whileHover={{ scale: 1.02 }}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
-                  <i className="fab fa-spotify text-white text-xl"></i>
+          {/* Spotify Integration - Only show if enabled */}
+          {profile?.spotifyEnabled && (
+            <motion.div
+              className="bg-medium-gray/80 backdrop-blur-sm border border-light-gray/30 rounded-xl p-6 transition-all duration-200 hover:shadow-2xl"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                    <i className="fab fa-spotify text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-lg">Spotify</h3>
+                    <p className="text-gray-400 text-sm">Showcase your favorite song or playlist</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-white text-lg">Spotify</h3>
-                  <p className="text-gray-400 text-sm">Showcase your favorite song or playlist</p>
+                <div className="bg-dark-gray/50 rounded-lg p-4 border border-light-gray/20 flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
+                    {profile?.spotifyAlbumArt ? (
+                      <img 
+                        src={profile.spotifyAlbumArt} 
+                        alt="Album Art" 
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <i className="fas fa-music text-white text-sm"></i>
+                    )}
+                  </div>
+                  <div>
+                    <div className="text-white text-sm font-medium">
+                      {profile?.spotifyTrackName || 'No Track Set'}
+                    </div>
+                    <div className="text-gray-400 text-xs">
+                      Playing • {profile?.spotifyArtistName || 'Unknown Artist'}
+                    </div>
+                  </div>
+                  {profile?.spotifyTrackUrl ? (
+                    <a 
+                      href={profile.spotifyTrackUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    >
+                      <i className="fas fa-play text-black text-xs"></i>
+                    </a>
+                  ) : (
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                      <i className="fas fa-play text-black text-xs"></i>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="bg-dark-gray/50 rounded-lg p-4 border border-light-gray/20 flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-music text-white text-sm"></i>
-                </div>
-                <div>
-                  <div className="text-white text-sm font-medium">moment</div>
-                  <div className="text-gray-400 text-xs">Playing • Vierre Cloud</div>
-                </div>
-                <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                  <i className="fas fa-play text-black text-xs"></i>
-                </button>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
 

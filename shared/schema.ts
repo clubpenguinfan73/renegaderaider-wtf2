@@ -16,6 +16,14 @@ export const profiles = pgTable("profiles", {
   backgroundImage: text("background_image"),
   backgroundMusic: text("background_music"),
   musicEnabled: boolean("music_enabled").default(false),
+  discordEnabled: boolean("discord_enabled").default(false),
+  discordUserId: text("discord_user_id"),
+  discordApplicationId: text("discord_application_id"),
+  spotifyEnabled: boolean("spotify_enabled").default(false),
+  spotifyTrackName: text("spotify_track_name"),
+  spotifyArtistName: text("spotify_artist_name"),
+  spotifyAlbumArt: text("spotify_album_art"),
+  spotifyTrackUrl: text("spotify_track_url"),
 });
 
 export const links = pgTable("links", {
@@ -40,6 +48,14 @@ export const insertProfileSchema = createInsertSchema(profiles).pick({
   backgroundImage: true,
   backgroundMusic: true,
   musicEnabled: true,
+  discordEnabled: true,
+  discordUserId: true,
+  discordApplicationId: true,
+  spotifyEnabled: true,
+  spotifyTrackName: true,
+  spotifyArtistName: true,
+  spotifyAlbumArt: true,
+  spotifyTrackUrl: true,
 });
 
 export const insertLinkSchema = createInsertSchema(links).pick({

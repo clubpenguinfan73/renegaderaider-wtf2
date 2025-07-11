@@ -33,7 +33,15 @@ export class MemStorage implements IStorage {
       profilePicture: "",
       backgroundImage: "",
       backgroundMusic: null,
-      musicEnabled: true
+      musicEnabled: true,
+      discordEnabled: false,
+      discordUserId: null,
+      discordApplicationId: null,
+      spotifyEnabled: false,
+      spotifyTrackName: null,
+      spotifyArtistName: null,
+      spotifyAlbumArt: null,
+      spotifyTrackUrl: null
     };
     this.links = new Map();
     this.currentUserId = 1;
@@ -82,6 +90,14 @@ export class MemStorage implements IStorage {
       backgroundImage: profileData.backgroundImage || null,
       backgroundMusic: profileData.backgroundMusic || null,
       musicEnabled: profileData.musicEnabled || false,
+      discordEnabled: profileData.discordEnabled || false,
+      discordUserId: profileData.discordUserId || null,
+      discordApplicationId: profileData.discordApplicationId || null,
+      spotifyEnabled: profileData.spotifyEnabled || false,
+      spotifyTrackName: profileData.spotifyTrackName || null,
+      spotifyArtistName: profileData.spotifyArtistName || null,
+      spotifyAlbumArt: profileData.spotifyAlbumArt || null,
+      spotifyTrackUrl: profileData.spotifyTrackUrl || null,
     };
     return this.profile!;
   }

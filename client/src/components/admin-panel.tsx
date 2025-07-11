@@ -33,9 +33,18 @@ export default function AdminPanel({
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [musicEnabled, setMusicEnabled] = useState(profile?.musicEnabled || false);
+  const [discordEnabled, setDiscordEnabled] = useState(profile?.discordEnabled || false);
+  const [discordUserId, setDiscordUserId] = useState(profile?.discordUserId || "");
+  const [discordApplicationId, setDiscordApplicationId] = useState(profile?.discordApplicationId || "");
+  const [spotifyEnabled, setSpotifyEnabled] = useState(profile?.spotifyEnabled || false);
+  const [spotifyTrackName, setSpotifyTrackName] = useState(profile?.spotifyTrackName || "");
+  const [spotifyArtistName, setSpotifyArtistName] = useState(profile?.spotifyArtistName || "");
+  const [spotifyAlbumArt, setSpotifyAlbumArt] = useState(profile?.spotifyAlbumArt || "");
+  const [spotifyTrackUrl, setSpotifyTrackUrl] = useState(profile?.spotifyTrackUrl || "");
   const backgroundUploadRef = useRef<HTMLInputElement>(null);
   const profileUploadRef = useRef<HTMLInputElement>(null);
   const musicUploadRef = useRef<HTMLInputElement>(null);
+  const spotifyAlbumUploadRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -89,6 +98,16 @@ export default function AdminPanel({
         bio: profile?.bio || "",
         profilePicture: type === 'profile' ? result : profile?.profilePicture,
         backgroundImage: type === 'background' ? result : profile?.backgroundImage,
+        backgroundMusic: profile?.backgroundMusic,
+        musicEnabled: profile?.musicEnabled,
+        discordEnabled: profile?.discordEnabled,
+        discordUserId: profile?.discordUserId,
+        discordApplicationId: profile?.discordApplicationId,
+        spotifyEnabled: profile?.spotifyEnabled,
+        spotifyTrackName: profile?.spotifyTrackName,
+        spotifyArtistName: profile?.spotifyArtistName,
+        spotifyAlbumArt: profile?.spotifyAlbumArt,
+        spotifyTrackUrl: profile?.spotifyTrackUrl,
       });
     };
     reader.readAsDataURL(file);
@@ -121,8 +140,28 @@ export default function AdminPanel({
           backgroundImage: profile?.backgroundImage,
           backgroundMusic: result,
           musicEnabled: true,
+          discordEnabled: profile?.discordEnabled,
+          discordUserId: profile?.discordUserId,
+          discordApplicationId: profile?.discordApplicationId,
+          spotifyEnabled: profile?.spotifyEnabled,
+          spotifyTrackName: profile?.spotifyTrackName,
+          spotifyArtistName: profile?.spotifyArtistName,
+          spotifyAlbumArt: profile?.spotifyAlbumArt,
+          spotifyTrackUrl: profile?.spotifyTrackUrl,
         });
         setMusicEnabled(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSpotifyAlbumUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setSpotifyAlbumArt(result);
       };
       reader.readAsDataURL(file);
     }
@@ -136,6 +175,14 @@ export default function AdminPanel({
       backgroundImage: "",
       backgroundMusic: profile?.backgroundMusic,
       musicEnabled: profile?.musicEnabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
     });
   };
 
@@ -148,6 +195,14 @@ export default function AdminPanel({
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
       musicEnabled: enabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
     });
   };
 
@@ -159,6 +214,14 @@ export default function AdminPanel({
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: null,
       musicEnabled: false,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
     });
     setMusicEnabled(false);
   };
@@ -171,6 +234,92 @@ export default function AdminPanel({
       backgroundImage: profile?.backgroundImage,
       backgroundMusic: profile?.backgroundMusic,
       musicEnabled: profile?.musicEnabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
+    });
+  };
+
+  const handleToggleDiscord = (enabled: boolean) => {
+    setDiscordEnabled(enabled);
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
+      discordEnabled: enabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
+    });
+  };
+
+  const handleToggleSpotify = (enabled: boolean) => {
+    setSpotifyEnabled(enabled);
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: enabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
+    });
+  };
+
+  const handleUpdateDiscordSettings = () => {
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId,
+      discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName: profile?.spotifyTrackName,
+      spotifyArtistName: profile?.spotifyArtistName,
+      spotifyAlbumArt: profile?.spotifyAlbumArt,
+      spotifyTrackUrl: profile?.spotifyTrackUrl,
+    });
+  };
+
+  const handleUpdateSpotifySettings = () => {
+    updateProfileMutation.mutate({
+      username: profile?.username || "",
+      bio: profile?.bio || "",
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: profile?.musicEnabled,
+      discordEnabled: profile?.discordEnabled,
+      discordUserId: profile?.discordUserId,
+      discordApplicationId: profile?.discordApplicationId,
+      spotifyEnabled: profile?.spotifyEnabled,
+      spotifyTrackName,
+      spotifyArtistName,
+      spotifyAlbumArt,
+      spotifyTrackUrl,
     });
   };
 
@@ -300,6 +449,124 @@ export default function AdminPanel({
                   
                   <div className="text-xs text-gray-400">
                     Supported formats: MP3, WAV, OGG
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Discord Rich Presence Settings */}
+              <Card className="mb-6 bg-medium-gray/50 border-light-gray/30">
+                <CardHeader>
+                  <CardTitle className="text-indigo-400 flex items-center gap-2">
+                    <i className="fab fa-discord text-lg"></i>
+                    Discord Rich Presence
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-sm">Enable Discord Rich Presence</span>
+                    <Switch
+                      checked={discordEnabled}
+                      onCheckedChange={handleToggleDiscord}
+                      className="data-[state=checked]:bg-indigo-600"
+                    />
+                  </div>
+                  
+                  <Input
+                    placeholder="Discord User ID"
+                    value={discordUserId}
+                    onChange={(e) => setDiscordUserId(e.target.value)}
+                    className="bg-medium-gray border-light-gray focus:border-indigo-500"
+                  />
+                  
+                  <Input
+                    placeholder="Discord Application ID"
+                    value={discordApplicationId}
+                    onChange={(e) => setDiscordApplicationId(e.target.value)}
+                    className="bg-medium-gray border-light-gray focus:border-indigo-500"
+                  />
+                  
+                  <Button
+                    onClick={handleUpdateDiscordSettings}
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm"
+                    disabled={updateProfileMutation.isPending}
+                  >
+                    {updateProfileMutation.isPending ? "Saving..." : "Save Discord Settings"}
+                  </Button>
+                  
+                  <div className="text-xs text-gray-400">
+                    <p>To set up Discord Rich Presence:</p>
+                    <p>1. Create a Discord application at discord.com/developers</p>
+                    <p>2. Copy your Application ID</p>
+                    <p>3. Find your User ID in Discord settings</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Spotify Settings */}
+              <Card className="mb-6 bg-medium-gray/50 border-light-gray/30">
+                <CardHeader>
+                  <CardTitle className="text-green-400 flex items-center gap-2">
+                    <i className="fab fa-spotify text-lg"></i>
+                    Spotify Integration
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-sm">Enable Spotify Widget</span>
+                    <Switch
+                      checked={spotifyEnabled}
+                      onCheckedChange={handleToggleSpotify}
+                      className="data-[state=checked]:bg-green-600"
+                    />
+                  </div>
+                  
+                  <Input
+                    placeholder="Track Name"
+                    value={spotifyTrackName}
+                    onChange={(e) => setSpotifyTrackName(e.target.value)}
+                    className="bg-medium-gray border-light-gray focus:border-green-500"
+                  />
+                  
+                  <Input
+                    placeholder="Artist Name"
+                    value={spotifyArtistName}
+                    onChange={(e) => setSpotifyArtistName(e.target.value)}
+                    className="bg-medium-gray border-light-gray focus:border-green-500"
+                  />
+                  
+                  <Input
+                    placeholder="Spotify Track URL"
+                    value={spotifyTrackUrl}
+                    onChange={(e) => setSpotifyTrackUrl(e.target.value)}
+                    className="bg-medium-gray border-light-gray focus:border-green-500"
+                  />
+                  
+                  <input
+                    type="file"
+                    ref={spotifyAlbumUploadRef}
+                    accept="image/*"
+                    onChange={handleSpotifyAlbumUpload}
+                    className="hidden"
+                  />
+                  
+                  <Button
+                    onClick={() => spotifyAlbumUploadRef.current?.click()}
+                    className="w-full bg-medium-gray hover:bg-light-gray text-sm"
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Album Art
+                  </Button>
+                  
+                  <Button
+                    onClick={handleUpdateSpotifySettings}
+                    className="w-full bg-green-600 hover:bg-green-700 text-sm"
+                    disabled={updateProfileMutation.isPending}
+                  >
+                    {updateProfileMutation.isPending ? "Saving..." : "Save Spotify Settings"}
+                  </Button>
+                  
+                  <div className="text-xs text-gray-400">
+                    Customize your Spotify widget with track info and album art
                   </div>
                 </CardContent>
               </Card>
