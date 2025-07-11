@@ -10,35 +10,44 @@ interface AnimatedTitleProps {
 export default function AnimatedTitle({ titles, speed = 3000, className = "", updateDocumentTitle = false }: AnimatedTitleProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (titles.length === 0) return;
 
-    const currentTitle = titles[currentIndex];
     let timeout: NodeJS.Timeout;
 
-    if (isTyping) {
-      if (displayText.length < currentTitle.length) {
-        // Still typing
+    if (!isDeleting) {
+      // Show current title
+      const currentTitle = titles[currentIndex];
+      setDisplayText(currentTitle);
+      
+      if (currentIndex === titles.length - 1) {
+        // Last title - wait then start deleting
         timeout = setTimeout(() => {
-          setDisplayText(currentTitle.slice(0, displayText.length + 1));
-        }, 100);
+          setIsDeleting(true);
+        }, speed);
       } else {
-        // Finished typing, wait then move to next
+        // Not last title - move to next after pause
         timeout = setTimeout(() => {
-          setIsTyping(false);
+          setCurrentIndex((prev) => prev + 1);
         }, speed);
       }
     } else {
-      // Move to next title
-      setDisplayText('');
-      setCurrentIndex((prev) => (prev + 1) % titles.length);
-      setIsTyping(true);
+      // Deleting phase - only happens after last title
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1));
+        }, 100);
+      } else {
+        // Finished deleting, restart from first title
+        setIsDeleting(false);
+        setCurrentIndex(0);
+      }
     }
 
     return () => clearTimeout(timeout);
-  }, [displayText, isTyping, currentIndex, titles, speed]);
+  }, [currentIndex, isDeleting, displayText, titles, speed]);
 
   // Update document title
   useEffect(() => {
