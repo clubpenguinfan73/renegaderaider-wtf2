@@ -425,6 +425,68 @@ export default function AdminPanel({
                         />
                       </div>
                       
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Font Size</label>
+                          <Select value={entranceFontSize} onValueChange={setEntranceFontSize}>
+                            <SelectTrigger className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white">
+                              <SelectValue placeholder="Font size" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-dark-gray border-light-gray/50">
+                              <SelectItem value="sm">Small</SelectItem>
+                              <SelectItem value="base">Base</SelectItem>
+                              <SelectItem value="lg">Large</SelectItem>
+                              <SelectItem value="xl">Extra Large</SelectItem>
+                              <SelectItem value="2xl">2XL</SelectItem>
+                              <SelectItem value="3xl">3XL</SelectItem>
+                              <SelectItem value="4xl">4XL</SelectItem>
+                              <SelectItem value="5xl">5XL</SelectItem>
+                              <SelectItem value="6xl">6XL</SelectItem>
+                              <SelectItem value="7xl">7XL</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-300">Font Family</label>
+                          <Select value={entranceFontFamily} onValueChange={setEntranceFontFamily}>
+                            <SelectTrigger className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white">
+                              <SelectValue placeholder="Font family" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-dark-gray border-light-gray/50">
+                              <SelectItem value="Inter">Inter (Clean)</SelectItem>
+                              <SelectItem value="Orbitron">Orbitron (Futuristic)</SelectItem>
+                              <SelectItem value="Rajdhani">Rajdhani (Gaming)</SelectItem>
+                              <SelectItem value="Audiowide">Audiowide (Retro)</SelectItem>
+                              <SelectItem value="Bebas Neue">Bebas Neue (Bold)</SelectItem>
+                              <SelectItem value="Bangers">Bangers (Comic)</SelectItem>
+                              <SelectItem value="Creepster">Creepster (Horror)</SelectItem>
+                              <SelectItem value="Righteous">Righteous (Strong)</SelectItem>
+                              <SelectItem value="Fredoka One">Fredoka One (Friendly)</SelectItem>
+                              <SelectItem value="Permanent Marker">Permanent Marker (Handwritten)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Font Color</label>
+                        <div className="flex items-center gap-3">
+                          <Input
+                            type="color"
+                            value={entranceFontColor}
+                            onChange={(e) => setEntranceFontColor(e.target.value)}
+                            className="w-12 h-10 bg-dark-gray border-light-gray/50 focus:border-gaming-purple rounded-md"
+                          />
+                          <Input
+                            placeholder="Color hex code"
+                            value={entranceFontColor}
+                            onChange={(e) => setEntranceFontColor(e.target.value)}
+                            className="flex-1 bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white"
+                          />
+                        </div>
+                      </div>
+                      
                       {/* File Upload Inputs */}
                       <input
                         type="file"
