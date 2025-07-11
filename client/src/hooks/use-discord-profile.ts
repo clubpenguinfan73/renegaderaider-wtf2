@@ -41,9 +41,9 @@ export function useDiscordProfile() {
 
   const { data: activity } = useQuery<DiscordActivity>({
     queryKey: ['/api/discord/activity'],
-    refetchInterval: 30000, // Refresh every 30 seconds
+    refetchInterval: 15000, // Refresh every 15 seconds for real-time music tracking
     retry: 3,
-    staleTime: 15000, // Data is fresh for 15 seconds
+    staleTime: 10000, // Data is fresh for 10 seconds
   });
 
   const getBadgeIcon = (badgeName: string) => {

@@ -109,9 +109,13 @@ class DiscordAPI {
   private startActivityTracking() {
     if (!this.client) return;
     
+    // Check activity immediately
+    this.checkUserActivity();
+    
+    // Then check every 15 seconds for more real-time updates
     setInterval(() => {
       this.checkUserActivity();
-    }, 30000);
+    }, 15000);
   }
 
   private async checkUserActivity() {
@@ -137,14 +141,35 @@ class DiscordAPI {
       return;
     }
 
-    const activity = presence.activities[0];
+    // Find the most relevant activity (prioritize music, then games, then other activities)
+    let selectedActivity = presence.activities[0];
+    
+    // Look for Spotify or music activity first
+    const musicActivity = presence.activities.find((act: any) => 
+      act.type === 2 || // LISTENING activity type
+      act.name?.toLowerCase().includes('spotify') ||
+      act.name?.toLowerCase().includes('apple music') ||
+      act.name?.toLowerCase().includes('youtube music') ||
+      act.name?.toLowerCase().includes('soundcloud')
+    );
+    
+    if (musicActivity) {
+      selectedActivity = musicActivity;
+    } else {
+      // Otherwise, find game activity
+      const gameActivity = presence.activities.find((act: any) => act.type === 0); // PLAYING activity type
+      if (gameActivity) {
+        selectedActivity = gameActivity;
+      }
+    }
+
     this.currentActivity = {
-      name: activity.name,
-      type: activity.type,
-      details: activity.details,
-      state: activity.state,
-      timestamps: activity.timestamps,
-      assets: activity.assets
+      name: selectedActivity.name,
+      type: selectedActivity.type,
+      details: selectedActivity.details,
+      state: selectedActivity.state,
+      timestamps: selectedActivity.timestamps,
+      assets: selectedActivity.assets
     };
   }
 

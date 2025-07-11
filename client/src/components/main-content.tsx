@@ -7,6 +7,8 @@ import type { Profile, Link } from "@shared/schema";
 import UsernameEffects from "./username-effects";
 import AnimatedTitle from "./animated-title";
 import { useDiscordProfile } from "@/hooks/use-discord-profile";
+import ThemeSelector from "./theme-selector";
+import { Theme, getStoredTheme, applyTheme } from "@/themes/themes";
 
 interface MainContentProps {
   profile?: Profile;
@@ -19,8 +21,14 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
   const backgroundImage = profile?.backgroundImage;
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [volume, setVolume] = useState(30);
+  const [currentTheme, setCurrentTheme] = useState<Theme>(getStoredTheme());
   const audioRef = useRef<HTMLAudioElement>(null);
   const { profile: discordProfile, activity: discordActivity, isLoading: discordLoading, error: discordError, getBadgeIcon } = useDiscordProfile();
+
+  // Apply theme on component mount
+  useEffect(() => {
+    applyTheme(currentTheme);
+  }, [currentTheme]);
 
   // Handle background music - Auto-play by default
   useEffect(() => {
@@ -102,7 +110,14 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
     >
       {/* Custom Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
+        <div 
+          className="absolute inset-0 opacity-80"
+          style={{ background: `var(--gradient-secondary)` }}
+        ></div>
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{ background: `var(--gradient-primary)` }}
+        ></div>
         {backgroundImage && (
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
@@ -111,8 +126,12 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
         )}
       </div>
 
-      {/* Admin Toggle */}
-      <div className="fixed top-4 right-4 z-40">
+      {/* Admin Toggle and Theme Selector */}
+      <div className="fixed top-4 right-4 z-40 flex gap-2">
+        <ThemeSelector 
+          currentTheme={currentTheme} 
+          onThemeChange={setCurrentTheme}
+        />
         <Button
           onClick={onToggleAdmin}
           variant="ghost"
@@ -268,12 +287,22 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
                     {/* Show current activity if available */}
                     {discordActivity && (
                       <div className="text-xs text-gaming-cyan mt-1">
-                        <span className="font-medium">Playing:</span> {discordActivity.name}
+                        <span className="font-medium">
+                          {discordActivity.type === 2 ? 'Listening to:' : 
+                           discordActivity.type === 0 ? 'Playing:' : 
+                           discordActivity.type === 1 ? 'Streaming:' : 
+                           discordActivity.type === 3 ? 'Watching:' : 'Activity:'}
+                        </span> {discordActivity.name}
                         {discordActivity.details && (
                           <div className="text-gray-400">{discordActivity.details}</div>
                         )}
                         {discordActivity.state && (
                           <div className="text-gray-400">{discordActivity.state}</div>
+                        )}
+                        {discordActivity.timestamps?.start && (
+                          <div className="text-gray-500 text-xs mt-1">
+                            Started: {new Date(discordActivity.timestamps.start).toLocaleTimeString()}
+                          </div>
                         )}
                       </div>
                     )}
