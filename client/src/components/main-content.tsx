@@ -90,12 +90,7 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-500 text-sm">
-            Made with <i className="fas fa-heart text-red-500"></i> by renegade raider
-          </p>
-        </div>
+
       </div>
     </motion.div>
   );
