@@ -4,6 +4,10 @@
 echo "Building frontend..."
 npm run build
 
+# Copy _redirects file to output directory
+echo "Copying _redirects file..."
+cp client/public/_redirects dist/public/
+
 # Build the Netlify function
 echo "Building Netlify functions..."
 mkdir -p dist/functions
