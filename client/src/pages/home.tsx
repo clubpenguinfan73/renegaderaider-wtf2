@@ -25,7 +25,7 @@ export default function Home() {
     queryKey: ["/api/links"],
   });
 
-  // Check authentication status on component mount
+  // Check authentication status and cache background image on component mount
   useEffect(() => {
     const checkAuth = () => {
       const authToken = localStorage.getItem("admin_auth");
@@ -46,6 +46,13 @@ export default function Home() {
     
     checkAuth();
   }, []);
+
+  // Cache background image when profile loads
+  useEffect(() => {
+    if (profile?.backgroundImage) {
+      localStorage.setItem('cached_background_image', profile.backgroundImage);
+    }
+  }, [profile?.backgroundImage]);
 
   const handleEnter = () => {
     setIsEntering(true);
@@ -92,18 +99,20 @@ export default function Home() {
 
   // Show loading screen while data loads
   if (profileLoading || linksLoading) {
+    // Try to get cached background image from localStorage
+    const cachedBackground = localStorage.getItem('cached_background_image');
+    
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
-        
-        {/* Loading animation */}
-        <div className="relative z-10 text-center">
-          <div className="flex space-x-2">
-            <div className="w-3 h-3 bg-gaming-purple rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
-            <div className="w-3 h-3 bg-gaming-cyan rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
-            <div className="w-3 h-3 bg-gaming-purple rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
-          </div>
+      <div className="fixed inset-0 z-50">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
+          {cachedBackground && (
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+              style={{ backgroundImage: `url(${cachedBackground})` }}
+            />
+          )}
         </div>
       </div>
     );
