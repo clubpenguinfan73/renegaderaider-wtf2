@@ -805,6 +805,38 @@ export default function AdminPanel({
                               ))}
                             </div>
                           )}
+                          {profileEffect === "leaves" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute text-orange-400 text-xs animate-bounce"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                  }}
+                                >
+                                  🍂
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {profileEffect === "bubbles" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute w-4 h-4 border-2 border-white/30 rounded-full animate-pulse"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    bottom: `${Math.random() * 50}%`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                       

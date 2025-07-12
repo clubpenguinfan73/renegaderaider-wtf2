@@ -35,15 +35,15 @@ export default function ProfileEffects({ effect, className = "" }: ProfileEffect
           break;
           
         case 'rain':
-          count = 80;
+          count = 120;
           for (let i = 0; i < count; i++) {
             newParticles.push({
               id: i,
               x: Math.random() * 100,
               y: -10,
-              delay: Math.random() * 3,
-              duration: 2 + Math.random() * 2,
-              size: 2 + Math.random() * 3,
+              delay: Math.random() * 2,
+              duration: 1.5 + Math.random() * 1.5,
+              size: 1 + Math.random() * 2,
             });
           }
           break;
@@ -164,11 +164,13 @@ export default function ProfileEffects({ effect, className = "" }: ProfileEffect
           )}
           {effect === 'rain' && (
             <div 
-              className="bg-blue-400 opacity-60"
+              className="opacity-70"
               style={{
-                width: '2px',
-                height: `${particle.size * 3}px`,
-                background: 'linear-gradient(to bottom, rgba(100,149,237,0.8), rgba(100,149,237,0.2))',
+                width: '1px',
+                height: `${particle.size * 6}px`,
+                background: 'linear-gradient(to bottom, rgba(173,216,230,0.9), rgba(135,206,235,0.7), rgba(100,149,237,0.4))',
+                borderRadius: '50px',
+                boxShadow: '0 0 2px rgba(173,216,230,0.5)',
               }}
             />
           )}
