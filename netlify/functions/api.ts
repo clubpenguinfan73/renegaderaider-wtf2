@@ -1,6 +1,8 @@
 import { Handler } from "@netlify/functions";
 import { storage } from "../../server/storage";
 import { insertProfileSchema, insertLinkSchema } from "../../shared/schema";
+import { discordAPI } from "../../server/discord";
+import { spotifyAPI } from "../../server/spotify";
 import { z } from "zod";
 
 export const handler: Handler = async (event, context) => {
@@ -111,6 +113,103 @@ export const handler: Handler = async (event, context) => {
           headers,
           body: JSON.stringify({ message: "Link deleted successfully" }),
         };
+      }
+    }
+
+    // Discord API endpoints
+    if (apiPath === "/discord/profile") {
+      if (httpMethod === "GET") {
+        try {
+          const user = await discordAPI.getUserProfile();
+          const avatarUrl = discordAPI.getAvatarUrl(user);
+          const bannerUrl = discordAPI.getBannerUrl(user);
+          const badges = discordAPI.getBadges(user.public_flags);
+          
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({
+              id: user.id,
+              username: user.username,
+              discriminator: user.discriminator,
+              avatar: avatarUrl,
+              banner: bannerUrl,
+              accentColor: user.accent_color,
+              badges: badges,
+              premiumType: user.premium_type,
+              publicFlags: user.public_flags
+            }),
+          };
+        } catch (error) {
+          console.error('Discord API error:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ message: "Failed to fetch Discord profile" }),
+          };
+        }
+      }
+    }
+
+    // Discord activity endpoint
+    if (apiPath === "/discord/activity") {
+      if (httpMethod === "GET") {
+        try {
+          const activity = await discordAPI.getCurrentActivity();
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify(activity),
+          };
+        } catch (error) {
+          console.error('Discord activity error:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ message: "Failed to fetch Discord activity" }),
+          };
+        }
+      }
+    }
+
+    // Spotify API endpoints
+    if (apiPath === "/spotify/current") {
+      if (httpMethod === "GET") {
+        try {
+          const currentTrack = await spotifyAPI.getCurrentlyPlaying();
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify(currentTrack),
+          };
+        } catch (error) {
+          console.error('Spotify API error:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ message: "Failed to fetch current track" }),
+          };
+        }
+      }
+    }
+
+    if (apiPath === "/spotify/recent") {
+      if (httpMethod === "GET") {
+        try {
+          const recentTracks = await spotifyAPI.getRecentlyPlayed(5);
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify(recentTracks),
+          };
+        } catch (error) {
+          console.error('Spotify API error:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ message: "Failed to fetch recent tracks" }),
+          };
+        }
       }
     }
 
