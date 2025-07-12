@@ -60,7 +60,9 @@
         }
 
         .link-item {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             padding: 1rem 1.5rem;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
@@ -76,6 +78,51 @@
             transform: translateY(-2px);
             border-color: #8B5CF6;
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .social-icon.twitch {
+            background: linear-gradient(135deg, #9146FF 0%, #7B3FE4 100%);
+        }
+
+        .social-icon.youtube {
+            background: linear-gradient(135deg, #FF0000 0%, #E60000 100%);
+        }
+
+        .social-icon.twitter {
+            background: linear-gradient(135deg, #1DA1F2 0%, #0C85D0 100%);
+        }
+
+        .social-icon.discord {
+            background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+        }
+
+        .social-icon.spotify {
+            background: linear-gradient(135deg, #1DB954 0%, #1ED760 100%);
+        }
+
+        .social-icon.instagram {
+            background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%);
+        }
+
+        .social-icon.tiktok {
+            background: linear-gradient(135deg, #000000 0%, #FF0050 50%, #00F2EA 100%);
+        }
+
+        .social-icon.github {
+            background: linear-gradient(135deg, #333333 0%, #24292E 100%);
         }
 
         .admin-button {
@@ -116,11 +163,26 @@
             </div>
 
             <div class="links-section" id="links-container">
-                <a href="#" class="link-item">🎮 Twitch</a>
-                <a href="#" class="link-item">📺 YouTube</a>
-                <a href="#" class="link-item">🐦 Twitter</a>
-                <a href="#" class="link-item">💬 Discord</a>
-                <a href="#" class="link-item">🎵 Spotify</a>
+                <a href="#" class="link-item">
+                    <div class="social-icon twitch">T</div>
+                    <span>Twitch</span>
+                </a>
+                <a href="#" class="link-item">
+                    <div class="social-icon youtube">Y</div>
+                    <span>YouTube</span>
+                </a>
+                <a href="#" class="link-item">
+                    <div class="social-icon twitter">X</div>
+                    <span>Twitter</span>
+                </a>
+                <a href="#" class="link-item">
+                    <div class="social-icon discord">D</div>
+                    <span>Discord</span>
+                </a>
+                <a href="#" class="link-item">
+                    <div class="social-icon spotify">♪</div>
+                    <span>Spotify</span>
+                </a>
             </div>
         </div>
 
@@ -183,8 +245,13 @@
                 if (linksEl && links && links.length > 0) {
                     let linksHTML = '';
                     links.forEach(link => {
-                        const emoji = getEmojiForLink(link.title);
-                        linksHTML += `<a href="${link.url}" class="link-item" target="_blank" rel="noopener noreferrer">${emoji} ${link.title}</a>`;
+                        const socialIcon = getSocialIcon(link.title);
+                        linksHTML += `
+                            <a href="${link.url}" class="link-item" target="_blank" rel="noopener noreferrer">
+                                <div class="social-icon ${socialIcon.class}">${socialIcon.icon}</div>
+                                <span>${link.title}</span>
+                            </a>
+                        `;
                     });
                     linksEl.innerHTML = linksHTML;
                     console.log('Links updated in DOM');
@@ -197,18 +264,18 @@
             }
         }
 
-        // Get emoji for link title
-        function getEmojiForLink(title) {
+        // Get social media icon and class for link title
+        function getSocialIcon(title) {
             const titleLower = title.toLowerCase();
-            if (titleLower.includes('twitch')) return '🎮';
-            if (titleLower.includes('youtube')) return '📺';
-            if (titleLower.includes('twitter')) return '🐦';
-            if (titleLower.includes('discord')) return '💬';
-            if (titleLower.includes('spotify')) return '🎵';
-            if (titleLower.includes('instagram')) return '📸';
-            if (titleLower.includes('tiktok')) return '🎬';
-            if (titleLower.includes('github')) return '💻';
-            return '🔗';
+            if (titleLower.includes('twitch')) return { icon: 'T', class: 'twitch' };
+            if (titleLower.includes('youtube')) return { icon: 'Y', class: 'youtube' };
+            if (titleLower.includes('twitter')) return { icon: 'X', class: 'twitter' };
+            if (titleLower.includes('discord')) return { icon: 'D', class: 'discord' };
+            if (titleLower.includes('spotify')) return { icon: '♪', class: 'spotify' };
+            if (titleLower.includes('instagram')) return { icon: 'I', class: 'instagram' };
+            if (titleLower.includes('tiktok')) return { icon: 'T', class: 'tiktok' };
+            if (titleLower.includes('github')) return { icon: 'G', class: 'github' };
+            return { icon: '🔗', class: 'default' };
         }
 
         // Admin toggle
