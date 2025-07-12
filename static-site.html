@@ -70,6 +70,23 @@
             font-weight: 500;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link-item:hover::before {
+            left: 100%;
         }
 
         .link-item:hover {
@@ -100,42 +117,66 @@
             transform: scale(1.1);
         }
 
+        .loading {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .success {
+            color: #51cf66;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
         @media (max-width: 480px) {
-            .username { font-size: 2rem; }
-            .bio { font-size: 1rem; }
-            .link-item { padding: 0.875rem 1.25rem; }
+            .username {
+                font-size: 2rem;
+            }
+            
+            .bio {
+                font-size: 1rem;
+            }
+            
+            .link-item {
+                padding: 0.875rem 1.25rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="root">
-        <div class="container">
-            <div class="profile-section">
-                <h1 class="username" id="username">renegade raider</h1>
-                <p class="bio" id="bio">Professional gamer • Content creator • Streaming daily</p>
-            </div>
-
-            <div class="links-section" id="links-container">
-                <a href="#" class="link-item">🎮 Twitch</a>
-                <a href="#" class="link-item">📺 YouTube</a>
-                <a href="#" class="link-item">🐦 Twitter</a>
-                <a href="#" class="link-item">💬 Discord</a>
-                <a href="#" class="link-item">🎵 Spotify</a>
-            </div>
+    <div class="container">
+        <div class="profile-section">
+            <h1 class="username" id="username">renegade raider</h1>
+            <p class="bio" id="bio">Professional gamer • Content creator • Streaming daily</p>
         </div>
 
-        <button class="admin-button" onclick="toggleAdmin()">⚙️</button>
+        <div class="links-section" id="links-container">
+            <a href="#" class="link-item">🎮 Twitch</a>
+            <a href="#" class="link-item">📺 YouTube</a>
+            <a href="#" class="link-item">🐦 Twitter</a>
+            <a href="#" class="link-item">💬 Discord</a>
+            <a href="#" class="link-item">🎵 Spotify</a>
+        </div>
     </div>
 
-    <script type="module" src="/src/main.tsx"></script>
+    <button class="admin-button" onclick="toggleAdmin()">⚙️</button>
+
     <script>
-        // API configuration
+        // Configuration
         const API_BASE = window.location.hostname === 'localhost' ? '/api' : '/.netlify/functions/api';
-        
-        console.log('Site initializing...');
-        console.log('API Base:', API_BASE);
-        console.log('Location:', window.location.hostname);
-        
+        let isLoadingData = false;
+
+        // DOM elements
+        const usernameEl = document.getElementById('username');
+        const bioEl = document.getElementById('bio');
+        const linksEl = document.getElementById('links-container');
+
         // Load profile data
         async function loadProfile() {
             try {
@@ -149,20 +190,17 @@
                 const profile = await response.json();
                 console.log('Profile loaded:', profile);
                 
-                const usernameEl = document.getElementById('username');
-                const bioEl = document.getElementById('bio');
-                
-                if (usernameEl && profile.username) {
+                if (profile.username) {
                     usernameEl.textContent = profile.username;
                 }
-                if (bioEl && profile.bio) {
+                if (profile.bio) {
                     bioEl.textContent = profile.bio;
                 }
                 
-                console.log('Profile updated in DOM');
+                return profile;
             } catch (error) {
                 console.error('Profile loading failed:', error);
-                console.log('Using fallback profile data');
+                return null;
             }
         }
 
@@ -179,21 +217,19 @@
                 const links = await response.json();
                 console.log('Links loaded:', links);
                 
-                const linksEl = document.getElementById('links-container');
-                if (linksEl && links && links.length > 0) {
+                if (links && links.length > 0) {
                     let linksHTML = '';
                     links.forEach(link => {
                         const emoji = getEmojiForLink(link.title);
                         linksHTML += `<a href="${link.url}" class="link-item" target="_blank" rel="noopener noreferrer">${emoji} ${link.title}</a>`;
                     });
                     linksEl.innerHTML = linksHTML;
-                    console.log('Links updated in DOM');
-                } else {
-                    console.log('No links found or links container missing');
                 }
+                
+                return links;
             } catch (error) {
                 console.error('Links loading failed:', error);
-                console.log('Using fallback links data');
+                return null;
             }
         }
 
@@ -226,40 +262,37 @@
 
         // Load all data
         async function loadAllData() {
-            console.log('Loading all data...');
+            if (isLoadingData) return;
+            isLoadingData = true;
+            
+            console.log('Starting data load...');
+            
             try {
-                await Promise.all([loadProfile(), loadLinks()]);
+                const [profile, links] = await Promise.all([
+                    loadProfile(),
+                    loadLinks()
+                ]);
+                
                 console.log('All data loaded successfully');
+                console.log('Profile:', profile);
+                console.log('Links:', links);
+                
             } catch (error) {
-                console.error('Error loading data:', error);
+                console.error('Data loading error:', error);
+            } finally {
+                isLoadingData = false;
             }
         }
 
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM loaded, starting data load...');
-            loadAllData();
-        });
+        // Initialize
+        console.log('Site initialized');
+        console.log('API Base:', API_BASE);
         
-        // Also load immediately if DOM is already ready
-        if (document.readyState === 'loading') {
-            console.log('DOM still loading, waiting...');
-        } else {
-            console.log('DOM already loaded, loading data immediately...');
-            loadAllData();
-        }
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadAllData);
         
-        // Fallback loading after delay
-        setTimeout(() => {
-            console.log('Fallback data load after 1 second...');
-            loadAllData();
-        }, 1000);
-        
-        // Additional fallback for slower connections
-        setTimeout(() => {
-            console.log('Final fallback data load after 3 seconds...');
-            loadAllData();
-        }, 3000);
+        // Also try loading after a short delay as fallback
+        setTimeout(loadAllData, 1000);
     </script>
 </body>
 </html>
