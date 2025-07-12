@@ -242,6 +242,34 @@ export default function AdminPanel({
     });
   };
 
+  const handleSaveUsernameEffects = () => {
+    updateProfileMutation.mutate({
+      username: username || profile?.username || "",
+      bio: bio || profile?.bio || "",
+      entranceText: entranceText || profile?.entranceText || "click to enter...",
+      entranceFontSize: entranceFontSize || profile?.entranceFontSize || "4xl",
+      entranceFontFamily: entranceFontFamily || profile?.entranceFontFamily || "Inter",
+      entranceFontColor: entranceFontColor || profile?.entranceFontColor || "#ffffff",
+      usernameEffect: usernameEffect,
+      animatedTitleEnabled: animatedTitleEnabled,
+      animatedTitleTexts: animatedTitleTexts,
+      animatedTitleSpeed: animatedTitleSpeed,
+      profilePicture: profile?.profilePicture,
+      backgroundImage: profile?.backgroundImage,
+      backgroundMusic: profile?.backgroundMusic,
+      musicEnabled: musicEnabled,
+      discordEnabled: discordEnabled,
+      discordUserId: discordUserId,
+      discordApplicationId: discordApplicationId,
+      spotifyEnabled: spotifyEnabled,
+      spotifyTrackName: spotifyTrackName,
+      spotifyArtistName: spotifyArtistName,
+      spotifyAlbumArt: spotifyAlbumArt,
+      spotifyTrackUrl: spotifyTrackUrl,
+      profileEffect: profileEffect,
+    });
+  };
+
   const handleToggleMusic = (checked: boolean) => {
     setMusicEnabled(checked);
     updateProfileMutation.mutate({
@@ -668,6 +696,17 @@ export default function AdminPanel({
                             className="text-xl"
                           />
                         </div>
+                      </div>
+                      
+                      {/* Save Username Effects Button */}
+                      <div className="pt-2">
+                        <Button
+                          onClick={handleSaveUsernameEffects}
+                          className="w-full bg-gaming-cyan hover:bg-gaming-cyan/80 text-white font-medium"
+                          disabled={updateProfileMutation.isPending}
+                        >
+                          {updateProfileMutation.isPending ? "Saving..." : "Save Username Effects"}
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
