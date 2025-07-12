@@ -21,15 +21,15 @@ export default function ProfileEffects({ effect, className = "" }: ProfileEffect
       
       switch (effect) {
         case 'snow':
-          count = 50;
+          count = 80;
           for (let i = 0; i < count; i++) {
             newParticles.push({
               id: i,
               x: Math.random() * 100,
               y: -10,
-              delay: Math.random() * 5,
-              duration: 8 + Math.random() * 4,
-              size: 8 + Math.random() * 8,
+              delay: Math.random() * 8,
+              duration: 12 + Math.random() * 8,
+              size: 2 + Math.random() * 4,
             });
           }
           break;
@@ -142,7 +142,7 @@ export default function ProfileEffects({ effect, className = "" }: ProfileEffect
             y: effect === 'hearts' || effect === 'bubbles' ? -100 : window.innerHeight + 100,
             opacity: [0, 1, 1, 0],
             rotate: effect === 'leaves' ? 720 : effect === 'confetti' ? 360 : 0,
-            x: effect === 'snow' ? Math.random() * 100 - 50 : 0,
+            x: effect === 'snow' ? [0, 30, -30, 0] : 0,
           }}
           transition={{
             duration: particle.duration,
@@ -152,7 +152,15 @@ export default function ProfileEffects({ effect, className = "" }: ProfileEffect
           }}
         >
           {effect === 'snow' && (
-            <span className="text-white opacity-80">❄️</span>
+            <div
+              className="bg-white rounded-full opacity-80"
+              style={{
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)',
+                background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 70%, rgba(255,255,255,0.3) 100%)',
+              }}
+            />
           )}
           {effect === 'rain' && (
             <div 

@@ -120,11 +120,11 @@ export default function UsernameEffects({ username, effect, className = "" }: Us
         };
       case "wave":
         return {
-          animation: "wave 2s ease-in-out infinite",
+          display: "inline-block",
         };
       case "pulse":
         return {
-          animation: "pulse 2s ease-in-out infinite",
+          display: "inline-block",
         };
       default:
         return {};
@@ -133,14 +133,39 @@ export default function UsernameEffects({ username, effect, className = "" }: Us
 
   const textToShow = effect === "typewriter" ? displayText : username;
 
+  // For wave and pulse effects, render each character individually
+  const renderCharacterEffect = (text: string, effectType: string) => {
+    return text.split('').map((char, index) => (
+      <span
+        key={index}
+        style={{
+          display: "inline-block",
+          animationName: effectType,
+          animationDuration: "2s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
+          animationDelay: `${index * 0.1}s`,
+        }}
+      >
+        {char}
+      </span>
+    ));
+  };
+
   return (
     <div className={`relative inline-block ${className}`}>
-      <span style={getEffectStyles()}>
-        {textToShow}
-        {effect === "typewriter" && currentIndex < username.length && (
-          <span className="animate-pulse">|</span>
-        )}
-      </span>
+      {(effect === "wave" || effect === "pulse") ? (
+        <span style={{ display: "inline-block" }}>
+          {renderCharacterEffect(textToShow, effect)}
+        </span>
+      ) : (
+        <span style={getEffectStyles()}>
+          {textToShow}
+          {effect === "typewriter" && currentIndex < username.length && (
+            <span className="animate-pulse">|</span>
+          )}
+        </span>
+      )}
       
       {effect === "white-sparkles" && renderSparkles("#ffffff")}
       {effect === "colored-sparkles" && renderSparkles("#7c3aed")}
