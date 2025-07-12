@@ -876,84 +876,13 @@
             container.appendChild(bubblesDiv);
         }
 
-        // Profile Effects Admin Panel
-        function createProfileEffectsModal() {
-            const modal = document.createElement('div');
-            modal.id = 'profileEffectsModal';
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-            `;
-            
-            const panel = document.createElement('div');
-            panel.style.cssText = `
-                background: #1a1a1a;
-                border-radius: 12px;
-                padding: 2rem;
-                width: 90%;
-                max-width: 500px;
-                color: white;
-                border: 2px solid #8B5CF6;
-            `;
-            
-            panel.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2 style="margin: 0; color: #8B5CF6; font-size: 1.5rem;">🎨 Profile Effects</h2>
-                    <button onclick="closeProfileEffectsModal()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">×</button>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Effect Style</label>
-                    <select id="profileEffectSelect" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid #333; background: #2a2a2a; color: white; font-size: 1rem;">
-                        <option value="none">None</option>
-                        <option value="snow">Snowing Winter</option>
-                        <option value="rain">Raining Summer</option>
-                        <option value="leaves">Autumn Leaves</option>
-                        <option value="confetti">Confetti Party</option>
-                        <option value="hearts">Floating Hearts</option>
-                        <option value="bubbles">Floating Bubbles</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Preview</label>
-                    <div id="profileEffectPreview" style="background: #2a2a2a; border-radius: 8px; padding: 2rem; text-align: center; border: 2px solid #333; position: relative; overflow: hidden; height: 80px;">
-                        <span style="font-size: 1.25rem; font-weight: 600;">Effect Preview</span>
-                    </div>
-                </div>
-                
-                <div style="display: flex; gap: 1rem;">
-                    <button onclick="saveProfileEffect()" style="flex: 1; background: #8B5CF6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                        Apply Effect
-                    </button>
-                    <button onclick="closeProfileEffectsModal()" style="flex: 1; background: #333; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                        Cancel
-                    </button>
-                </div>
-            `;
-            
-            modal.appendChild(panel);
-            document.body.appendChild(modal);
-            
-            // Add event listener for effect selection
-            const select = document.getElementById('profileEffectSelect');
-            select.addEventListener('change', updateProfileEffectPreview);
-            
-            // Load current effect
-            loadCurrentProfileEffect();
-        }
-        
+        // Profile Effects Preview Function (moved to main admin panel)
         function updateProfileEffectPreview() {
             const select = document.getElementById('profileEffectSelect');
             const preview = document.getElementById('profileEffectPreview');
+            
+            if (!select || !preview) return;
+            
             const effect = select.value;
             
             // Clear previous preview
@@ -1009,24 +938,10 @@
             }
         }
         
-        function loadCurrentProfileEffect() {
-            // Get current effect from profile data
-            fetch(`${API_BASE}/profile`)
-                .then(response => response.json())
-                .then(profile => {
-                    const select = document.getElementById('profileEffectSelect');
-                    if (select && profile.profileEffect) {
-                        select.value = profile.profileEffect;
-                        updateProfileEffectPreview();
-                    }
-                })
-                .catch(error => {
-                    console.log('Could not load current effect:', error);
-                });
-        }
-        
         function saveProfileEffect() {
             const select = document.getElementById('profileEffectSelect');
+            if (!select) return;
+            
             const effect = select.value;
             
             // Apply effect immediately to main page
@@ -1045,32 +960,255 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Profile effect saved:', data);
-                closeProfileEffectsModal();
+                alert('Profile effect applied successfully!');
             })
             .catch(error => {
                 console.error('Error saving profile effect:', error);
                 alert('Failed to save profile effect');
             });
         }
-        
-        function closeProfileEffectsModal() {
-            const modal = document.getElementById('profileEffectsModal');
-            if (modal) {
-                modal.remove();
-            }
-        }
 
-        // Admin toggle
+        // Main Admin Panel
         function toggleAdmin() {
             const username = prompt('Enter username:');
             const password = prompt('Enter password:');
             
             if (username === 'Cat' && password === 'Cat@Renagde.wtf73') {
-                createProfileEffectsModal();
+                createAdminPanel();
                 console.log('Admin access granted');
             } else {
                 alert('Invalid credentials');
             }
+        }
+        
+        function createAdminPanel() {
+            const modal = document.createElement('div');
+            modal.id = 'adminModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            const panel = document.createElement('div');
+            panel.style.cssText = `
+                background: #1a1a1a;
+                border-radius: 12px;
+                padding: 0;
+                width: 90%;
+                max-width: 600px;
+                max-height: 90vh;
+                color: white;
+                border: 2px solid #8B5CF6;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            `;
+            
+            panel.innerHTML = `
+                <div style="padding: 1.5rem; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin: 0; color: #8B5CF6; font-size: 1.5rem;">⚙️ Admin Panel</h2>
+                    <button onclick="closeAdminPanel()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">×</button>
+                </div>
+                
+                <div style="display: flex; flex: 1;">
+                    <div style="width: 200px; background: #2a2a2a; padding: 1rem; border-right: 1px solid #333;">
+                        <div style="margin-bottom: 1rem;">
+                            <button onclick="showTab('username')" id="usernameTab" style="width: 100%; padding: 0.75rem; background: #8B5CF6; color: white; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 0.5rem; font-weight: 600;">
+                                Username Effects
+                            </button>
+                            <button onclick="showTab('profile')" id="profileTab" style="width: 100%; padding: 0.75rem; background: #333; color: white; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 0.5rem; font-weight: 600;">
+                                Profile Effects
+                            </button>
+                            <button onclick="showTab('links')" id="linksTab" style="width: 100%; padding: 0.75rem; background: #333; color: white; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 0.5rem; font-weight: 600;">
+                                Manage Links
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; padding: 1.5rem; overflow-y: auto;">
+                        <div id="usernameContent" style="display: block;">
+                            <h3 style="margin-top: 0; color: #8B5CF6; margin-bottom: 1rem;">🎭 Username Effects</h3>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Effect Style</label>
+                                <select id="usernameEffectSelect" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid #333; background: #2a2a2a; color: white; font-size: 1rem;">
+                                    <option value="none">None</option>
+                                    <option value="rainbow">Rainbow</option>
+                                    <option value="glow">Glow</option>
+                                    <option value="neon">Neon</option>
+                                    <option value="fire">Fire</option>
+                                    <option value="ice">Ice</option>
+                                    <option value="electric">Electric</option>
+                                    <option value="typewriter">Typewriter</option>
+                                    <option value="glitch">Glitch</option>
+                                    <option value="wave">Wave</option>
+                                    <option value="bounce">Bounce</option>
+                                    <option value="pulse">Pulse</option>
+                                    <option value="shake">Shake</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Preview</label>
+                                <div id="usernamePreview" style="background: #2a2a2a; border-radius: 8px; padding: 2rem; text-align: center; border: 2px solid #333; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <span id="usernamePreviewText" style="font-size: 1.5rem; font-weight: 600;">Preview</span>
+                                </div>
+                            </div>
+                            <button onclick="saveUsernameEffect()" style="width: 100%; background: #8B5CF6; color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                Apply Username Effect
+                            </button>
+                        </div>
+                        
+                        <div id="profileContent" style="display: none;">
+                            <h3 style="margin-top: 0; color: #8B5CF6; margin-bottom: 1rem;">🎨 Profile Effects</h3>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Effect Style</label>
+                                <select id="profileEffectSelect" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid #333; background: #2a2a2a; color: white; font-size: 1rem;">
+                                    <option value="none">None</option>
+                                    <option value="snow">Snowing Winter</option>
+                                    <option value="rain">Raining Summer</option>
+                                    <option value="leaves">Autumn Leaves</option>
+                                    <option value="confetti">Confetti Party</option>
+                                    <option value="hearts">Floating Hearts</option>
+                                    <option value="bubbles">Floating Bubbles</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Preview</label>
+                                <div id="profileEffectPreview" style="background: #2a2a2a; border-radius: 8px; padding: 2rem; text-align: center; border: 2px solid #333; position: relative; overflow: hidden; height: 80px;">
+                                    <span style="font-size: 1.25rem; font-weight: 600;">Effect Preview</span>
+                                </div>
+                            </div>
+                            <button onclick="saveProfileEffect()" style="width: 100%; background: #8B5CF6; color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                Apply Profile Effect
+                            </button>
+                        </div>
+                        
+                        <div id="linksContent" style="display: none;">
+                            <h3 style="margin-top: 0; color: #8B5CF6; margin-bottom: 1rem;">🔗 Manage Links</h3>
+                            <p style="color: #ccc; margin-bottom: 1rem;">Link management coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.appendChild(panel);
+            document.body.appendChild(modal);
+            
+            // Add event listeners
+            const usernameSelect = document.getElementById('usernameEffectSelect');
+            const profileSelect = document.getElementById('profileEffectSelect');
+            
+            usernameSelect.addEventListener('change', updateUsernamePreview);
+            profileSelect.addEventListener('change', updateProfileEffectPreview);
+            
+            // Load current settings
+            loadCurrentSettings();
+        }
+        
+        function showTab(tabName) {
+            // Hide all content
+            document.getElementById('usernameContent').style.display = 'none';
+            document.getElementById('profileContent').style.display = 'none';
+            document.getElementById('linksContent').style.display = 'none';
+            
+            // Reset all tab buttons
+            document.getElementById('usernameTab').style.background = '#333';
+            document.getElementById('profileTab').style.background = '#333';
+            document.getElementById('linksTab').style.background = '#333';
+            
+            // Show selected content and highlight tab
+            document.getElementById(tabName + 'Content').style.display = 'block';
+            document.getElementById(tabName + 'Tab').style.background = '#8B5CF6';
+        }
+        
+        function closeAdminPanel() {
+            const modal = document.getElementById('adminModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function updateUsernamePreview() {
+            const select = document.getElementById('usernameEffectSelect');
+            const previewText = document.getElementById('usernamePreviewText');
+            const effect = select.value;
+            
+            if (previewText) {
+                previewText.textContent = 'Preview';
+                previewText.className = effect !== 'none' ? `username ${effect}` : '';
+                
+                // For glitch effect, add data attribute
+                if (effect === 'glitch') {
+                    previewText.setAttribute('data-text', 'Preview');
+                }
+            }
+        }
+        
+        function saveUsernameEffect() {
+            const select = document.getElementById('usernameEffectSelect');
+            const effect = select.value;
+            
+            // Apply effect immediately to main username
+            const mainUsername = document.getElementById('username');
+            if (mainUsername) {
+                if (effect !== 'none') {
+                    mainUsername.className = `username ${effect}`;
+                    if (effect === 'glitch') {
+                        mainUsername.setAttribute('data-text', mainUsername.textContent);
+                    }
+                } else {
+                    mainUsername.className = 'username';
+                }
+            }
+            
+            // Save to profile
+            fetch(`${API_BASE}/profile`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    usernameEffect: effect
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Username effect saved:', data);
+                alert('Username effect applied successfully!');
+            })
+            .catch(error => {
+                console.error('Error saving username effect:', error);
+                alert('Failed to save username effect');
+            });
+        }
+        
+        function loadCurrentSettings() {
+            fetch(`${API_BASE}/profile`)
+                .then(response => response.json())
+                .then(profile => {
+                    const usernameSelect = document.getElementById('usernameEffectSelect');
+                    const profileSelect = document.getElementById('profileEffectSelect');
+                    
+                    if (usernameSelect && profile.usernameEffect) {
+                        usernameSelect.value = profile.usernameEffect;
+                        updateUsernamePreview();
+                    }
+                    
+                    if (profileSelect && profile.profileEffect) {
+                        profileSelect.value = profile.profileEffect;
+                        updateProfileEffectPreview();
+                    }
+                })
+                .catch(error => {
+                    console.log('Could not load current settings:', error);
+                });
         }
 
         // Load all data
