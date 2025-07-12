@@ -25,8 +25,15 @@ export const handler: Handler = async (event, context) => {
   }
 
   try {
-    // Parse the API path
-    const apiPath = path.replace(/^\/api/, "");
+    // Parse the API path - handle both /api and /.netlify/functions/api paths
+    let apiPath = path;
+    if (path.startsWith('/.netlify/functions/api')) {
+      apiPath = path.replace('/.netlify/functions/api', '');
+    } else if (path.startsWith('/api')) {
+      apiPath = path.replace('/api', '');
+    }
+    
+    console.log('Function called with path:', path, 'parsed as:', apiPath);
     const parsedBody = body ? JSON.parse(body) : {};
 
     // Profile endpoints
@@ -214,10 +221,16 @@ export const handler: Handler = async (event, context) => {
     }
 
     // Not found
+    console.log('Unhandled path:', apiPath, 'original path:', path);
     return {
       statusCode: 404,
       headers,
-      body: JSON.stringify({ message: "Not found" }),
+      body: JSON.stringify({ 
+        message: "Not found",
+        path: path,
+        apiPath: apiPath,
+        method: httpMethod
+      }),
     };
 
   } catch (error) {
