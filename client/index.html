@@ -1105,8 +1105,12 @@
             const usernameSelect = document.getElementById('usernameEffectSelect');
             const profileSelect = document.getElementById('profileEffectSelect');
             
-            usernameSelect.addEventListener('change', updateUsernamePreview);
-            profileSelect.addEventListener('change', updateProfileEffectPreview);
+            if (usernameSelect) {
+                usernameSelect.addEventListener('change', updateUsernamePreview);
+            }
+            if (profileSelect) {
+                profileSelect.addEventListener('change', updateProfileEffectPreview);
+            }
             
             // Load current settings
             loadCurrentSettings();
@@ -1114,18 +1118,36 @@
         
         function showTab(tabName) {
             // Hide all content
-            document.getElementById('usernameContent').style.display = 'none';
-            document.getElementById('profileContent').style.display = 'none';
-            document.getElementById('linksContent').style.display = 'none';
+            const usernameContent = document.getElementById('usernameContent');
+            const profileContent = document.getElementById('profileContent');
+            const linksContent = document.getElementById('linksContent');
+            
+            if (usernameContent) usernameContent.style.display = 'none';
+            if (profileContent) profileContent.style.display = 'none';
+            if (linksContent) linksContent.style.display = 'none';
             
             // Reset all tab buttons
-            document.getElementById('usernameTab').style.background = '#333';
-            document.getElementById('profileTab').style.background = '#333';
-            document.getElementById('linksTab').style.background = '#333';
+            const usernameTab = document.getElementById('usernameTab');
+            const profileTab = document.getElementById('profileTab');
+            const linksTab = document.getElementById('linksTab');
+            
+            if (usernameTab) usernameTab.style.background = '#333';
+            if (profileTab) profileTab.style.background = '#333';
+            if (linksTab) linksTab.style.background = '#333';
             
             // Show selected content and highlight tab
-            document.getElementById(tabName + 'Content').style.display = 'block';
-            document.getElementById(tabName + 'Tab').style.background = '#8B5CF6';
+            const selectedContent = document.getElementById(tabName + 'Content');
+            const selectedTab = document.getElementById(tabName + 'Tab');
+            
+            if (selectedContent) selectedContent.style.display = 'block';
+            if (selectedTab) selectedTab.style.background = '#8B5CF6';
+            
+            // If switching to profile tab, update the preview
+            if (tabName === 'profile') {
+                setTimeout(() => {
+                    updateProfileEffectPreview();
+                }, 100);
+            }
         }
         
         function closeAdminPanel() {
