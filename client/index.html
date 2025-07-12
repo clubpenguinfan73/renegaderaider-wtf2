@@ -109,46 +109,54 @@
       // Fallback functionality if React doesn't load
       window.addEventListener('load', function() {
         setTimeout(() => {
-          if (document.getElementById('profile-section').innerHTML.includes('Loading')) {
+          const profileSection = document.getElementById('profile-section');
+          if (profileSection && profileSection.innerHTML.includes('Loading')) {
             loadFallbackContent();
           }
         }, 3000);
       });
       
       function loadFallbackContent() {
-        fetch('/api/profile')
-          .then(response => response.json())
-          .then(profile => {
-            document.getElementById('profile-section').innerHTML = `
-              <h1 class="gradient-text">${profile.username || 'renegade raider'}</h1>
-              <p class="bio">${profile.bio || 'Professional gamer • Content creator • Streaming daily'}</p>
-            `;
-          })
-          .catch(() => {
-            document.getElementById('profile-section').innerHTML = `
-              <h1 class="gradient-text">renegade raider</h1>
-              <p class="bio">Professional gamer • Content creator • Streaming daily</p>
-            `;
-          });
-          
-        fetch('/api/links')
-          .then(response => response.json())
-          .then(links => {
-            let linksHTML = '';
-            links.forEach(link => {
-              linksHTML += `<a href="${link.url}" class="link-item" target="_blank">${link.title}</a>`;
+        const profileSection = document.getElementById('profile-section');
+        const linksSection = document.getElementById('links-section');
+        
+        if (profileSection) {
+          fetch('/api/profile')
+            .then(response => response.json())
+            .then(profile => {
+              profileSection.innerHTML = `
+                <h1 class="gradient-text">${profile.username || 'renegade raider'}</h1>
+                <p class="bio">${profile.bio || 'Professional gamer • Content creator • Streaming daily'}</p>
+              `;
+            })
+            .catch(() => {
+              profileSection.innerHTML = `
+                <h1 class="gradient-text">renegade raider</h1>
+                <p class="bio">Professional gamer • Content creator • Streaming daily</p>
+              `;
             });
-            document.getElementById('links-section').innerHTML = linksHTML;
-          })
-          .catch(() => {
-            document.getElementById('links-section').innerHTML = `
-              <a href="#" class="link-item">Twitch</a>
-              <a href="#" class="link-item">YouTube</a>
-              <a href="#" class="link-item">Twitter</a>
-              <a href="#" class="link-item">Discord</a>
-              <a href="#" class="link-item">Spotify</a>
-            `;
-          });
+        }
+        
+        if (linksSection) {
+          fetch('/api/links')
+            .then(response => response.json())
+            .then(links => {
+              let linksHTML = '';
+              links.forEach(link => {
+                linksHTML += `<a href="${link.url}" class="link-item" target="_blank">${link.title}</a>`;
+              });
+              linksSection.innerHTML = linksHTML;
+            })
+            .catch(() => {
+              linksSection.innerHTML = `
+                <a href="#" class="link-item">Twitch</a>
+                <a href="#" class="link-item">YouTube</a>
+                <a href="#" class="link-item">Twitter</a>
+                <a href="#" class="link-item">Discord</a>
+                <a href="#" class="link-item">Spotify</a>
+              `;
+            });
+        }
       }
       
       function toggleAdmin() {
