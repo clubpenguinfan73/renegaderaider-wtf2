@@ -1,6 +1,6 @@
 [build]
   publish = "dist/public"
-  command = "./build.sh"
+  command = "echo 'Using pre-built files' && ls -la dist/public/"
 
 [build.environment]
   NODE_VERSION = "20.12.2"
