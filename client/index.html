@@ -2,21 +2,165 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>renegade raider.wtf</title>
-    <meta name="description" content="Professional gamer, content creator, and streamer. Follow my gaming journey and connect with me across all platforms." />
-    <meta property="og:title" content="renegade raider.wtf - Gaming & Content Creation" />
-    <meta property="og:description" content="Professional gamer, content creator, and streamer. Follow my gaming journey and connect with me across all platforms." />
-    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+        color: white;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .container {
+        text-align: center;
+        max-width: 400px;
+        padding: 2rem;
+      }
+      
+      .gradient-text {
+        background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      
+      .bio {
+        opacity: 0.8;
+        margin-bottom: 2rem;
+      }
+      
+      .link-item {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem 0;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid transparent;
+        border-radius: 12px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      
+      .link-item:hover {
+        transform: translateY(-2px);
+        border-color: #8B5CF6;
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+      }
+      
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        opacity: 0.6;
+      }
+      
+      .admin-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(139, 92, 246, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        color: white;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      
+      .admin-button:hover {
+        background: rgba(139, 92, 246, 1);
+        transform: scale(1.1);
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="container">
+        <div id="profile-section">
+          <div class="loading">Loading profile...</div>
+        </div>
+        
+        <div id="links-section">
+          <div class="loading">Loading links...</div>
+        </div>
+      </div>
+      
+      <button class="admin-button" onclick="toggleAdmin()">⚙️</button>
+    </div>
+    
     <script type="module" src="/src/main.tsx"></script>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    <script>
+      // Fallback functionality if React doesn't load
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          if (document.getElementById('profile-section').innerHTML.includes('Loading')) {
+            loadFallbackContent();
+          }
+        }, 3000);
+      });
+      
+      function loadFallbackContent() {
+        fetch('/api/profile')
+          .then(response => response.json())
+          .then(profile => {
+            document.getElementById('profile-section').innerHTML = `
+              <h1 class="gradient-text">${profile.username || 'renegade raider'}</h1>
+              <p class="bio">${profile.bio || 'Professional gamer • Content creator • Streaming daily'}</p>
+            `;
+          })
+          .catch(() => {
+            document.getElementById('profile-section').innerHTML = `
+              <h1 class="gradient-text">renegade raider</h1>
+              <p class="bio">Professional gamer • Content creator • Streaming daily</p>
+            `;
+          });
+          
+        fetch('/api/links')
+          .then(response => response.json())
+          .then(links => {
+            let linksHTML = '';
+            links.forEach(link => {
+              linksHTML += `<a href="${link.url}" class="link-item" target="_blank">${link.title}</a>`;
+            });
+            document.getElementById('links-section').innerHTML = linksHTML;
+          })
+          .catch(() => {
+            document.getElementById('links-section').innerHTML = `
+              <a href="#" class="link-item">Twitch</a>
+              <a href="#" class="link-item">YouTube</a>
+              <a href="#" class="link-item">Twitter</a>
+              <a href="#" class="link-item">Discord</a>
+              <a href="#" class="link-item">Spotify</a>
+            `;
+          });
+      }
+      
+      function toggleAdmin() {
+        const username = prompt('Enter username:');
+        const password = prompt('Enter password:');
+        
+        if (username === 'Cat' && password === 'Cat@Renagde.wtf73') {
+          alert('Admin access granted! Full features will be available soon.');
+        } else {
+          alert('Invalid credentials');
+        }
+      }
+    </script>
   </body>
 </html>
