@@ -61,12 +61,6 @@
         box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
       }
       
-      .loading {
-        text-align: center;
-        padding: 2rem;
-        opacity: 0.6;
-      }
-      
       .admin-button {
         position: fixed;
         bottom: 20px;
@@ -90,72 +84,51 @@
     </style>
   </head>
   <body>
-    <div id="root">
-      <div class="container">
-        <div id="profile-section">
-          <div class="loading">Loading profile...</div>
-        </div>
-        
-        <div id="links-section">
-          <div class="loading">Loading links...</div>
-        </div>
-      </div>
+    <div class="container">
+      <h1 class="gradient-text" id="username">renegade raider</h1>
+      <p class="bio" id="bio">Professional gamer • Content creator • Streaming daily</p>
       
-      <button class="admin-button" onclick="toggleAdmin()">⚙️</button>
+      <div id="links-container">
+        <a href="#" class="link-item">🎮 Twitch</a>
+        <a href="#" class="link-item">📺 YouTube</a>
+        <a href="#" class="link-item">🐦 Twitter</a>
+        <a href="#" class="link-item">💬 Discord</a>
+        <a href="#" class="link-item">🎵 Spotify</a>
+      </div>
     </div>
     
-    <script type="module" src="/src/main.tsx"></script>
+    <button class="admin-button" onclick="toggleAdmin()">⚙️</button>
+    
     <script>
-      // Fallback functionality if React doesn't load
-      window.addEventListener('load', function() {
-        setTimeout(() => {
-          const profileSection = document.getElementById('profile-section');
-          if (profileSection && profileSection.innerHTML.includes('Loading')) {
-            loadFallbackContent();
+      // Load actual data from API
+      async function loadContent() {
+        try {
+          console.log('Loading profile data...');
+          const profileResponse = await fetch('/.netlify/functions/api/profile');
+          const profile = await profileResponse.json();
+          console.log('Profile loaded:', profile);
+          
+          const linksResponse = await fetch('/.netlify/functions/api/links');
+          const links = await linksResponse.json();
+          console.log('Links loaded:', links);
+          
+          // Update profile
+          document.getElementById('username').textContent = profile.username || 'renegade raider';
+          document.getElementById('bio').textContent = profile.bio || 'Professional gamer • Content creator • Streaming daily';
+          
+          // Update links
+          if (links && links.length > 0) {
+            let linksHTML = '';
+            links.forEach(link => {
+              linksHTML += `<a href="${link.url}" class="link-item" target="_blank">${link.title}</a>`;
+            });
+            document.getElementById('links-container').innerHTML = linksHTML;
           }
-        }, 3000);
-      });
-      
-      function loadFallbackContent() {
-        const profileSection = document.getElementById('profile-section');
-        const linksSection = document.getElementById('links-section');
-        
-        if (profileSection) {
-          fetch('/.netlify/functions/api/profile')
-            .then(response => response.json())
-            .then(profile => {
-              profileSection.innerHTML = `
-                <h1 class="gradient-text">${profile.username || 'renegade raider'}</h1>
-                <p class="bio">${profile.bio || 'Professional gamer • Content creator • Streaming daily'}</p>
-              `;
-            })
-            .catch(() => {
-              profileSection.innerHTML = `
-                <h1 class="gradient-text">renegade raider</h1>
-                <p class="bio">Professional gamer • Content creator • Streaming daily</p>
-              `;
-            });
-        }
-        
-        if (linksSection) {
-          fetch('/.netlify/functions/api/links')
-            .then(response => response.json())
-            .then(links => {
-              let linksHTML = '';
-              links.forEach(link => {
-                linksHTML += `<a href="${link.url}" class="link-item" target="_blank">${link.title}</a>`;
-              });
-              linksSection.innerHTML = linksHTML;
-            })
-            .catch(() => {
-              linksSection.innerHTML = `
-                <a href="#" class="link-item">Twitch</a>
-                <a href="#" class="link-item">YouTube</a>
-                <a href="#" class="link-item">Twitter</a>
-                <a href="#" class="link-item">Discord</a>
-                <a href="#" class="link-item">Spotify</a>
-              `;
-            });
+          
+          console.log('Content loaded successfully!');
+        } catch (error) {
+          console.error('Error loading content:', error);
+          // Fallback content is already in the HTML
         }
       }
       
@@ -169,6 +142,9 @@
           alert('Invalid credentials');
         }
       }
+      
+      // Load content when page loads
+      window.addEventListener('load', loadContent);
     </script>
   </body>
 </html>
