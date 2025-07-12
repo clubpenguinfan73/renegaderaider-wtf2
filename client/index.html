@@ -93,11 +93,16 @@
     <div id="root">
       <div class="container">
         <div id="profile-section">
-          <div class="loading">Loading profile...</div>
+          <h1 class="gradient-text">renegade raider</h1>
+          <p class="bio">Professional gamer • Content creator • Streaming daily</p>
         </div>
         
         <div id="links-section">
-          <div class="loading">Loading links...</div>
+          <a href="#" class="link-item">🎮 Twitch</a>
+          <a href="#" class="link-item">📺 YouTube</a>
+          <a href="#" class="link-item">🐦 Twitter</a>
+          <a href="#" class="link-item">💬 Discord</a>
+          <a href="#" class="link-item">🎵 Spotify</a>
         </div>
       </div>
       
@@ -106,14 +111,9 @@
     
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Fallback functionality if React doesn't load
+      // Load content immediately
       window.addEventListener('load', function() {
-        setTimeout(() => {
-          const profileSection = document.getElementById('profile-section');
-          if (profileSection && profileSection.innerHTML.includes('Loading')) {
-            loadFallbackContent();
-          }
-        }, 3000);
+        loadFallbackContent();
       });
       
       function loadFallbackContent() {
