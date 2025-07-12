@@ -49,7 +49,8 @@ export class MemStorage implements IStorage {
       spotifyTrackName: null,
       spotifyArtistName: null,
       spotifyAlbumArt: null,
-      spotifyTrackUrl: null
+      spotifyTrackUrl: null,
+      profileEffect: "none"
     };
     this.links = new Map();
     this.currentUserId = 1;

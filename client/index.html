@@ -248,6 +248,212 @@
             50% { transform: scale(1.05); opacity: 0.8; }
         }
 
+        /* Profile Effects */
+        .profile-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Snow Effect */
+        .snow-effect {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            user-select: none;
+            pointer-events: none;
+            animation: snowfall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Rain Effect */
+        .rain-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            animation: rainfall linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rainfall {
+            0% {
+                transform: translateY(-100vh);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Autumn Leaves Effect */
+        .leaves-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ff6b35;
+            border-radius: 0 100% 0 100%;
+            animation: leaffall linear infinite;
+            opacity: 0.7;
+        }
+
+        .leaf:nth-child(odd) {
+            background: #ff8c42;
+        }
+
+        .leaf:nth-child(3n) {
+            background: #ffd662;
+        }
+
+        @keyframes leaffall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti Effect */
+        .confetti-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confettifall linear infinite;
+        }
+
+        .confetti:nth-child(2n) { background: #4ecdc4; }
+        .confetti:nth-child(3n) { background: #45b7d1; }
+        .confetti:nth-child(4n) { background: #96ceb4; }
+        .confetti:nth-child(5n) { background: #feca57; }
+        .confetti:nth-child(6n) { background: #ff9ff3; }
+
+        @keyframes confettifall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Floating Hearts Effect */
+        .hearts-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 20px;
+            animation: heartfloat linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes heartfloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Floating Bubbles Effect */
+        .bubbles-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: bubbleup linear infinite;
+        }
+
+        @keyframes bubbleup {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
         .bio {
             opacity: 0.8;
             font-size: 1.1rem;
@@ -386,6 +592,8 @@
 </head>
 <body>
     <div id="root">
+        <div class="profile-effects" id="profileEffects"></div>
+        
         <div class="container">
             <div class="profile-section">
                 <h1 class="username" id="username">renegade raider</h1>
@@ -467,6 +675,9 @@
                     bioEl.textContent = profile.bio;
                 }
                 
+                // Apply profile effects
+                applyProfileEffect(profile.profileEffect || 'snow');
+                
                 console.log('Profile updated in DOM');
             } catch (error) {
                 console.error('Profile loading failed:', error);
@@ -528,6 +739,141 @@
             if (titleLower.includes('whatsapp')) return { icon: '<i class="fab fa-whatsapp"></i>', class: 'whatsapp' };
             if (titleLower.includes('lastfm') || titleLower.includes('last.fm')) return { icon: '<i class="fab fa-lastfm"></i>', class: 'lastfm' };
             return { icon: '<i class="fas fa-link"></i>', class: 'default' };
+        }
+
+        // Profile Effects System
+        function applyProfileEffect(effect) {
+            const effectsContainer = document.getElementById('profileEffects');
+            if (!effectsContainer) return;
+            
+            // Clear existing effects
+            effectsContainer.innerHTML = '';
+            
+            switch (effect) {
+                case 'snow':
+                    createSnowEffect(effectsContainer);
+                    break;
+                case 'rain':
+                    createRainEffect(effectsContainer);
+                    break;
+                case 'leaves':
+                    createLeavesEffect(effectsContainer);
+                    break;
+                case 'confetti':
+                    createConfettiEffect(effectsContainer);
+                    break;
+                case 'hearts':
+                    createHeartsEffect(effectsContainer);
+                    break;
+                case 'bubbles':
+                    createBubblesEffect(effectsContainer);
+                    break;
+                default:
+                    // No effect
+                    break;
+            }
+        }
+        
+        function createSnowEffect(container) {
+            const snowDiv = document.createElement('div');
+            snowDiv.className = 'snow-effect';
+            
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 2 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snowDiv.appendChild(snowflake);
+            }
+            
+            container.appendChild(snowDiv);
+        }
+        
+        function createRainEffect(container) {
+            const rainDiv = document.createElement('div');
+            rainDiv.className = 'rain-effect';
+            
+            for (let i = 0; i < 100; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.className = 'raindrop';
+                raindrop.style.left = Math.random() * 100 + '%';
+                raindrop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+                raindrop.style.animationDelay = Math.random() * 1 + 's';
+                rainDiv.appendChild(raindrop);
+            }
+            
+            container.appendChild(rainDiv);
+        }
+        
+        function createLeavesEffect(container) {
+            const leavesDiv = document.createElement('div');
+            leavesDiv.className = 'leaves-effect';
+            
+            for (let i = 0; i < 30; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                leaf.style.animationDelay = Math.random() * 2 + 's';
+                leavesDiv.appendChild(leaf);
+            }
+            
+            container.appendChild(leavesDiv);
+        }
+        
+        function createConfettiEffect(container) {
+            const confettiDiv = document.createElement('div');
+            confettiDiv.className = 'confetti-effect';
+            
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confettiDiv.appendChild(confetti);
+            }
+            
+            container.appendChild(confettiDiv);
+        }
+        
+        function createHeartsEffect(container) {
+            const heartsDiv = document.createElement('div');
+            heartsDiv.className = 'hearts-effect';
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                heartsDiv.appendChild(heart);
+            }
+            
+            container.appendChild(heartsDiv);
+        }
+        
+        function createBubblesEffect(container) {
+            const bubblesDiv = document.createElement('div');
+            bubblesDiv.className = 'bubbles-effect';
+            
+            for (let i = 0; i < 25; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 40 + 20;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                bubble.style.animationDelay = Math.random() * 3 + 's';
+                bubblesDiv.appendChild(bubble);
+            }
+            
+            container.appendChild(bubblesDiv);
         }
 
         // Admin toggle

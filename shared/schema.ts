@@ -32,6 +32,7 @@ export const profiles = pgTable("profiles", {
   spotifyArtistName: text("spotify_artist_name"),
   spotifyAlbumArt: text("spotify_album_art"),
   spotifyTrackUrl: text("spotify_track_url"),
+  profileEffect: text("profile_effect").default("none"),
 });
 
 export const links = pgTable("links", {
