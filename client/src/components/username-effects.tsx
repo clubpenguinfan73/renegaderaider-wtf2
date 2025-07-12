@@ -106,6 +106,26 @@ export default function UsernameEffects({ username, effect, className = "" }: Us
           textShadow: "0 0 10px #87ceeb, 0 0 20px #4682b4, 0 0 40px #4682b4",
           animation: "ice 3s ease-in-out infinite alternate",
         };
+      case "sparkles":
+        return {
+          color: "#ffffff",
+          textShadow: "0 0 10px #7c3aed, 0 0 20px #7c3aed",
+          position: "relative",
+        };
+      case "glitch":
+        return {
+          color: "#00ff00",
+          textShadow: "0 0 5px #00ff00, 0 0 10px #00ff00",
+          animation: "glitch 0.5s ease-in-out infinite",
+        };
+      case "wave":
+        return {
+          animation: "wave 2s ease-in-out infinite",
+        };
+      case "pulse":
+        return {
+          animation: "pulse 2s ease-in-out infinite",
+        };
       default:
         return {};
     }
