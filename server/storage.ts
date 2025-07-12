@@ -50,7 +50,7 @@ export class MemStorage implements IStorage {
       spotifyArtistName: null,
       spotifyAlbumArt: null,
       spotifyTrackUrl: null,
-      profileEffect: "none"
+      profileEffect: "snow"
     };
     this.links = new Map();
     this.currentUserId = 1;
@@ -116,6 +116,7 @@ export class MemStorage implements IStorage {
       spotifyArtistName: profileData.spotifyArtistName || null,
       spotifyAlbumArt: profileData.spotifyAlbumArt || null,
       spotifyTrackUrl: profileData.spotifyTrackUrl || null,
+      profileEffect: profileData.profileEffect || "none",
     };
     return this.profile!;
   }

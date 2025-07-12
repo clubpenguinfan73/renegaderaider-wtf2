@@ -73,6 +73,7 @@ export const insertProfileSchema = createInsertSchema(profiles).pick({
   spotifyArtistName: true,
   spotifyAlbumArt: true,
   spotifyTrackUrl: true,
+  profileEffect: true,
 });
 
 export const insertLinkSchema = createInsertSchema(links).pick({

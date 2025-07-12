@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Profile, Link } from "@shared/schema";
 import UsernameEffects from "./username-effects";
 import AnimatedTitle from "./animated-title";
+import ProfileEffects from "./profile-effects";
 import { useDiscordProfile } from "@/hooks/use-discord-profile";
 import { useSpotifyCurrentTrack, formatDuration, getAlbumArt } from "@/hooks/use-spotify";
 
@@ -134,6 +135,9 @@ export default function MainContent({ profile, links, onToggleAdmin, onEditLink 
       transition={{ duration: 1 }}
       className="min-h-screen"
     >
+      {/* Profile Effects */}
+      <ProfileEffects effect={profile?.profileEffect || 'none'} />
+      
       {/* Custom Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-gaming-purple/20 via-black to-gaming-cyan/20"></div>
