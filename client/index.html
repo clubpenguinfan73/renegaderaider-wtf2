@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -81,16 +82,16 @@
         }
 
         .social-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 16px;
             color: white;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .social-icon.twitch {
@@ -123,6 +124,30 @@
 
         .social-icon.github {
             background: linear-gradient(135deg, #333333 0%, #24292E 100%);
+        }
+
+        .social-icon.linkedin {
+            background: linear-gradient(135deg, #0077B5 0%, #005582 100%);
+        }
+
+        .social-icon.facebook {
+            background: linear-gradient(135deg, #1877F2 0%, #0C65D8 100%);
+        }
+
+        .social-icon.snapchat {
+            background: linear-gradient(135deg, #FFFC00 0%, #FFC107 100%);
+        }
+
+        .social-icon.telegram {
+            background: linear-gradient(135deg, #0088CC 0%, #0066A3 100%);
+        }
+
+        .social-icon.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .social-icon.default {
+            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
         }
 
         .admin-button {
@@ -164,23 +189,23 @@
 
             <div class="links-section" id="links-container">
                 <a href="#" class="link-item">
-                    <div class="social-icon twitch">T</div>
+                    <div class="social-icon twitch"><i class="fab fa-twitch"></i></div>
                     <span>Twitch</span>
                 </a>
                 <a href="#" class="link-item">
-                    <div class="social-icon youtube">Y</div>
+                    <div class="social-icon youtube"><i class="fab fa-youtube"></i></div>
                     <span>YouTube</span>
                 </a>
                 <a href="#" class="link-item">
-                    <div class="social-icon twitter">X</div>
+                    <div class="social-icon twitter"><i class="fab fa-twitter"></i></div>
                     <span>Twitter</span>
                 </a>
                 <a href="#" class="link-item">
-                    <div class="social-icon discord">D</div>
+                    <div class="social-icon discord"><i class="fab fa-discord"></i></div>
                     <span>Discord</span>
                 </a>
                 <a href="#" class="link-item">
-                    <div class="social-icon spotify">♪</div>
+                    <div class="social-icon spotify"><i class="fab fa-spotify"></i></div>
                     <span>Spotify</span>
                 </a>
             </div>
@@ -267,15 +292,20 @@
         // Get social media icon and class for link title
         function getSocialIcon(title) {
             const titleLower = title.toLowerCase();
-            if (titleLower.includes('twitch')) return { icon: 'T', class: 'twitch' };
-            if (titleLower.includes('youtube')) return { icon: 'Y', class: 'youtube' };
-            if (titleLower.includes('twitter')) return { icon: 'X', class: 'twitter' };
-            if (titleLower.includes('discord')) return { icon: 'D', class: 'discord' };
-            if (titleLower.includes('spotify')) return { icon: '♪', class: 'spotify' };
-            if (titleLower.includes('instagram')) return { icon: 'I', class: 'instagram' };
-            if (titleLower.includes('tiktok')) return { icon: 'T', class: 'tiktok' };
-            if (titleLower.includes('github')) return { icon: 'G', class: 'github' };
-            return { icon: '🔗', class: 'default' };
+            if (titleLower.includes('twitch')) return { icon: '<i class="fab fa-twitch"></i>', class: 'twitch' };
+            if (titleLower.includes('youtube')) return { icon: '<i class="fab fa-youtube"></i>', class: 'youtube' };
+            if (titleLower.includes('twitter')) return { icon: '<i class="fab fa-twitter"></i>', class: 'twitter' };
+            if (titleLower.includes('discord')) return { icon: '<i class="fab fa-discord"></i>', class: 'discord' };
+            if (titleLower.includes('spotify')) return { icon: '<i class="fab fa-spotify"></i>', class: 'spotify' };
+            if (titleLower.includes('instagram')) return { icon: '<i class="fab fa-instagram"></i>', class: 'instagram' };
+            if (titleLower.includes('tiktok')) return { icon: '<i class="fab fa-tiktok"></i>', class: 'tiktok' };
+            if (titleLower.includes('github')) return { icon: '<i class="fab fa-github"></i>', class: 'github' };
+            if (titleLower.includes('linkedin')) return { icon: '<i class="fab fa-linkedin"></i>', class: 'linkedin' };
+            if (titleLower.includes('facebook')) return { icon: '<i class="fab fa-facebook"></i>', class: 'facebook' };
+            if (titleLower.includes('snapchat')) return { icon: '<i class="fab fa-snapchat"></i>', class: 'snapchat' };
+            if (titleLower.includes('telegram')) return { icon: '<i class="fab fa-telegram"></i>', class: 'telegram' };
+            if (titleLower.includes('whatsapp')) return { icon: '<i class="fab fa-whatsapp"></i>', class: 'whatsapp' };
+            return { icon: '<i class="fas fa-link"></i>', class: 'default' };
         }
 
         // Admin toggle
