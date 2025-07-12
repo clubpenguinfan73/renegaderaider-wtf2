@@ -52,6 +52,7 @@ export default function AdminPanel({
   const [spotifyArtistName, setSpotifyArtistName] = useState(profile?.spotifyArtistName || "");
   const [spotifyAlbumArt, setSpotifyAlbumArt] = useState(profile?.spotifyAlbumArt || "");
   const [spotifyTrackUrl, setSpotifyTrackUrl] = useState(profile?.spotifyTrackUrl || "");
+  const [profileEffect, setProfileEffect] = useState(profile?.profileEffect || "none");
   
   const backgroundUploadRef = useRef<HTMLInputElement>(null);
   const profileUploadRef = useRef<HTMLInputElement>(null);
@@ -83,6 +84,7 @@ export default function AdminPanel({
       setSpotifyArtistName(profile.spotifyArtistName || "");
       setSpotifyAlbumArt(profile.spotifyAlbumArt || "");
       setSpotifyTrackUrl(profile.spotifyTrackUrl || "");
+      setProfileEffect(profile.profileEffect || "none");
     }
   }, [profile]);
 
@@ -352,6 +354,7 @@ export default function AdminPanel({
       spotifyArtistName: spotifyArtistName,
       spotifyAlbumArt: spotifyAlbumArt,
       spotifyTrackUrl: spotifyTrackUrl,
+      profileEffect: profileEffect,
     });
     setMusicEnabled(false);
   };
@@ -634,6 +637,105 @@ export default function AdminPanel({
                             effect={usernameEffect} 
                             className="text-xl"
                           />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Profile Effects */}
+                  <Card className="bg-medium-gray/60 border-light-gray/40 shadow-lg">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-gaming-purple flex items-center gap-2 text-lg">
+                        🎨 Profile Effects
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Effect Style</label>
+                        <Select value={profileEffect} onValueChange={setProfileEffect}>
+                          <SelectTrigger className="bg-dark-gray border-light-gray/50 focus:border-gaming-purple text-white">
+                            <SelectValue placeholder="Select effect" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-dark-gray border-light-gray/50">
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="snow">❄️ Snowing Winter</SelectItem>
+                            <SelectItem value="rain">🌧️ Raining Summer</SelectItem>
+                            <SelectItem value="leaves">🍂 Autumn Leaves</SelectItem>
+                            <SelectItem value="confetti">🎊 Confetti Party</SelectItem>
+                            <SelectItem value="hearts">❤️ Floating Hearts</SelectItem>
+                            <SelectItem value="bubbles">🫧 Floating Bubbles</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-300">Preview</label>
+                        <div className="bg-dark-gray/50 p-4 rounded-lg text-center min-h-[80px] relative overflow-hidden">
+                          <span className="text-gray-300 text-sm">Effect Preview</span>
+                          {profileEffect === "snow" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 8 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute text-white text-xs animate-pulse"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                  }}
+                                >
+                                  ❄️
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {profileEffect === "rain" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 6 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute w-px h-4 bg-gradient-to-b from-blue-300 to-transparent animate-pulse"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    animationDelay: `${Math.random() * 1}s`,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
+                          {profileEffect === "hearts" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 4 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute text-red-400 text-xs animate-bounce"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    bottom: `${Math.random() * 50}%`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                  }}
+                                >
+                                  ❤️
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {profileEffect === "confetti" && (
+                            <div className="absolute inset-0 pointer-events-none">
+                              {Array.from({ length: 6 }, (_, i) => (
+                                <div
+                                  key={i}
+                                  className="absolute w-2 h-2 animate-spin"
+                                  style={{
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`,
+                                    backgroundColor: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'][i % 5],
+                                    animationDelay: `${Math.random() * 2}s`,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
