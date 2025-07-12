@@ -333,16 +333,6 @@
     text-shadow: 0 0 10px #87ceeb, 0 0 20px #4682b4, 0 0 40px #4682b4;
   }
 }
-}
-
-@keyframes ice {
-  from { 
-    text-shadow: 0 0 10px #87ceeb, 0 0 20px #4682b4, 0 0 40px #4682b4;
-  }
-  to { 
-    text-shadow: 0 0 20px #87ceeb, 0 0 30px #4682b4, 0 0 60px #4682b4;
-  }
-}
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
