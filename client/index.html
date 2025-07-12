@@ -146,6 +146,10 @@
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
         }
 
+        .social-icon.lastfm {
+            background: linear-gradient(135deg, #D51007 0%, #B71C1C 100%);
+        }
+
         .social-icon.default {
             background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
         }
@@ -207,6 +211,10 @@
                 <a href="#" class="link-item">
                     <div class="social-icon spotify"><i class="fab fa-spotify"></i></div>
                     <span>Spotify</span>
+                </a>
+                <a href="#" class="link-item">
+                    <div class="social-icon lastfm"><i class="fab fa-lastfm"></i></div>
+                    <span>Last.fm</span>
                 </a>
             </div>
         </div>
@@ -305,6 +313,7 @@
             if (titleLower.includes('snapchat')) return { icon: '<i class="fab fa-snapchat"></i>', class: 'snapchat' };
             if (titleLower.includes('telegram')) return { icon: '<i class="fab fa-telegram"></i>', class: 'telegram' };
             if (titleLower.includes('whatsapp')) return { icon: '<i class="fab fa-whatsapp"></i>', class: 'whatsapp' };
+            if (titleLower.includes('lastfm') || titleLower.includes('last.fm')) return { icon: '<i class="fab fa-lastfm"></i>', class: 'lastfm' };
             return { icon: '<i class="fas fa-link"></i>', class: 'default' };
         }
 

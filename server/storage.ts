@@ -61,11 +61,12 @@ export class MemStorage implements IStorage {
       { id: 2, title: "YouTube", url: "#", description: "Gaming highlights & tutorials", icon: "fab fa-youtube", color: "bg-red-600", order: 2 },
       { id: 3, title: "Twitter", url: "#", description: "Latest updates & thoughts", icon: "fab fa-twitter", color: "bg-gaming-cyan", order: 3 },
       { id: 4, title: "Discord", url: "#", description: "Join the community", icon: "fab fa-discord", color: "bg-indigo-600", order: 4 },
-      { id: 5, title: "Spotify", url: "#", description: "My gaming playlists", icon: "fab fa-spotify", color: "bg-green-600", order: 5 }
+      { id: 5, title: "Spotify", url: "#", description: "My gaming playlists", icon: "fab fa-spotify", color: "bg-green-600", order: 5 },
+      { id: 6, title: "Last.fm", url: "#", description: "My music scrobbles", icon: "fab fa-lastfm", color: "bg-red-600", order: 6 }
     ];
     
     defaultLinks.forEach(link => this.links.set(link.id, link));
-    this.currentLinkId = 6;
+    this.currentLinkId = 7;
   }
 
   async getUser(id: number): Promise<User | undefined> {
