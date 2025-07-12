@@ -876,13 +876,197 @@
             container.appendChild(bubblesDiv);
         }
 
+        // Profile Effects Admin Panel
+        function createProfileEffectsModal() {
+            const modal = document.createElement('div');
+            modal.id = 'profileEffectsModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            const panel = document.createElement('div');
+            panel.style.cssText = `
+                background: #1a1a1a;
+                border-radius: 12px;
+                padding: 2rem;
+                width: 90%;
+                max-width: 500px;
+                color: white;
+                border: 2px solid #8B5CF6;
+            `;
+            
+            panel.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0; color: #8B5CF6; font-size: 1.5rem;">🎨 Profile Effects</h2>
+                    <button onclick="closeProfileEffectsModal()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">×</button>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Effect Style</label>
+                    <select id="profileEffectSelect" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid #333; background: #2a2a2a; color: white; font-size: 1rem;">
+                        <option value="none">None</option>
+                        <option value="snow">Snowing Winter</option>
+                        <option value="rain">Raining Summer</option>
+                        <option value="leaves">Autumn Leaves</option>
+                        <option value="confetti">Confetti Party</option>
+                        <option value="hearts">Floating Hearts</option>
+                        <option value="bubbles">Floating Bubbles</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Preview</label>
+                    <div id="profileEffectPreview" style="background: #2a2a2a; border-radius: 8px; padding: 2rem; text-align: center; border: 2px solid #333; position: relative; overflow: hidden; height: 80px;">
+                        <span style="font-size: 1.25rem; font-weight: 600;">Effect Preview</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button onclick="saveProfileEffect()" style="flex: 1; background: #8B5CF6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        Apply Effect
+                    </button>
+                    <button onclick="closeProfileEffectsModal()" style="flex: 1; background: #333; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        Cancel
+                    </button>
+                </div>
+            `;
+            
+            modal.appendChild(panel);
+            document.body.appendChild(modal);
+            
+            // Add event listener for effect selection
+            const select = document.getElementById('profileEffectSelect');
+            select.addEventListener('change', updateProfileEffectPreview);
+            
+            // Load current effect
+            loadCurrentProfileEffect();
+        }
+        
+        function updateProfileEffectPreview() {
+            const select = document.getElementById('profileEffectSelect');
+            const preview = document.getElementById('profileEffectPreview');
+            const effect = select.value;
+            
+            // Clear previous preview
+            preview.innerHTML = '<span style="font-size: 1.25rem; font-weight: 600;">Effect Preview</span>';
+            
+            // Create mini preview based on effect
+            switch (effect) {
+                case 'snow':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 10; i++) {
+                        preview.innerHTML += `<div style="position: absolute; color: white; font-size: 12px; animation: snowfall 2s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;">❄</div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+                case 'rain':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 15; i++) {
+                        preview.innerHTML += `<div style="position: absolute; width: 1px; height: 10px; background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.2)); animation: rainfall 1s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;"></div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+                case 'leaves':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 8; i++) {
+                        const colors = ['#ff6b35', '#ff8c42', '#ffd662'];
+                        preview.innerHTML += `<div style="position: absolute; width: 8px; height: 8px; background: ${colors[i % 3]}; border-radius: 0 100% 0 100%; animation: leaffall 3s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;"></div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+                case 'confetti':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 12; i++) {
+                        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+                        preview.innerHTML += `<div style="position: absolute; width: 6px; height: 6px; background: ${colors[i % 6]}; animation: confettifall 2s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;"></div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+                case 'hearts':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 6; i++) {
+                        preview.innerHTML += `<div style="position: absolute; color: #ff6b6b; font-size: 12px; animation: heartfloat 4s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;">❤️</div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+                case 'bubbles':
+                    preview.innerHTML += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">';
+                    for (let i = 0; i < 8; i++) {
+                        const size = Math.random() * 15 + 8;
+                        preview.innerHTML += `<div style="position: absolute; width: ${size}px; height: ${size}px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); animation: bubbleup 4s linear infinite; left: ${Math.random() * 100}%; animation-delay: ${Math.random()}s;"></div>`;
+                    }
+                    preview.innerHTML += '</div>';
+                    break;
+            }
+        }
+        
+        function loadCurrentProfileEffect() {
+            // Get current effect from profile data
+            fetch(`${API_BASE}/profile`)
+                .then(response => response.json())
+                .then(profile => {
+                    const select = document.getElementById('profileEffectSelect');
+                    if (select && profile.profileEffect) {
+                        select.value = profile.profileEffect;
+                        updateProfileEffectPreview();
+                    }
+                })
+                .catch(error => {
+                    console.log('Could not load current effect:', error);
+                });
+        }
+        
+        function saveProfileEffect() {
+            const select = document.getElementById('profileEffectSelect');
+            const effect = select.value;
+            
+            // Apply effect immediately to main page
+            applyProfileEffect(effect);
+            
+            // Save to profile
+            fetch(`${API_BASE}/profile`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    profileEffect: effect
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Profile effect saved:', data);
+                closeProfileEffectsModal();
+            })
+            .catch(error => {
+                console.error('Error saving profile effect:', error);
+                alert('Failed to save profile effect');
+            });
+        }
+        
+        function closeProfileEffectsModal() {
+            const modal = document.getElementById('profileEffectsModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
         // Admin toggle
         function toggleAdmin() {
             const username = prompt('Enter username:');
             const password = prompt('Enter password:');
             
             if (username === 'Cat' && password === 'Cat@Renagde.wtf73') {
-                alert('Admin access granted! Full admin panel coming soon.');
+                createProfileEffectsModal();
                 console.log('Admin access granted');
             } else {
                 alert('Invalid credentials');
